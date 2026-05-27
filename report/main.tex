@@ -1,0 +1,82 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage{alltt, fancyvrb, url}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\usepackage[italian]{babel}
+
+\usepackage[italian]{cleveref}
+
+\title{Relazione DungeonSQL}
+\author{Andrea Maria Castronovo, \\ Carmelo Falsone}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Analisi}
+
+\vspace{-20pt}
+
+\section{Introduzione}
+
+L'applicazione si pone l'obiettivo di facilitare la gestione e l'archiviazione di ciò 
+che riguarda una o più campagne del gioco di ruolo Dungeons and Dragons, occupandosi 
+principalmente di gestire più facilmente le parti più "macchinose" del gioco, 
+lasciando un po' più spazio alla parte di role play dei giocatori. 
+%
+Ad esempio fornirà ai giocatori dei modi semplici per tenere traccia dei loro bonus,
+quanti slot magici hanno utilizzato o possono ancora utilizzare oppure la vita rimasta 
+dopo un combattimento.
+
+Una \textbf{Campagna} (ovvero il mondo di gioco) necessita di un \textit{nome}, una \textit{descrizione}
+e la presenza di un gruppo di \textbf{Giocatori} 
+(utenti) di cui uno (il creatore) ricoprirà il ruolo di \textbf{Dungeon Master} (DM).
+%
+Una campagna è composta da \textbf{Sessioni di gioco} che si tengono in determinati \textit{giorni} 
+concordati dai giocatori. Il DM potrà appuntare le cose che accadono nelle sessioni in 
+un \textbf{Diario} della campagna.
+%
+Ogni giocatore potrà creare delle campagne assumendo il ruolo di DM e inviterà altri 
+giocatori a partecipare con un loro \textbf{Personaggio}.
+%
+Ogni utente potrà partecipare ad una campagna con un solo personaggio, il quale dovrà 
+essere creato oppure selezionato (ed eventualmente riadattato) da quelli preparati 
+precedentemente. 
+%
+Il DM può usare qualsiasi suo personaggio come personaggio non giocante (NPC) 
+e può creare dei combattimenti all'interno della campagna selezionando i personaggi coinvolti che vuole 
+oppure qualsiasi NPC o \textbf{Mostro} a sua scelta. 
+%
+Un combattimento è diviso in round e turni,
+questi ultimi ordinati in base ad un tiro iniziativa di ogni partecipante. 
+La creazione di un personaggio comprende diversi aspetti stabiliti in un manuale scelto.
+%
+Per i fini di questo progetto sarà tenuta in considerazione una parte del manuale della 
+5° edizione di Dungeons and Dragons. Un personaggio sarà creato scegliendo una \textbf{Razza}
+(divisa anche in \textbf{Sottorazze}), una \textbf{Classe} 
+(più avanti sviluppata in \textbf{Sottoclasse}) e tutto ciò che il manuale dice sulla classe 
+(ad esempio i \textbf{Tratti}). 
+%
+Un personaggio ha dei "punti caratteristica" da dover distribuire nelle 
+seguenti caratteristiche principali: 
+\textit{forza}, \textit{costituzione}, \textit{destrezza}, \textit{intelligenza}, \textit{saggezza} e 
+\textit{carisma}, tenendo conto degli incrementi forniti ad esempio dalla razza; 
+%
+inoltre ha anche delle \textit{monete}, un inventario composto da \textbf{Oggetti} e un 
+equipaggiamento composto da \textbf{Armi} e \textbf{Armature}. 
+%
+Esistono inoltre vari \textbf{Incantesimi} che possono essere utilizzati
+dai personaggi, che però dovranno avere adeguati requisiti per utilizzarli (ad esempio 
+un incantesimo può essere appreso solo da determinate classi o necessita un determinato livello di una classe).
+
+
+\end{document}
