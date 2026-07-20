@@ -12,7 +12,7 @@
 \usepackage[italian]{cleveref}
 
 \title{Relazione DungeonSQL}
-\author{Andrea Maria Castronovo, \\ Carmelo Falsone}
+\author{Andrea Maria Castronovo (0001171933), \\ Carmelo Falsone (0001161090)}
 \date{\today}
 
 
@@ -22,11 +22,56 @@
 
 \tableofcontents
 
-\chapter{Analisi}
+\chapter{Analisi dei requisiti}
 
 \vspace{-20pt}
 
-\section{Introduzione}
+\section{Intervista}
+
+L'applicazione dovrà gestire ciò che riguarda una o più campagne del gioco di ruolo 
+Dungeons and Dragons senza però alterare l'esperienza di gioco dal vivo (gioco di ruolo).
+%
+Una campagna (ovvero il mondo di gioco) necessita la presenza di un gruppo di giocatori di cui uno (il creatore) 
+ricoprirà il ruolo di Dungeon Master (DM). 
+%
+Ogni giocatore potrà creare dei personaggi ognuno con delle caratteristiche.
+La creazione del personaggio (scheda) seguirà la tipica creazione della 5° edizione di DnD, 
+scegliendo le caratteristiche principali e calcolando automaticamente i punti abilità di conseguenza. 
+%
+Ogni giocatore potrà inserire caratteri speciali o equipaggiamento che possono alterare le caratteristiche del 
+personaggio (ad esempio armature che alterano la Classe Armatura (CA), background che incrementano 
+caratteristiche ecc…).
+%
+I personaggi possono avere o non avere determinate sezioni per abilità speciali, quali ad esempio le magie per i 
+maghi o le suppliche occulte per i Warlock: queste sezioni potranno essere attivate o disattivate durante la 
+creazione o la modifica del personaggio, in modo da garantire flessibilità durante la creazione.
+%
+Ogni utente potrà iscrivere uno dei suoi personaggi ad una campagna e potrà anche crearne (facendo quindi da DM) 
+altrettante.
+%
+Il DM di una campagna dovrà poter vedere le schede dei personaggi giocanti (che partecipano alla campagna), 
+avendo la possibilità di proporre modifiche al personaggio (ad esempio in caso di caratteristiche incoerenti 
+con il manuale scelto); deve avere anche la possibilità di creare delle schede per personaggi non giocanti (NPC) 
+e anche creare oggetti e magie personalizzate per la campagna.
+%
+Il DM potrà scrivere in un'apposita sezione un resoconto delle sessioni di gioco, in modo da poter segnare in un
+posto comodo (diario) tutto ciò che succede nelle sessioni di gioco, con la possibilità di poter collegare ad ogni 
+capitolo dei personaggi (giocanti o non) o degli oggetti di gioco (ad esempio Item, Magie ecc…).
+%
+Il DM potrà creare combattimenti tra i personaggi dei giocatori ed NPC da lui creati in modo da facilitare la gestione dei turni e delle azioni. I giocatori potranno accedere al combattimento per vedere quando è il loro turno, ma solo il DM potrà applicare modifiche alla vita e agli effetti di stato dei combattenti.
+Statistiche
+Ogni giocatore avrà accesso ad una sezione dedicata a delle statistiche riassuntive delle azioni svolte dai loro personaggi, ad esempio punti esperienza guadagnati, mostri sconfitti, danni effettuati, danni ricevuti. Potrà anche vedere statistiche riguardo tutti i suoi personaggi, come ad esempio i personaggi che hanno inflitto o ricevuto più danni.
+
+\section{Rilevamento delle ambiguità e correzioni proposte}
+
+\begin{itemize}
+    \item È opportuno evidenziare che con "Campagna" si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM)
+    \item Per "Giocatore" si intende un partecipante della campagna mentre con "DM" si identifica l'amministratore della Campagna
+
+\end{itemize}
+
+
+\section{Definizione delle specifiche in linguaggio naturale ed estrazione dei concetti principali}
 
 L'applicazione si pone l'obiettivo di facilitare la gestione e l'archiviazione di ciò 
 che riguarda una o più campagne del gioco di ruolo Dungeons and Dragons, occupandosi 
@@ -77,6 +122,53 @@ equipaggiamento composto da \textbf{Armi} e \textbf{Armature}.
 Esistono inoltre vari \textbf{Incantesimi} che possono essere utilizzati
 dai personaggi, che però dovranno avere adeguati requisiti per utilizzarli (ad esempio 
 un incantesimo può essere appreso solo da determinate classi o necessita un determinato livello di una classe).
+%
+A livello di permessi e interazione con l'applicazione, il sistema distinguerà 
+le funzionalità in base al ruolo dell'utente all'interno di una specifica campagna. 
+%
+La \textbf{Vista Giocatore} permetterà all'utente di consultare e modificare unicamente 
+la propria scheda, calcolando automaticamente i punti abilità derivanti dalle sue 
+scelte (ad esempio i bonus di classe o derivanti dall'equipaggiamento). 
+Durante un combattimento, il giocatore avrà un accesso in sola lettura per monitorare 
+il proprio turno.
+%
+La \textbf{Vista Dungeon Master}, al contrario, garantirà poteri di gestione completi sulla 
+campagna. Solo il DM potrà proporre modifiche alle schede dei giocatori, applicare 
+alterazioni ai punti vita (HP) e infliggere \textbf{Effetti di stato} ai partecipanti 
+durante i combattimenti.
+%
+Infine, per favorire il monitoraggio dei progressi, ogni giocatore avrà accesso a una 
+sezione \textbf{Statistiche}. Il sistema terrà traccia delle performance dei singoli 
+personaggi, fornendo dati riassuntivi quali punti esperienza guadagnati, 
+mostri sconfitti e il totale dei danni inflitti o ricevuti.
 
+\chapter{Progettazione Concettuale}
+
+\vspace{-20pt}
+
+\section{Schema scheletro}
+
+
+\section{Raffinamenti proposti}
+
+\section{Schema concettuale finale}
+
+\chapter{Progettazione logica}
+
+\section{Stima del volume dei dati}
+
+\section{Descrizione delle operazioni principali e stima della loro frequenza}
+
+\section{Schemi di navigazione e tabelle degli accessi}
+
+\section{Raffinamento dello schema}
+
+\section{Analisi delle ridondanze}
+
+\section{Traduzione di entità e associazioni in relazioni}
+
+\section{Schema relazionale finale}
+
+\section{Traduzione delle operazioni in query SQL}
 
 \end{document}
