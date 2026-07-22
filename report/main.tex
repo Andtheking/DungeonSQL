@@ -6,6 +6,11 @@
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[autostyle=true]{csquotes}
+\DeclareQuoteAlias{english}{italian}
 
 \usepackage[italian]{babel}
 
@@ -60,24 +65,27 @@ Il DM potrà scrivere in un'apposita sezione un resoconto delle sessioni di gioc
 posto comodo (diario) tutto ciò che succede nelle sessioni di gioco, con la possibilità di poter collegare ad ogni 
 capitolo dei personaggi (giocanti o non) o degli oggetti di gioco (ad esempio Item, Magie ecc…).
 %
-Il DM potrà creare combattimenti tra i personaggi dei giocatori ed NPC da lui creati in modo da facilitare la gestione dei turni e delle azioni. I giocatori potranno accedere al combattimento per vedere quando è il loro turno, ma solo il DM potrà applicare modifiche alla vita e agli effetti di stato dei combattenti.
-Statistiche
-Ogni giocatore avrà accesso ad una sezione dedicata a delle statistiche riassuntive delle azioni svolte dai loro personaggi, ad esempio punti esperienza guadagnati, mostri sconfitti, danni effettuati, danni ricevuti. Potrà anche vedere statistiche riguardo tutti i suoi personaggi, come ad esempio i personaggi che hanno inflitto o ricevuto più danni.
+Il DM potrà creare combattimenti tra i personaggi dei giocatori ed NPC da lui creati in modo da facilitare la gestione 
+dei turni e delle azioni. I giocatori potranno accedere al combattimento per vedere quando è il loro turno, ma solo il DM 
+potrà applicare modifiche alla vita e agli effetti di stato dei combattenti.
+%
+Ogni giocatore avrà accesso ad una sezione dedicata a delle statistiche riassuntive delle azioni svolte dai loro personaggi, 
+ad esempio punti esperienza guadagnati, mostri sconfitti, danni effettuati, danni ricevuti. Potrà anche vedere statistiche 
+riguardo tutti i suoi personaggi, come ad esempio i personaggi che hanno inflitto o ricevuto più danni.
 
 \section{Rilevamento delle ambiguità e correzioni proposte}
 
 \begin{itemize}
-    \item È opportuno evidenziare che con "Campagna" si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM)
-    \item Per "Giocatore" si intende un partecipante della campagna mentre con "DM" si identifica l'amministratore della Campagna
+    \item È opportuno evidenziare che con \enquote{Campagna} si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM)
+    \item Per \enquote{Giocatore} si intende un partecipante della campagna mentre con \enquote{DM} si identifica l'amministratore della Campagna
 
 \end{itemize}
-
 
 \section{Definizione delle specifiche in linguaggio naturale ed estrazione dei concetti principali}
 
 L'applicazione si pone l'obiettivo di facilitare la gestione e l'archiviazione di ciò 
 che riguarda una o più campagne del gioco di ruolo Dungeons and Dragons, occupandosi 
-principalmente di gestire più facilmente le parti più "macchinose" del gioco, 
+principalmente di gestire più facilmente le parti più \enquote{macchinose} del gioco, 
 lasciando un po' più spazio alla parte di role play dei giocatori. 
 %
 Ad esempio fornirà ai giocatori dei modi semplici per tenere traccia dei loro bonus,
@@ -109,11 +117,11 @@ La creazione di un personaggio comprende diversi aspetti stabiliti in un manuale
 %
 Per i fini di questo progetto sarà tenuta in considerazione una parte del manuale della 
 5° edizione di Dungeons and Dragons. Un personaggio sarà creato scegliendo una \textbf{Razza}
-(divisa anche in \textbf{Sottorazze}), una \textbf{Classe} 
-(più avanti sviluppata in \textbf{Sottoclasse}) e tutto ciò che il manuale dice sulla classe 
+(divisa anche in \textbf{Sottorazze}), una o più \textbf{Classi} 
+(più avanti con i livelli sviluppata in \textbf{Sottoclasse}) e tutto ciò che il manuale dice sulla classe 
 (ad esempio i \textbf{Tratti}). 
 %
-Un personaggio ha dei "punti caratteristica" da dover distribuire nelle 
+Un personaggio ha dei \enquote{punti caratteristica} da dover distribuire nelle 
 seguenti caratteristiche principali: 
 \textit{forza}, \textit{costituzione}, \textit{destrezza}, \textit{intelligenza}, \textit{saggezza} e 
 \textit{carisma}, tenendo conto degli incrementi forniti ad esempio dalla razza; 
@@ -150,6 +158,9 @@ mostri sconfitti e il totale dei danni inflitti o ricevuti.
 
 \section{Schema scheletro}
 
+Per facilitare la lettura e la composizione degli schemi, saranno rappresentate delle 
+macro aree un po' per volta. Di seguito lo scheletro delle macro-aree generali.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{skeleton.png}
@@ -159,9 +170,98 @@ mostri sconfitti e il totale dei danni inflitti o ricevuti.
 
 \section{Raffinamenti proposti}
 
+A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e 
+l'aggiunta dei relativi identificatori e attributi per modellare tutte le specifiche:
+
 \begin{itemize}
-    \item L'utente dovrà essere identificato da un nome utente e una password
+    \item L'\textbf{Utente} dovrà essere identificato da un nome utente e possederà 
+    attributi di base come la password.
+    
+    \item La \textbf{Campagna} avrà come identificativo un \textit{titolo} e sarà arricchita
+    da un attributo per la \textit{descrizione} del mondo di gioco.
+    
+    \item Un \textbf{Personaggio} dovrà avere un \textit{nome} e sarà identificato esternamente 
+    tramite l'utente che l'ha creato, oltre a possedere gli attributi base delle 
+    caratteristiche (\textit{forza}, \textit{destrezza}, \textit{costituzione}, ecc.).
+    
+    \item I \textbf{Combattimenti} (così come le \textbf{Sessioni}) saranno entità deboli, 
+    identificati con un \textit{numero progressivo} collegato esternamente alla campagna di appartenenza.
+
+    \item \textbf{Gerarchia dei Partecipanti (Gestione Mostri e NPC):} Ai combattimenti potranno prendere 
+    parte dei \textbf{Mostri}, che hanno blocchi di statistiche semplificati rispetto ai personaggi 
+    (senza Classi, Razze, ecc...). L'associazione del Combattimento sarà quindi spostata su una nuova entità padre 
+    \textbf{Partecipante}, che conterrà le statistiche di base in comune (HP, Classe Armatura). 
+    Questa si specializzerà tramite generalizzazione in \textbf{Personaggio} e \textbf{Mostro}.
+    
+    \item \textbf{Strutturazione della Scheda:} Per rispettare le regole di creazione della 5° edizione, 
+    aggiungeremo le entità \textbf{Razza}, \textbf{Classe} (con Sottoclassi) 
+    e \textbf{Incantesimi/Abilità}. Queste si relazioneranno al personaggio per giustificare il calcolo 
+    automatico dei punti abilità.
+
+    \item Le \textbf{Sottorazze} secondo le regole di gioco non applicano dei cambiamenti troppo diversi da 
+    quelli delle razze normali, per cui sarà trattata come stessa entità sfruttando un'associazione ricorsiva 
+    per modellarne la gerarchia e la derivazione
+    
+    \item Le \textbf{Sottoclassi}, invece, possono fornire intere nuove abilità al personaggio ed inoltre
+    un personaggio può anche \enquote{multiclassare}, ovvero avere più di una classe in cui distribuire i livelli.
+    Per questa necessità non basta una semplice relazione ma sarà reificata nell'entità \textbf{Progresso}. 
+    Inoltre, la Sottoclasse sarà modellata come entità debole della Classe, per garantire a livello strutturale 
+    che un personaggio non possa mai vedersi assegnata la sottoclasse di una classe differente.
+
+    \item \textbf{Gerarchia dell'Equipaggiamento:} Verrà inserita un'entità \textbf{Oggetto}, specializzata 
+    in \textbf{Armi} e \textbf{Armature} (con attributi specifici come il modificatore alla Classe Armatura), 
+    per modellare l'inventario dei personaggi.
+    
+    \item \textbf{Statistiche e Status:} Aggiungeremo gli attributi necessari a gestire le variazioni dei Punti 
+    Vita (HP) e gli Effetti di Stato durante i combattimenti. Inoltre, inseriremo nel Personaggio i campi per 
+    l'elaborazione delle statistiche richieste (punti esperienza, mostri sconfitti, danni effettuati/ricevuti).
 \end{itemize}
+
+\noindent
+Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo schema finale
+
+\small
+\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.28\textwidth} >{\centering\arraybackslash}p{0.10\textwidth} >{\raggedright\arraybackslash}p{0.54\textwidth} @{}}
+
+    \toprule    
+    \textbf{Nome} & \textbf{Tipo} & \textbf{Descrizione} \\ 
+    \midrule
+    \endhead
+
+    \midrule
+    \endfoot
+
+    \bottomrule
+    \endlastfoot
+
+    Utente & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \addlinespace[0.3em] 
+    Campagna & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \addlinespace[0.3em]
+    Sessione & E & Rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \addlinespace[0.3em]
+    Combattimento & E & Rappresenta uno scontro a turni svoltosi all'interno della Campagna. \\ \addlinespace[0.3em]
+    Partecipante & E & Generalizzazione che accomuna tutti i soggetti coinvolti in un Combattimento. \\ \addlinespace[0.3em]
+    Personaggio & E & Rappresenta la scheda giocante o un NPC completo. \\ \addlinespace[0.3em]
+    Mostro & E & Rappresenta un nemico con statistiche base semplificate. \\ \addlinespace[0.3em]
+    Razza & E & Rappresenta la razza base scelta nella creazione del Personaggio. \\ \addlinespace[0.3em]
+    Sottorazza & E & Specializzazione di Razza, conferisce tratti specifici addizionali. \\ \addlinespace[0.3em]
+    Classe & E & Rappresenta la classe principale del Personaggio (es. Mago, Guerriero). \\ \addlinespace[0.3em]
+    Sottoclasse & E & Specializzazione di Classe, scelta a un determinato livello. \\ \addlinespace[0.3em]
+    Incantesimo & E & Rappresenta le magie o capacità attivabili/disattivabili dai personaggi. \\ \addlinespace[0.3em]
+    Oggetto & E & Generalizzazione per tutto l'equipaggiamento e l'inventario. \\ \addlinespace[0.3em]
+    Arma & E & Rappresenta un equipaggiamento offensivo relativo ai danni inflitti. \\ \addlinespace[0.3em]
+    Armatura & E & Rappresenta un equipaggiamento difensivo relativo alla Classe Armatura. \\ \addlinespace[1.2em]
+
+    Ha Creato & R & Lega l'Utente ai Personaggi che ha creato. \\ \addlinespace[0.3em]
+    È Master Di & R & Lega l'Utente (con ruolo di DM) alla Campagna che gestisce. \\ \addlinespace[0.3em]
+    Partecipa In & R & Lega il Personaggio alle Campagne a cui partecipa. \\ \addlinespace[0.3em]
+    Composta Da & R & Lega la Campagna alle Sessioni che la compongono. \\ \addlinespace[0.3em]
+    Avvenuti & R & Lega la Campagna ai Combattimenti svoltisi al suo interno. \\ \addlinespace[0.3em]
+    Parte Di & R & Lega i Partecipanti al Combattimento in cui lottano. \\ \addlinespace[0.3em]
+    Appartiene & R & Lega il Personaggio alla propria Razza e Classe. \\ \addlinespace[0.3em]
+    Conosce & R & Lega il Personaggio agli Incantesimi e alle Abilità apprese. \\ \addlinespace[0.3em]
+    Possiede & R & Lega il Personaggio agli Oggetti presenti nel suo inventario. \\
+
+\end{longtable}
+
 
 \section{Schema concettuale finale}
 
