@@ -3,6 +3,7 @@
 \usepackage{alltt, fancyvrb, url}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
+\usepackage[pass]{geometry}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -42,7 +43,7 @@ Una campagna (ovvero il mondo di gioco) necessita la presenza di un gruppo di gi
 ricoprirà il ruolo di Dungeon Master (DM). 
 %
 Ogni giocatore potrà creare dei personaggi ognuno con delle caratteristiche.
-La creazione del personaggio (scheda) seguirà la tipica creazione della 5° edizione di DnD, 
+La creazione del personaggio (scheda) seguirà la tipica creazione della quinta edizione di DnD, 
 scegliendo le caratteristiche principali e calcolando automaticamente i punti abilità di conseguenza. 
 %
 Ogni giocatore potrà inserire caratteri speciali o equipaggiamento che possono alterare le caratteristiche del 
@@ -116,7 +117,7 @@ questi ultimi ordinati in base ad un tiro iniziativa di ogni partecipante.
 La creazione di un personaggio comprende diversi aspetti stabiliti in un manuale scelto.
 %
 Per i fini di questo progetto sarà tenuta in considerazione una parte del manuale della 
-5° edizione di Dungeons and Dragons. Un personaggio sarà creato scegliendo una \textbf{Razza}
+quinta edizione di Dungeons and Dragons. Un personaggio sarà creato scegliendo una \textbf{Razza}
 (divisa anche in \textbf{Sottorazze}), una o più \textbf{Classi} 
 (più avanti con i livelli sviluppata in \textbf{Sottoclasse}) e tutto ciò che il manuale dice sulla classe 
 (ad esempio i \textbf{Tratti}). 
@@ -173,115 +174,157 @@ macro aree un po' per volta. Di seguito lo scheletro delle macro-aree generali.
 A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e 
 l'aggiunta dei relativi identificatori e attributi per modellare tutte le specifiche:
 
-\section{Raffinamenti proposti}
-
-A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e 
-l'aggiunta dei relativi identificatori e attributi per modellare in modo efficiente e normalizzato tutte le specifiche del dominio:
-
 \begin{itemize}
     \item L'\textbf{Utente} dovrà essere identificato da un \textit{username} e possederà 
     attributi di base come \textit{email} e \textit{password}.
     
     \item La \textbf{Campagna} avrà come identificativo il suo \textit{nome} e conterrà un attributo per la \textit{data di inizio}.
     
-    \item \textbf{Sessioni:} Considerando che tipicamente le \textbf{Sessioni} si riferiscono ad una giornata 
-    di gioco, saranno entità deboli identificate dalla \textit{data di svolgimento} e collegate esternamente alla campagna 
+    \item Le \textbf{Sessioni:} Considerando che tipicamente le \textbf{Sessioni} si riferiscono ad una giornata 
+    di gioco, saranno entità deboli identificate dalla \textit{data di svolgimento} e collegate alla campagna 
     di appartenenza. Conterranno un attributo testuale per il \textit{diario} e saranno legate tramite associazioni N-M 
-    a Oggetti, Magie e Partecipanti per implementare un sistema di "tagging" dinamico del testo come richiesto.
+    a Oggetti, Magie e Partecipanti per implementare un sistema di \enquote{tagging} dinamico del testo come richiesto.
     
     \item \textbf{Mostri e Personaggi:} I combattimenti coinvolgono entità diverse tra loro. 
     Le statistiche base comuni saranno accomunate in una entità \textbf{Partecipante} che contiene  
-    (\textit{HP}, \textit{Classe}, \textit{Armatura}, \textit{Taglia}). Questa entità è identificata 
-    esternamente tramite l'Utente creatore combinato al \textit{nome}, e si specializza tramite generalizzazione 
-    totale in \textbf{Personaggio} (con statistiche aggiuntive come Esperienza e Allineamento) e \textbf{Mostro} 
-    (con Livello di Sfida/CR).
+    (\textit{HP}, la classe armatura chiamata \textit{CA} e \textit{Taglia}). Questa entità è identificata 
+    tramite l'Utente creatore combinato al \textit{nome}, e si specializza tramite gerarchia 
+    totale ed esclusiva in \textbf{Personaggio} (\textit{Allineamento} e \textit{Exp. Accumulata}) e \textbf{Mostro} 
+    (che ha il livello di sfida noto come \textit{CR} e \textit{Exp. Rilasciata}). I due tipi di esperienza non sono
+    ereditati dal padre in quanto hanno scopi strettamente diversi: la exp. accumulata da un personaggio andrà aumentata
+    spesso, mentre la exp. rilasciata dai mostri è statica.
     
-    \item \textbf{Gestione dinamica delle Caratteristiche:} Invece di inserire Forza, Destrezza, ecc. come semplici 
-    attributi, è stata creata un'entità \textbf{Caratteristica}. Il legame N-M con il Partecipante permette di posizionare 
-    sull'associazione gli attributi \textit{Punteggio} e \textit{Competenza salvezza}, rendendo il database scalabile.
+    \item \textbf{Gestione delle Caratteristiche:} Per le caratteristiche di Forza, Destrezza, ecc. 
+    sarà creata un'entità \textbf{Caratteristica}. Questo per gestire le \textbf{Skill} che si basano su
+    determinate caratteristiche. Ci sarà una relazione che determina quali Skill dipendono da quale Caratteristica
+    e i Personaggi saranno relazionati con le Skill e le Caratteristiche in base alle loro competenze in esse.
     
-    \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della 5° edizione, un personaggio 
-    può avere più di una classe. Questa necessità è reificata nell'entità \textbf{Progresso}, che registra il livello per 
-    ogni classe. Inoltre, la \textbf{Sottoclasse} è modellata come entità debole della Classe, per garantire a livello 
+    \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della quinta edizione, un personaggio 
+    può avere più di una classe. Questa necessità sarà reificata nell'entità \textbf{Progresso}, che registra il livello per 
+    ogni classe. Inoltre, la \textbf{Sottoclasse} sarà una entità debole della Classe, per garantire a livello 
     strutturale che a un personaggio non venga mai assegnata una specializzazione incoerente.
     
     \item \textbf{Risorse di Classe:} Privilegi e risorse (es. Punti Ki, Ira) sono legati tramite associazioni N-M 
-    all'entità \textit{Progresso}. Sull'associazione sono stati posizionati gli attributi \textit{Quantità max} e 
-    \textit{Quantità attuale}, in modo che il consumo delle risorse avvenga a livello di singolo personaggio e non 
-    alteri il catalogo globale.
+    all'entità \textit{Progresso}. L'associazione avrà come attributi \textit{Quantità max} e \textit{Quantità attuale}, 
+    in modo che il consumo delle risorse avvenga a livello di singolo personaggio e non alteri il catalogo globale.
     
-    \item \textbf{Le Sottorazze:} Secondo le regole di gioco, le sottorazze derivano da razze genitrici. Questa 
-    gerarchia è stata modellata sfruttando un'associazione ricorsiva (1-N) sull'entità \textbf{Razza}.
+    \item \textbf{Le Sottorazze:} Secondo le regole di gioco, le sottorazze derivano da razze genitrici. 
+    Considerando che le Sottorazze non aggiungono dettagli troppo diversi da quelli delle razze normali,
+    possono essere rappresentate dalla stessa entità \textbf{Razza}, ci sarà però una relazione ricorsiva
+    per poter risalire correttamente alla razza \enquote{base}.
     
-    \item \textbf{Gerarchia Equipaggiamento e Materiale Homebrew:} Verrà inserita un'entità \textbf{Oggetto}, 
-    specializzata in \textbf{Arma}, \textbf{Armatura} e \textbf{Consumabile}. Per l'entità Oggetto e l'entità 
-    \textbf{Magia} è stata scelta una chiave surrogata (\textit{Codice Oggetto} e \textit{Codice Magia}). 
-    Esse sono collegate all'entità Campagna tramite un'associazione con cardinalità (0-1), permettendo al sistema 
-    di distinguere il materiale ufficiale "globale" (valore nullo) dal materiale personalizzato inventato da un Master 
-    per una singola campagna.
+    \item \textbf{Equipaggiamento:} In DnD sono presenti armi, armature, pozioni e oggetti di trama.
+    Verrà inserita un'entità \textbf{Oggetto}, che si potrà specializzare in \textbf{Arma}, \textbf{Armatura} o 
+    \textbf{Consumabile} tramite una gerarchia Parziale Esclusiva, permettendo quindi l'esistenza di oggetti semplici. 
+    Essendo risulto dall'intervista la necessità che gli utenti master di una campagna creino i propri oggetti e magie di trama
+    sorge la necessità di avere un codice numerico per identificare gli \textbf{Oggetti} e le \textbf{Magie}, così da poter permettere
+    a \textbf{Utenti} diversi di usare gli stessi nomi.
+    Saranno collegate all'entità Campagna tramite un'associazione 0-1, permettendo di distinguere il materiale ufficiale "globale" (valore nullo) 
+    dal materiale personalizzato inventato da un \textbf{Utente} per una singola campagna.
     
-    \item \textbf{Log dei Combattimenti (Entità Deboli a Cascata):} Per storicizzare i combattimenti, si è optato per 
-    una scomposizione gerarchica di entità deboli: \textit{Combattimento} $\rightarrow$ \textit{Turno} $\rightarrow$ 
-    \textit{Azione}, legati a cascata. L'Azione tiene traccia dell'arma o della magia utilizzata.
+    \item \textbf{Log dei Combattimenti:} Per modellare i \textbf{Combattimenti} questi saranno divisi in base ad ogni fase di gioco:
+    Un combattimento è diviso in \textbf{Turni} e ogni turno è composto da \textbf{Azioni}. I combattimenti sono identificati progressivamente
+    in base alla \textbf{Campagna} in cui avvengono, i \textbf{Turni} progressivamente in base al \textbf{Combattimento} e le \textbf{Azioni}
+    progressivamente in base al \textbf{Turno}. 
+    Le \textbf{Azioni} possono essere molteplici: nel manuale della quinta edizione è possibile trovare abilità che forniscono multi-attacco oppure
+    azioni secondarie come l'azione bonus che hanno tutti. 
+    Dunque un partecipante effettuerà \textbf{Azioni} che poi risaliranno ad un combattimento attraverso tutta la catena appena definita.
     
-    \item \textbf{Stack di Risoluzione e Danni ad Area (AoE):} Per gestire correttamente gli attacchi con bersagli 
-    multipli (es. \textit{Palla di Fuoco}), l'Azione si lega ai Partecipanti subenti tramite un'associazione N-M. 
-    Gli attributi \textit{Danno}, \textit{Esito} e \textit{Sconfitto} sono posizionati direttamente su questa 
-    associazione, permettendo al DBMS di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa.
+    \item \textbf{Mantenimento statistiche combattimenti:} Per gestire correttamente qualsiasi tipo di attacco, compresi quelli ad area 
+    l'\textbf{Azione} sarà legata a molteplici \textbf{Partecipanti} subenti. Gli attributi \textit{Danno}, \textit{Esito} e \textit{Sconfitto} 
+    sono posizionati direttamente su questa associazione, permettendo di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa
+    (ad esempio restistenze a certi elementi).
     
-    \item \textbf{Effetti di Stato (Associazione Ternaria):} L'applicazione di alterazioni (es. \textit{Avvelenato}) è 
-    modellata tramite un'associazione ternaria che collega \textbf{Azione}, \textbf{Partecipante} ed 
-    \textbf{Effetto Stato}. Tale associazione ospita l'attributo \textit{Durata}, garantendo un Audit Trail perfetto 
-    su "chi" ha inflitto "cosa" e "a chi".
+    \item \textbf{Effetti di Stato:} L'applicazione di \textbf{Effetti di Stato} sarà modellata tramite un'associazione ternaria che collega 
+    \textbf{Azione}, \textbf{Partecipante} ed \textbf{Effetto Stato}, questo perché un effetto di stato è applicato sempre da una \textbf{Azione} 
+    e sempre ad un \textbf{Partecipante}.
 \end{itemize}
 
 \noindent
 Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo schema finale
 
-\small
-\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.28\textwidth} >{\centering\arraybackslash}p{0.10\textwidth} >{\raggedright\arraybackslash}p{0.54\textwidth} @{}}
+\clearpage
+\newgeometry{margin=1.5cm}
+
+\footnotesize
+\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.22\textwidth} >{\centering\arraybackslash}p{0.05\textwidth} >{\raggedright\arraybackslash}p{0.65\textwidth} @{}}
 
     \toprule    
-    \textbf{Nome} & \textbf{Tipo} & \textbf{Descrizione} \\ 
+    \textbf{Nome} & \textbf{Tipo} & \textbf{Descrizione} \\     
     \midrule
     \endhead
 
-    \midrule
     \endfoot
 
-    \bottomrule
     \endlastfoot
 
-    Utente & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \addlinespace[0.3em] 
-    Campagna & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \addlinespace[0.3em]
-    Sessione & E & Rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \addlinespace[0.3em]
-    Combattimento & E & Rappresenta uno scontro a turni svoltosi all'interno della Campagna. \\ \addlinespace[0.3em]
-    Partecipante & E & Generalizzazione che accomuna tutti i soggetti coinvolti in un Combattimento. \\ \addlinespace[0.3em]
-    Personaggio & E & Rappresenta la scheda giocante o un NPC completo. \\ \addlinespace[0.3em]
-    Mostro & E & Rappresenta un nemico con statistiche base semplificate. \\ \addlinespace[0.3em]
-    Razza & E & Rappresenta la razza base scelta nella creazione del Personaggio. \\ \addlinespace[0.3em]
-    Sottorazza & E & Specializzazione di Razza, conferisce tratti specifici addizionali. \\ \addlinespace[0.3em]
-    Classe & E & Rappresenta la classe principale del Personaggio (es. Mago, Guerriero). \\ \addlinespace[0.3em]
-    Sottoclasse & E & Specializzazione di Classe, scelta a un determinato livello. \\ \addlinespace[0.3em]
-    Incantesimo & E & Rappresenta le magie o capacità attivabili/disattivabili dai personaggi. \\ \addlinespace[0.3em]
-    Oggetto & E & Generalizzazione per tutto l'equipaggiamento e l'inventario. \\ \addlinespace[0.3em]
-    Arma & E & Rappresenta un equipaggiamento offensivo relativo ai danni inflitti. \\ \addlinespace[0.3em]
-    Armatura & E & Rappresenta un equipaggiamento difensivo relativo alla Classe Armatura. \\ \addlinespace[1.2em]
+    
+    Utente & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \midrule
+    Campagna & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \midrule 
+    Sessione & E & Entità debole che rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \midrule 
+    Partecipante & E & Accomuna tutti i soggetti giocanti e non giocanti. \\ \midrule 
+    Personaggio & E & Rappresenta una scheda dotata di Esperienza. \\ \midrule 
+    Mostro & E & Rappresenta un nemico caratterizzato da Grado di Sfida (CR) e Punti Esperienza erogati alla morte. \\ \midrule 
+    Caratteristica & E & Rappresenta le sei caratteristiche base (es. Forza, Destrezza) del sistema di gioco. \\ \midrule 
+    Skill & E & Rappresenta le abilità (Furtività, Agilità, ecc...) in cui un partecipante può avere competenza. \\ \midrule 
+    Razza & E & Rappresenta la razza base scelta nella creazione del Personaggio. \\ \midrule 
+    Classe & E & Rappresenta le classi giocabili (es. Mago, Guerriero). \\ \midrule 
+    Sottoclasse & E & Rappresenta la specializzazione a determinati livelli di una Classe. \\ \midrule 
+    Progresso & E & Rappresenta il progresso di Personaggio in una Classe per permettere il Multiclasse. \\ \midrule 
+    Tratto Classe & E & Rappresenta i privilegi e le abilità passive fornite dalle classi. \\ \midrule 
+    Risorsa Classe & E & Rappresenta i \enquote{serbatoi} di punti spendibili (Punti Ki, Ira, ecc...) forniti dalle classi. \\ \midrule 
+    Magia & E & Rappresenta gli incantesimi utilizzabili dai partecipanti nel mondo di gioco. \\ \midrule 
+    Oggetto & E & Generalizzazione per tutto l'equipaggiamento e l'inventario. \\ \midrule 
+    Arma & E & Rappresenta un equipaggiamento offensivo con relativi danni e proprietà. \\ \midrule 
+    Armatura & E & Rappresenta un equipaggiamento difensivo relativo alla Classe Armatura (CA). \\ \midrule 
+    Consumabile & E & Rappresenta un oggetto a singolo uso o con un effetto temporaneo. \\ \midrule 
+    Combattimento & E & Rappresenta uno scontro a turni in una Campagna. \\ \midrule 
+    Turno & E & Rappresenta un turno del combattimento. \\ \midrule 
+    Azione & E & Rappresenta la singola mossa effettuata nel combattimento. \\ \midrule 
+    Effetto Stato & E & Rappresenta le alterazioni (es. Avvelenato, Prono) subite nei combattimenti. \\ \midrule
 
-    Ha Creato & R & Lega l'Utente ai Personaggi che ha creato. \\ \addlinespace[0.3em]
-    È Master Di & R & Lega l'Utente (con ruolo di DM) alla Campagna che gestisce. \\ \addlinespace[0.3em]
-    Partecipa In & R & Lega il Personaggio alle Campagne a cui partecipa. \\ \addlinespace[0.3em]
-    Composta Da & R & Lega la Campagna alle Sessioni che la compongono. \\ \addlinespace[0.3em]
-    Avvenuti & R & Lega la Campagna ai Combattimenti svoltisi al suo interno. \\ \addlinespace[0.3em]
-    Parte Di & R & Lega i Partecipanti al Combattimento in cui lottano. \\ \addlinespace[0.3em]
-    Appartiene & R & Lega il Personaggio alla propria Razza e Classe. \\ \addlinespace[0.3em]
-    Conosce & R & Lega il Personaggio agli Incantesimi e alle Abilità apprese. \\ \addlinespace[0.3em]
-    Possiede & R & Lega il Personaggio agli Oggetti presenti nel suo inventario. \\
+    Ha Creato & R &  Lega l'Utente ai Partecipanti che ha creato sulla piattaforma. \\ \midrule 
+    È Master Di & R &  Lega l'Utente (con ruolo di DM) alle Campagne che gestisce. \\ \midrule 
+    Partecipa In & R &  Lega il Partecipante alle Campagne in cui è presente. \\ \midrule 
+    Creata per & R &  Collega le Magie create dal master alla Campagna \\ \midrule 
+    Creato per & R &  Collega gli Oggetti creati dal master alla Campagna \\ \midrule 
+    Composta Da & R &  Lega la Campagna alle Sessioni che la compongono temporalmente. \\ \midrule 
+    OggettoDiario & R &  Lega la Sessione all'Oggetto menzionato. \\ \midrule 
+    MagiaDiario & R &  Lega la Sessione alla Magia menzionata. \\ \midrule 
+    PartecipanteDiario & R &  Lega la Sessione al Partecipante menzionato. \\ \midrule 
+    Sottorazza di & R &  Lega ricorsivamente una Razza per definire le Sottorazze. \\ \midrule 
+    AppartieneR & R &  Lega il Personaggio alla Razza a cui appartiene \\ \midrule 
+    Appartiene & R &  Lega il Progresso al Personaggio giocante \\ \midrule 
+    Riferito a & R &  Lega il Progresso alla Classe \\ \midrule 
+    Scelta & R &  Lega il Progresso alla Sottoclasse scelta per una classe \\ \midrule 
+    Sviluppa & R &  Lega una Classe alle Sottoclassi in cui si sviluppa \\ \midrule 
+    Fornisce & R &  Lega una Classe alle Risorse che può fornire \\ \midrule 
+    Sblocca\_tratto & R &  Lega il Progresso al Tratto sbloccato \\ \midrule 
+    Sblocca\_risorsa & R &  Lega il Progresso alla Risorsa sbloccata, modellando anche la quantità massima e corrente della risorsa. \\ \midrule 
+    Offre & R &  Lega una Classe ai Tratti che può offrire \\ \midrule 
+    Può imparare & R &  Lega una Classe alle magie che può imparare \\ \midrule 
+    Conosce & R &  Lega una Magia ai Partecipanti che la conoscono \\ \midrule 
+    Castando & R &  Lega una Magia all'azione in cui è stata utilizzata \\ \midrule 
+    Si basa su & R &  Lega una Skill alla Caratteristica su cui si basa \\ \midrule 
+    CapaceIn & R &  Lega un Partecipante alla Skill in cui è capace in base al LivelloCapacità (competenza o maestra). \\ \midrule 
+    Ha & R &  Lega un Partecipante alla Caratteristica in cui ha un punteggio e potrebbe avere competenza. \\ \midrule 
+    Affetto\_da & R &  Lega un Partecipante agli Effetti di stato da cui è affetto e L'Azione in cui è stato applicato e ne determina la Durata. \\ \midrule 
+    Esegue & R &  Lega un Partecipante alle Azioni che esegue. \\ \midrule 
+    Contro & R &  Lega un Partecipante alle Azioni che subisce e ne definisce il danno, l'esito (schivato, andato a segno, ecc...) e se questa Azione lo ha sconfitto o no. \\ \midrule 
+    Usando & R &  Lega una Azione all'oggetto che è stato utilizzato. \\ \midrule 
+    Inventario & R &  Lega un Partecipante agli Oggetti che possiede definendo in quale quantità. \\ \midrule 
+    Avvenuti & R &  Lega una Campagna ai combattimenti avvenuti. \\ \midrule 
+    Si compone di & R &  Lega un Combattimento ai Turni di cui si compone \\ \midrule 
+    In turno & R &  Lega una Azione nel Turno in cui avviene. \\ \midrule 
+    
 
 \end{longtable}
 
+\clearpage
 
 \section{Schema concettuale finale}
+
+*immagine gigaenorme*
 
 \chapter{Progettazione logica}
 
