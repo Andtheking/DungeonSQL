@@ -173,48 +173,66 @@ macro aree un po' per volta. Di seguito lo scheletro delle macro-aree generali.
 A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e 
 l'aggiunta dei relativi identificatori e attributi per modellare tutte le specifiche:
 
+\section{Raffinamenti proposti}
+
+A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e 
+l'aggiunta dei relativi identificatori e attributi per modellare in modo efficiente e normalizzato tutte le specifiche del dominio:
+
 \begin{itemize}
-    \item L'\textbf{Utente} dovrà essere identificato da un nome utente e possederà 
-    attributi di base come la password.
+    \item L'\textbf{Utente} dovrà essere identificato da un \textit{username} e possederà 
+    attributi di base come \textit{email} e \textit{password}.
     
-    \item La \textbf{Campagna} avrà come identificativo un \textit{titolo} e sarà arricchita
-    da un attributo per la \textit{descrizione} del mondo di gioco.
+    \item La \textbf{Campagna} avrà come identificativo il suo \textit{nome} e conterrà un attributo per la \textit{data di inizio}.
     
-    \item Un \textbf{Personaggio} dovrà avere un \textit{nome} e sarà identificato esternamente 
-    tramite l'utente che l'ha creato, oltre a possedere gli attributi base delle 
-    caratteristiche (\textit{forza}, \textit{destrezza}, \textit{costituzione}, ecc.).
+    \item \textbf{Sessioni:} Considerando che tipicamente le \textbf{Sessioni} si riferiscono ad una giornata 
+    di gioco, saranno entità deboli identificate dalla \textit{data di svolgimento} e collegate esternamente alla campagna 
+    di appartenenza. Conterranno un attributo testuale per il \textit{diario} e saranno legate tramite associazioni N-M 
+    a Oggetti, Magie e Partecipanti per implementare un sistema di "tagging" dinamico del testo come richiesto.
     
-    \item I \textbf{Combattimenti} (così come le \textbf{Sessioni}) saranno entità deboli, 
-    identificati con un \textit{numero progressivo} collegato esternamente alla campagna di appartenenza.
-
-    \item \textbf{Gerarchia dei Partecipanti (Gestione Mostri e NPC):} Ai combattimenti potranno prendere 
-    parte dei \textbf{Mostri}, che hanno blocchi di statistiche semplificati rispetto ai personaggi 
-    (senza Classi, Razze, ecc...). L'associazione del Combattimento sarà quindi spostata su una nuova entità padre 
-    \textbf{Partecipante}, che conterrà le statistiche di base in comune (HP, Classe Armatura). 
-    Questa si specializzerà tramite generalizzazione in \textbf{Personaggio} e \textbf{Mostro}.
+    \item \textbf{Mostri e Personaggi:} I combattimenti coinvolgono entità diverse tra loro. 
+    Le statistiche base comuni saranno accomunate in una entità \textbf{Partecipante} che contiene  
+    (\textit{HP}, \textit{Classe}, \textit{Armatura}, \textit{Taglia}). Questa entità è identificata 
+    esternamente tramite l'Utente creatore combinato al \textit{nome}, e si specializza tramite generalizzazione 
+    totale in \textbf{Personaggio} (con statistiche aggiuntive come Esperienza e Allineamento) e \textbf{Mostro} 
+    (con Livello di Sfida/CR).
     
-    \item \textbf{Strutturazione della Scheda:} Per rispettare le regole di creazione della 5° edizione, 
-    aggiungeremo le entità \textbf{Razza}, \textbf{Classe} (con Sottoclassi) 
-    e \textbf{Incantesimi/Abilità}. Queste si relazioneranno al personaggio per giustificare il calcolo 
-    automatico dei punti abilità.
-
-    \item Le \textbf{Sottorazze} secondo le regole di gioco non applicano dei cambiamenti troppo diversi da 
-    quelli delle razze normali, per cui sarà trattata come stessa entità sfruttando un'associazione ricorsiva 
-    per modellarne la gerarchia e la derivazione
+    \item \textbf{Gestione dinamica delle Caratteristiche:} Invece di inserire Forza, Destrezza, ecc. come semplici 
+    attributi, è stata creata un'entità \textbf{Caratteristica}. Il legame N-M con il Partecipante permette di posizionare 
+    sull'associazione gli attributi \textit{Punteggio} e \textit{Competenza salvezza}, rendendo il database scalabile.
     
-    \item Le \textbf{Sottoclassi}, invece, possono fornire intere nuove abilità al personaggio ed inoltre
-    un personaggio può anche \enquote{multiclassare}, ovvero avere più di una classe in cui distribuire i livelli.
-    Per questa necessità non basta una semplice relazione ma sarà reificata nell'entità \textbf{Progresso}. 
-    Inoltre, la Sottoclasse sarà modellata come entità debole della Classe, per garantire a livello strutturale 
-    che un personaggio non possa mai vedersi assegnata la sottoclasse di una classe differente.
-
-    \item \textbf{Gerarchia dell'Equipaggiamento:} Verrà inserita un'entità \textbf{Oggetto}, specializzata 
-    in \textbf{Armi} e \textbf{Armature} (con attributi specifici come il modificatore alla Classe Armatura), 
-    per modellare l'inventario dei personaggi.
+    \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della 5° edizione, un personaggio 
+    può avere più di una classe. Questa necessità è reificata nell'entità \textbf{Progresso}, che registra il livello per 
+    ogni classe. Inoltre, la \textbf{Sottoclasse} è modellata come entità debole della Classe, per garantire a livello 
+    strutturale che a un personaggio non venga mai assegnata una specializzazione incoerente.
     
-    \item \textbf{Statistiche e Status:} Aggiungeremo gli attributi necessari a gestire le variazioni dei Punti 
-    Vita (HP) e gli Effetti di Stato durante i combattimenti. Inoltre, inseriremo nel Personaggio i campi per 
-    l'elaborazione delle statistiche richieste (punti esperienza, mostri sconfitti, danni effettuati/ricevuti).
+    \item \textbf{Risorse di Classe:} Privilegi e risorse (es. Punti Ki, Ira) sono legati tramite associazioni N-M 
+    all'entità \textit{Progresso}. Sull'associazione sono stati posizionati gli attributi \textit{Quantità max} e 
+    \textit{Quantità attuale}, in modo che il consumo delle risorse avvenga a livello di singolo personaggio e non 
+    alteri il catalogo globale.
+    
+    \item \textbf{Le Sottorazze:} Secondo le regole di gioco, le sottorazze derivano da razze genitrici. Questa 
+    gerarchia è stata modellata sfruttando un'associazione ricorsiva (1-N) sull'entità \textbf{Razza}.
+    
+    \item \textbf{Gerarchia Equipaggiamento e Materiale Homebrew:} Verrà inserita un'entità \textbf{Oggetto}, 
+    specializzata in \textbf{Arma}, \textbf{Armatura} e \textbf{Consumabile}. Per l'entità Oggetto e l'entità 
+    \textbf{Magia} è stata scelta una chiave surrogata (\textit{Codice Oggetto} e \textit{Codice Magia}). 
+    Esse sono collegate all'entità Campagna tramite un'associazione con cardinalità (0-1), permettendo al sistema 
+    di distinguere il materiale ufficiale "globale" (valore nullo) dal materiale personalizzato inventato da un Master 
+    per una singola campagna.
+    
+    \item \textbf{Log dei Combattimenti (Entità Deboli a Cascata):} Per storicizzare i combattimenti, si è optato per 
+    una scomposizione gerarchica di entità deboli: \textit{Combattimento} $\rightarrow$ \textit{Turno} $\rightarrow$ 
+    \textit{Azione}, legati a cascata. L'Azione tiene traccia dell'arma o della magia utilizzata.
+    
+    \item \textbf{Stack di Risoluzione e Danni ad Area (AoE):} Per gestire correttamente gli attacchi con bersagli 
+    multipli (es. \textit{Palla di Fuoco}), l'Azione si lega ai Partecipanti subenti tramite un'associazione N-M. 
+    Gli attributi \textit{Danno}, \textit{Esito} e \textit{Sconfitto} sono posizionati direttamente su questa 
+    associazione, permettendo al DBMS di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa.
+    
+    \item \textbf{Effetti di Stato (Associazione Ternaria):} L'applicazione di alterazioni (es. \textit{Avvelenato}) è 
+    modellata tramite un'associazione ternaria che collega \textbf{Azione}, \textbf{Partecipante} ed 
+    \textbf{Effetto Stato}. Tale associazione ospita l'attributo \textit{Durata}, garantendo un Audit Trail perfetto 
+    su "chi" ha inflitto "cosa" e "a chi".
 \end{itemize}
 
 \noindent
