@@ -441,10 +441,15 @@ Questi valori di carico si riveleranno fondamentali per calcolare i costi e le p
 
 \section{Schemi di navigazione e tabelle degli accessi}
 
-\vspace{0.5cm}
-\textbf{OP1 - Creazione di un nuovo Personaggio}
+\subsection{OP1 - Creazione di un nuovo Personaggio}
 
-\noindent
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op1.png}
+    \caption{Navigazione OP1}
+    \label{fig:op1}
+\end{figure}
+
 La creazione richiede la lettura dei cataloghi di base e l'inserimento dei dati del Personaggio e del suo Progresso per la scelta della Classe.
 
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
@@ -452,46 +457,84 @@ La creazione richiede la lettura dei cataloghi di base e l'inserimento dei dati 
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 8 L + 12 S. \textbf{Costo operazione:} 32 (8 + 12x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 1.600 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 13 L + 17 S. \textbf{Costo operazione:} 47 (13 + 17x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 2.350 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    RAZZA & E & 1 & L \\ 
-    CLASSE & E & 1 & L \\ 
-    CARATTERISTICA & E & 6 & L \\ 
-    PERSONAGGIO & E & 1 & S \\ 
-    PROGRESSO & E & 1 & S \\ 
-    Ha creato & R & 1 & S \\ 
-    AppartieneR a & R & 1 & S \\ 
-    Appartiene & R & 1 & S \\ 
-    Riferito a & R & 1 & S \\ 
-    Ha (Punteggi Caratteristica) & R & 6 & S \\ 
+    UTENTE & E & 1 & L \\ \hline
+    PARTECIPANTE & E & 1 & S \\ \hline
+    PERSONAGGIO & E & 1 & S \\ \hline
+    RAZZA & E & 1 & L \\ \hline
+    CLASSE & E & 1 & L \\ \hline
+    CARATTERISTICA & E & 6 & L \\ \hline
+    SKILL & E & 4 & L \\ \hline
+    PROGRESSO & E & 1 & S \\ \hline
+    CREAZIONE & R & 1 & S \\ \hline
+    APPARTENENZA\_RAZZA & R & 1 & S \\ \hline
+    APPARTENENZA & R & 1 & S \\ \hline
+    RIFERIMENTO & R & 1 & S \\ \hline
+    POSSESSO & R & 6 & S \\ \hline
+    CAPACITÀ & R & 4 & S \\ \hline
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP2 - Visualizzazione della Scheda Personaggio} \\
-Operazione in cui il database deve recuperare le statistiche del personaggio, razza, classe e caratteristiche.
+\subsection{OP2 - Visualizzazione della Scheda Personaggio}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op2.png}
+    \caption{Navigazione OP2}
+    \label{fig:op2}
+\end{figure}
+
+Operazione di lettura completa per recuperare statistiche, competenze, progressione, privilegi, risorse e incantesimi noti del personaggio.
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
     \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 19 L. \textbf{Costo operazione:} 19} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 2.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 38.000 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 114 L. \textbf{Costo operazione:} 114} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 2.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 228.000 accessi/giorno} \\
     \bottomrule
     \endlastfoot
 
-    PERSONAGGIO / PROGRESSO / CLASSE / RAZZA & E & 4 & L \\ 
+    PARTECIPANTE & E & 1 & L \\ 
+    PERSONAGGIO & E & 1 & L \\ 
+    RAZZA & E & 1 & L \\ 
+    PROGRESSO & E & 1 & L \\ 
+    CLASSE & E & 1 & L \\ 
+    SOTTOCLASSE & E & 1 & L \\ 
     CARATTERISTICA & E & 6 & L \\ 
-    AppartieneR / Appartiene / Riferito a & R & 3 & L \\ 
-    Ha (Punteggi) & R & 6 & L \\ 
+    SKILL & E & 18 & L \\ 
+    TRATTO\_CLASSE & E & 5 & L \\ 
+    RISORSA\_CLASSE & E & 2 & L \\ 
+    MAGIA & E & 8 & L \\ 
+    APPARTENENZA\_RAZZA & R & 1 & L \\ 
+    APPARTENENZA & R & 1 & L \\ 
+    RIFERIMENTO & R & 1 & L \\ 
+    SCELTA & R & 1 & L \\ 
+    SVILUPPO & R & 1 & L \\ 
+    POSSESSO & R & 6 & L \\ 
+    CAPACITÀ & R & 18 & L \\ 
+    BASE & R & 18 & L \\ 
+    OFFERTA & R & 5 & L \\ 
+    ABILITAZIONE\_TRATTO & R & 5 & L \\ 
+    FORNITURA & R & 2 & L \\ 
+    ABILITAZIONE\_RISORSA & R & 2 & L \\ 
+    CONOSCENZA & R & 8 & L \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP3 - Aggiunta/Rimozione di un Oggetto dall'Inventario} \\
+\subsection{OP3 - Aggiunta di un Oggetto dall'Inventario}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op3.png}
+    \caption{Navigazione OP3}
+    \label{fig:op3}
+\end{figure}
+
 Aggiornamento della quantità di un oggetto sull'associazione N-M dell'inventario.
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
@@ -504,34 +547,80 @@ Aggiornamento della quantità di un oggetto sull'associazione N-M dell'inventari
     \bottomrule
     \endlastfoot
 
-    PARTECIPANTE / OGGETTO & E & 2 & L \\ 
-    Inventario & R & 1 & L \\ 
-    Inventario (Aggiornamento Quantità) & R & 1 & S \\ 
+    PARTECIPANTE & E & 1 & L \\ 
+    OGGETTO & E & 1 & L \\ 
+    INVENTARIO & R & 1 & L \\ 
+    INVENTARIO & R & 1 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP5 - Visualizzazione statistiche globali giocatore} \\
-Lettura massiva dei combattimenti storicizzati per sommare i danni inflitti e subiti dai personaggi di un utente.
+\subsection{OP4 - Esecuzione di un'Azione in Combattimento}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op4.png}
+    \caption{Navigazione OP4}
+    \label{fig:op4}
+\end{figure}
+
+Registrazione di una nuova mossa (attacco con arma o magia) in un turno, con calcolo dei danni, esito e aggiornamento dei Punti Vita del bersaglio.
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
     \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 137 L. \textbf{Costo operazione:} 137} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 100 al giorno $\rightarrow$ \textbf{Costo Totale:} 13.700 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 4 L + 6 S. \textbf{Costo operazione:} 16 (4 + 6x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 3.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 48.000 accessi/giorno} \\
     \bottomrule
     \endlastfoot
 
-    UTENTE & E & 1 & L \\ 
-    Ha creato (per trovare i Personaggi) & R & 3 & L \\ 
-    PARTECIPANTE (Personaggi giocati) & E & 3 & L \\ 
-    Esegue (ricerca azioni offensive) & R & 50 & L \\ 
-    Contro (calcolo danni inflitti/subiti) & R & 80 & L \\ 
+    TURNO & E & 1 & L \\ 
+    PARTECIPANTE & E & 2 & L \\ 
+    OGGETTO & E & 1 & L \\ 
+    AZIONE & E & 1 & S \\ 
+    PARTECIPANTE & E & 1 & S \\ 
+    SUDDIVISIONE & R & 1 & S \\ 
+    ESECUZIONE & R & 1 & S \\ 
+    USO & R & 1 & S \\ 
+    CONTRO & R & 1 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP6 - Creazione di una nuova Campagna} \\
+\subsection{OP5 - Visualizzazione statistiche globali giocatore}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op5.png}
+    \caption{Navigazione OP5}
+    \label{fig:op5}
+\end{figure}
+
+Lettura statistiche dei combattimenti storicizzati per sommare i danni inflitti e subiti da un personaggio.
+\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
+    \toprule    
+    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 63 L. \textbf{Costo operazione:} 63} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 100 al giorno $\rightarrow$ \textbf{Costo Totale:} 6.300 accessi/giorno} \\
+    \bottomrule
+    \endlastfoot
+
+    PARTECIPANTE & E & 1 & L \\ 
+    ESECUZIONE & R & 20 & L \\ 
+    AZIONE & E & 20 & L \\ 
+    CONTRO & R & 22 & L \\ 
+\end{longtable}
+
+\subsection{OP6 - Creazione di una nuova Campagna} 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op6.png}
+    \caption{Navigazione OP6}
+    \label{fig:op6}
+\end{figure}
+
 L'Utente (in veste di Master) instanzia un nuovo mondo di gioco.
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
@@ -546,12 +635,19 @@ L'Utente (in veste di Master) instanzia un nuovo mondo di gioco.
 
     UTENTE & E & 1 & L \\ 
     CAMPAGNA & E & 1 & S \\ 
-    È master di & R & 1 & S \\ 
+    MASTER & R & 1 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP7 - Inserimento di materiale personalizzato (Homebrew)} \\
-Il Master aggiunge ad esempio una nuova Magia riservata esclusivamente alla sua campagna.
+\subsection{OP7 - Inserimento di oggetti personalizzati}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{navigation/op7.png}
+    \caption{Navigazione OP7}
+    \label{fig:op7}
+\end{figure}
+
+Il Master crea un nuovo Oggetto riservato esclusivamente alla sua campagna.
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
@@ -564,44 +660,8 @@ Il Master aggiunge ad esempio una nuova Magia riservata esclusivamente alla sua 
     \endlastfoot
 
     CAMPAGNA & E & 1 & L \\ 
-    MAGIA (o OGGETTO) & E & 1 & S \\ 
-    Creata\_per & R & 1 & S \\ 
-\end{longtable}
-
-\vspace{0.5cm}
-\noindent \textbf{OP11 - Registrazione di un nuovo Utente all'applicazione} \\
-Il sistema memorizza le credenziali per un nuovo account.
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 S. \textbf{Costo operazione:} 2 (1x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 20 al giorno $\rightarrow$ \textbf{Costo Totale:} 40 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
-    UTENTE & E & 1 & S \\ 
-\end{longtable}
-
-\vspace{0.5cm}
-\noindent \textbf{OP12 - Inserimento di dati base (es. Nuova Classe Ufficiale)} \\
-L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole due Tratti di Classe.
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 5 S. \textbf{Costo operazione:} 10 (5x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 2 al mese $\rightarrow$ \textbf{Costo Totale:} 20 accessi/mese} \\
-    \bottomrule
-    \endlastfoot
-
-    CLASSE & E & 1 & S \\ 
-    TRATTO\_CLASSE & E & 2 & S \\ 
-    Offre & R & 2 & S \\ 
+    OGGETTO & E & 1 & S \\ 
+    CREAZIONE\_OGGETTO & R & 1 & S \\ 
 \end{longtable}
 
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.5\textwidth} >{\centering\arraybackslash}p{0.10\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
@@ -628,8 +688,7 @@ L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole
     Contro (Danni sui 3 bersagli) & R & 3 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP8 - Creazione di un nuovo Mostro per la Campagna} \\
+\subsection{OP8 - Creazione di un nuovo Mostro per la Campagna}
 Il Dungeon Master crea una nuova creatura. Il DBMS legge l'account del DM e inserisce i dati sia nell'entità padre (Partecipante) che nell'entità figlia (Mostro), collegandole all'utente.
 
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
@@ -652,8 +711,8 @@ Il Dungeon Master crea una nuova creatura. Il DBMS legge l'account del DM e inse
     Ha Creato & R & 1 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP9 - Registrazione di un nuovo Combattimento e Turno iniziale} \\
+\subsection{OP9 - Registrazione di un nuovo Combattimento e Turno iniziale}
+
 L'applicazione istanzia un nuovo blocco di combattimento all'interno di una Campagna e ne inizializza il primo turno.
 
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
@@ -677,8 +736,8 @@ L'applicazione istanzia un nuovo blocco di combattimento all'interno di una Camp
     Si compone di & R & 1 & S \\ 
 \end{longtable}
 
-\vspace{0.5cm}
-\noindent \textbf{OP10 - Stesura di un Diario di Sessione con Tag Multipli} \\
+\subsection{OP10 - Stesura di un Diario di Sessione con Tag Multipli}
+
 Il DM scrive il resoconto della sessione e "tagga" nel testo 1 Oggetto, 1 Magia e 1 Personaggio, popolando le tre relazioni dedicate.
 
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
@@ -703,6 +762,45 @@ Il DM scrive il resoconto della sessione e "tagga" nel testo 1 Oggetto, 1 Magia 
     MagiaDiario & R & 1 & S \\ 
     PartecipanteDiario & R & 1 & S \\ 
 \end{longtable}
+
+\subsection{OP11 - Registrazione di un nuovo Utente all'applicazione}
+
+Il sistema memorizza le credenziali per un nuovo account.
+
+\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
+    \toprule    
+    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 S. \textbf{Costo operazione:} 2 (1x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 20 al giorno $\rightarrow$ \textbf{Costo Totale:} 40 accessi/giorno} \\
+    \bottomrule
+    \endlastfoot
+
+    UTENTE & E & 1 & S \\ 
+\end{longtable}
+
+\subsection{OP12 - Inserimento di dati base (es. Nuova Classe Ufficiale)}
+
+L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole due Tratti di Classe.
+
+\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
+    \toprule    
+    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 5 S. \textbf{Costo operazione:} 10 (5x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 2 al mese $\rightarrow$ \textbf{Costo Totale:} 20 accessi/mese} \\
+    \bottomrule
+    \endlastfoot
+
+    CLASSE & E & 1 & S \\ 
+    TRATTO\_CLASSE & E & 2 & S \\ 
+    Offre & R & 2 & S \\ 
+\end{longtable}
+
 
 \section{Raffinamento dello schema}
 
