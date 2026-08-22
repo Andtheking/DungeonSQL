@@ -48,8 +48,7 @@ La creazione del personaggio (scheda) seguirà la tipica creazione della quinta 
 scegliendo le caratteristiche principali e calcolando automaticamente i punti abilità di conseguenza. 
 %
 Ogni giocatore potrà inserire caratteri speciali o equipaggiamento che possono alterare le caratteristiche del 
-personaggio (ad esempio armature che alterano la Classe Armatura (CA), background che incrementano 
-caratteristiche ecc…).
+personaggio (ad esempio armature che alterano la Classe Armatura, ecc…).
 %
 I personaggi possono avere o non avere determinate sezioni per abilità speciali, quali ad esempio le magie per i 
 maghi o le suppliche occulte per i Warlock: queste sezioni potranno essere attivate o disattivate durante la 
@@ -78,9 +77,8 @@ riguardo tutti i suoi personaggi, come ad esempio i personaggi che hanno inflitt
 \section{Rilevamento delle ambiguità e correzioni proposte}
 
 \begin{itemize}
-    \item È opportuno evidenziare che con \enquote{Campagna} si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM)
-    \item Per \enquote{Giocatore} si intende un partecipante della campagna mentre con \enquote{DM} si identifica l'amministratore della Campagna
-
+    \item È opportuno evidenziare che con \enquote{Campagna} si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM);
+    \item Per \enquote{Giocatore} si intende un partecipante della campagna mentre con \enquote{DM} si identifica l'amministratore della Campagna;
 \end{itemize}
 
 \section{Definizione delle specifiche in linguaggio naturale ed estrazione dei concetti principali}
@@ -95,8 +93,8 @@ quanti slot magici hanno utilizzato o possono ancora utilizzare oppure la vita r
 dopo un combattimento.
 
 Una \textbf{Campagna} (ovvero il mondo di gioco) necessita di un \textit{nome}, una \textit{descrizione}
-e la presenza di un gruppo di \textbf{Giocatori} 
-(utenti) di cui uno (il creatore) ricoprirà il ruolo di \textbf{Dungeon Master} (DM).
+e la presenza di un gruppo di \textbf{Giocatori} (utenti) di cui uno (il creatore) ricoprirà il ruolo 
+di \textbf{Dungeon Master} (DM).
 %
 Una campagna è composta da \textbf{Sessioni di gioco} che si tengono in determinati \textit{giorni} 
 concordati dai giocatori. Il DM potrà appuntare le cose che accadono nelle sessioni in 
@@ -217,7 +215,7 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     \item \textbf{Equipaggiamento:} In DnD sono presenti armi, armature, pozioni e oggetti di trama.
     Verrà inserita un'entità \textbf{Oggetto}, che si potrà specializzare in \textbf{Arma}, \textbf{Armatura} o 
     \textbf{Consumabile} tramite una gerarchia Parziale Esclusiva, permettendo quindi l'esistenza di oggetti semplici. 
-    Essendo risulto dall'intervista la necessità che gli utenti master di una campagna creino i propri oggetti e magie di trama
+    Essendo risultato dall'intervista la necessità che gli utenti master di una campagna creino i propri oggetti e magie di trama
     sorge la necessità di avere un codice numerico per identificare gli \textbf{Oggetti} e le \textbf{Magie}, così da poter permettere
     a \textbf{Utenti} diversi di usare gli stessi nomi.
     Saranno collegate all'entità Campagna tramite un'associazione 0-1, permettendo di distinguere il materiale ufficiale "globale" (valore nullo) 
@@ -236,9 +234,13 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     sono posizionati direttamente su questa associazione, permettendo di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa
     (ad esempio restistenze a certi elementi).
     
-    \item \textbf{Effetti di Stato:} L'applicazione di \textbf{Effetti di Stato} sarà modellata tramite un'associazione ternaria che collega 
-    \textbf{Azione}, \textbf{Partecipante} ed \textbf{Effetto Stato}, questo perché un effetto di stato è applicato sempre da una \textbf{Azione} 
-    e sempre ad un \textbf{Partecipante}.
+    \item \textbf{Effetti di Stato:} L'applicazione degli \textbf{Effetti di Stato} sarà modellata tramite l'entità debole 
+    \textbf{Stato Attivo}, che rappresenta l'istanza dinamica di una condizione nel tempo. Questa entità è collegata al 
+    \textbf{Partecipante} che subisce la condizione, allo specifico \textbf{Effetto Stato} di riferimento e, in modo opzionale, 
+    all'\textbf{Azione} che lo ha scatenato. Per mantenere gli effetti applicati in passato, verrà introdotto un attributo Numero 
+    incrementale per ogni personaggio e effetto di stato. Questa scomposizione permette di gestire correttamente sia gli stati 
+    applicati durante i turni di combattimento, sia quelli derivanti da fonti ambientali o esterne, slegandoli dall'obbligatorietà di 
+    un'azione diretta, permettendo al \textbf{Master} di applicare \textbf{Effetti di Stato} quando vuole.
 \end{itemize}
 
 \noindent
@@ -248,76 +250,76 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
 \newgeometry{margin=1.5cm}
 
 \footnotesize
-\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.22\textwidth} >{\centering\arraybackslash}p{0.05\textwidth} >{\raggedright\arraybackslash}p{0.65\textwidth} @{}}
-
+\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.28\textwidth} >{\centering\arraybackslash}p{0.02\textwidth} >{\raggedright\arraybackslash}p{0.65\textwidth} @{}}
     \toprule    
-    \textbf{Nome} & \textbf{Tipo} & \textbf{Descrizione} \\     
+    \textbf{Nome} & \textbf{T} & \textbf{Descrizione} \\     
     \midrule
     \endhead
 
     \endfoot
 
     \endlastfoot
-
     
-    Utente & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \midrule
-    Campagna & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \midrule 
-    Sessione & E & Entità debole che rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \midrule 
-    Partecipante & E & Accomuna tutti i soggetti giocanti e non giocanti. \\ \midrule 
-    Personaggio & E & Rappresenta una scheda dotata di Esperienza. \\ \midrule 
-    Mostro & E & Rappresenta un nemico caratterizzato da Grado di Sfida (CR) e Punti Esperienza erogati alla morte. \\ \midrule 
-    Caratteristica & E & Rappresenta le sei caratteristiche base (es. Forza, Destrezza) del sistema di gioco. \\ \midrule 
-    Skill & E & Rappresenta le abilità (Furtività, Agilità, ecc...) in cui un partecipante può avere competenza. \\ \midrule 
-    Razza & E & Rappresenta la razza base scelta nella creazione del Personaggio. \\ \midrule 
-    Classe & E & Rappresenta le classi giocabili (es. Mago, Guerriero). \\ \midrule 
-    Sottoclasse & E & Rappresenta la specializzazione a determinati livelli di una Classe. \\ \midrule 
-    Progresso & E & Rappresenta il progresso di Personaggio in una Classe per permettere il Multiclasse. \\ \midrule 
-    Tratto Classe & E & Rappresenta i privilegi e le abilità passive fornite dalle classi. \\ \midrule 
-    Risorsa Classe & E & Rappresenta i \enquote{serbatoi} di punti spendibili (Punti Ki, Ira, ecc...) forniti dalle classi. \\ \midrule 
-    Magia & E & Rappresenta gli incantesimi utilizzabili dai partecipanti nel mondo di gioco. \\ \midrule 
-    Oggetto & E & Generalizzazione per tutto l'equipaggiamento e l'inventario. \\ \midrule 
-    Arma & E & Rappresenta un equipaggiamento offensivo con relativi danni e proprietà. \\ \midrule 
-    Armatura & E & Rappresenta un equipaggiamento difensivo relativo alla Classe Armatura (CA). \\ \midrule 
-    Consumabile & E & Rappresenta un oggetto a singolo uso o con un effetto temporaneo. \\ \midrule 
-    Combattimento & E & Rappresenta uno scontro a turni in una Campagna. \\ \midrule 
-    Turno & E & Rappresenta un turno del combattimento. \\ \midrule 
-    Azione & E & Rappresenta la singola mossa effettuata nel combattimento. \\ \midrule 
-    Effetto Stato & E & Rappresenta le alterazioni (es. Avvelenato, Prono) subite nei combattimenti. \\ \midrule
+    UTENTE & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \midrule
+    CAMPAGNA & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \midrule 
+    SESSIONE & E & Entità debole che rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \midrule 
+    PARTECIPANTE & E & Accomuna tutti i soggetti giocanti e non giocanti. \\ \midrule 
+    PERSONAGGIO & E & Entità specializzata di Partecipante, dotata di Esperienza e Allineamento. \\ \midrule 
+    MOSTRO & E & Entità specializzata di Partecipante, caratterizzata da Grado di Sfida (CR) ed Esperienza rilasciata. \\ \midrule 
+    CARATTERISTICA & E & Rappresenta le caratteristiche base (es. Forza, Destrezza) del sistema di gioco. \\ \midrule 
+    SKILL & E & Rappresenta le abilità (Furtività, Agilità, ecc...) in cui si può avere competenza. \\ \midrule 
+    RAZZA & E & Rappresenta la razza scelta nella creazione del Personaggio. \\ \midrule
+    CLASSE & E & Rappresenta le classi giocabili (es. Mago, Guerriero). \\ \midrule 
+    SOTTOCLASSE & E & Rappresenta la specializzazione a determinati livelli di una Classe. \\ \midrule 
+    PROGRESSO & E & Entità debole che traccia l'avanzamento di un Personaggio in una Classe (permette il Multiclasse). \\ \midrule 
+    TRATTO\_CLASSE & E & Rappresenta privilegi e abilità passive fornite dalle classi. \\ \midrule 
+    RISORSA\_CLASSE & E & Rappresenta i punti spendibili (Punti Ki, Ira, ecc...) forniti da una Classe. \\ \midrule 
+    MAGIA & E & Rappresenta gli incantesimi utilizzabili nel mondo di gioco. \\ \midrule 
+    OGGETTO & E & Generalizzazione per tutto l'equipaggiamento e l'inventario. \\ \midrule 
+    ARMA & E & Entità specializzata di Oggetto, rappresenta un equipaggiamento offensivo. \\ \midrule 
+    ARMATURA & E & Entità specializzata di Oggetto, rappresenta un equipaggiamento difensivo (CA). \\ \midrule 
+    CONSUMABILE & E & Entità specializzata di Oggetto, rappresenta risorse a singolo uso o a effetto temporaneo. \\ \midrule 
+    COMBATTIMENTO & E & Entità debole che rappresenta uno scontro a turni in una Campagna. \\ \midrule 
+    TURNO & E & Entità debole che rappresenta un turno temporale all'interno del Combattimento. \\ \midrule 
+    AZIONE & E & Entità debole che rappresenta la singola mossa effettuata durante un Turno. \\ \midrule 
+    EFFETTO\_STATO & E & Catalogo delle alterazioni possibili (es. Avvelenato, Prono). \\ \midrule
+    STATO\_ATTIVO & E & Entità debole dinamica di un Effetto di Stato su un Partecipante. \\ \midrule
 
-    Ha Creato & R &  Lega l'Utente ai Partecipanti che ha creato sulla piattaforma. \\ \midrule 
-    È Master Di & R &  Lega l'Utente (con ruolo di DM) alle Campagne che gestisce. \\ \midrule 
-    Partecipa In & R &  Lega il Partecipante alle Campagne in cui è presente. \\ \midrule 
-    Creata per & R &  Collega le Magie create dal master alla Campagna \\ \midrule 
-    Creato per & R &  Collega gli Oggetti creati dal master alla Campagna \\ \midrule 
-    Composta Da & R &  Lega la Campagna alle Sessioni che la compongono temporalmente. \\ \midrule 
-    OggettoDiario & R &  Lega la Sessione all'Oggetto menzionato. \\ \midrule 
-    MagiaDiario & R &  Lega la Sessione alla Magia menzionata. \\ \midrule 
-    PartecipanteDiario & R &  Lega la Sessione al Partecipante menzionato. \\ \midrule 
-    Sottorazza di & R &  Lega ricorsivamente una Razza per definire le Sottorazze. \\ \midrule 
-    AppartieneR & R &  Lega il Personaggio alla Razza a cui appartiene \\ \midrule 
-    Appartiene & R &  Lega il Progresso al Personaggio giocante \\ \midrule 
-    Riferito a & R &  Lega il Progresso alla Classe \\ \midrule 
-    Scelta & R &  Lega il Progresso alla Sottoclasse scelta per una classe \\ \midrule 
-    Sviluppa & R &  Lega una Classe alle Sottoclassi in cui si sviluppa \\ \midrule 
-    Fornisce & R &  Lega una Classe alle Risorse che può fornire \\ \midrule 
-    Sblocca\_tratto & R &  Lega il Progresso al Tratto sbloccato \\ \midrule 
-    Sblocca\_risorsa & R &  Lega il Progresso alla Risorsa sbloccata, modellando anche la quantità massima e corrente della risorsa. \\ \midrule 
-    Offre & R &  Lega una Classe ai Tratti che può offrire \\ \midrule 
-    Può imparare & R &  Lega una Classe alle magie che può imparare \\ \midrule 
-    Conosce & R &  Lega una Magia ai Partecipanti che la conoscono \\ \midrule 
-    Castando & R &  Lega una Magia all'azione in cui è stata utilizzata \\ \midrule 
-    Si basa su & R &  Lega una Skill alla Caratteristica su cui si basa \\ \midrule 
-    CapaceIn & R &  Lega un Partecipante alla Skill in cui è capace in base al LivelloCapacità (competenza o maestra). \\ \midrule 
-    Ha & R &  Lega un Partecipante alla Caratteristica in cui ha un punteggio e potrebbe avere competenza. \\ \midrule 
-    Affetto\_da & R &  Lega un Partecipante agli Effetti di stato da cui è affetto e L'Azione in cui è stato applicato e ne determina la Durata. \\ \midrule 
-    Esegue & R &  Lega un Partecipante alle Azioni che esegue. \\ \midrule 
-    Contro & R &  Lega un Partecipante alle Azioni che subisce e ne definisce il danno, l'esito (schivato, andato a segno, ecc...) e se questa Azione lo ha sconfitto o no. \\ \midrule 
-    Usando & R &  Lega una Azione all'oggetto che è stato utilizzato. \\ \midrule 
-    Inventario & R &  Lega un Partecipante agli Oggetti che possiede definendo in quale quantità. \\ \midrule 
-    Avvenuti & R &  Lega una Campagna ai combattimenti avvenuti. \\ \midrule 
-    Si compone di & R &  Lega un Combattimento ai Turni di cui si compone \\ \midrule 
-    In turno & R &  Lega una Azione nel Turno in cui avviene. \\ \midrule 
-    
+    CREAZIONE & R & Lega l'Utente ai Partecipanti che ha creato. \\ \midrule 
+    MASTER & R & Lega l'Utente (DM) alle Campagne che gestisce. \\ \midrule 
+    PRESENZA & R & Lega il Partecipante alle Campagne in cui è presente. \\ \midrule 
+    CREAZIONE\_MAGIA & R & Lega l'Utente alle Magie che ha creato per la piattaforma. \\ \midrule 
+    CREAZIONE\_OGGETTO & R & Lega l'Utente agli Oggetti creati. \\ \midrule 
+    COMPOSIZIONE & R & Lega la Campagna alle Sessioni che la compongono temporalmente. \\ \midrule 
+    TAG\_OGGETTO & R & Lega la Sessione agli Oggetti menzionati al suo interno. \\ \midrule 
+    TAG\_MAGIA & R & Lega la Sessione alle Magie menzionate al suo interno. \\ \midrule 
+    TAG\_PARTECIPANTE & R & Lega la Sessione ai Partecipanti menzionati al suo interno. \\ \midrule 
+    SOTTORAZZA & R & Lega ricorsivamente una Razza alle sue Sottorazze. \\ \midrule 
+    APPARTENENZA\_RAZZA & R & Lega il Personaggio alla Razza a cui appartiene. \\ \midrule 
+    APPARTENENZA & R & Lega il Progresso al Personaggio giocante, definendone il livello accumulato. \\ \midrule 
+    RIFERIMENTO & R & Lega il Progresso alla specifica Classe in cui il Personaggio sta avanzando. \\ \midrule 
+    SCELTA & R & Lega il Progresso alla Sottoclasse intrapresa. \\ \midrule 
+    SVILUPPO & R & Lega una Classe alle Sottoclassi in cui può specializzarsi. \\ \midrule 
+    FORNITURA & R & Lega una Classe alle Risorse di classe che eroga. \\ \midrule 
+    ABILITAZIONE\_TRATTO & R & Lega il Progresso al Tratto di Classe sbloccato per aver raggiunto il livello richiesto. \\ \midrule 
+    ABILITAZIONE\_RISORSA & R & Lega il Progresso alla Risorsa sbloccata, definendo la quantità massima disponibile. \\ \midrule 
+    OFFERTA & R & Lega una Classe ai Tratti che offre di base. \\ \midrule 
+    APPRENDIMENTO & R & Lega una Classe alle Magie che rientrano nella sua lista incantesimi. \\ \midrule 
+    CONOSCENZA & R & Lega una Magia ai Partecipanti che l'hanno imparata. \\ \midrule 
+    LANCIO & R & Lega una Magia all'Azione in cui è stata utilizzata/castata. \\ \midrule 
+    BASE & R & Lega una Skill alla Caratteristica su cui viene calcolata. \\ \midrule 
+    CAPACITÀ & R & Lega un Partecipante alle Skill in cui è capace, determinando il Livello di Capacità. \\ \midrule 
+    POSSESSO & R & Lega un Partecipante alle Caratteristiche, definendone il punteggio e la competenza nei tiri salvezza. \\ \midrule 
+    AFFLIZIONE & R & Lega un Partecipante allo Stato Attivo da cui è momentaneamente afflitto. \\ \midrule 
+    ATTIVAZIONE & R & Lega uno Stato Attivo all'Effetto di Stato corrispondente. \\ \midrule 
+    CAUSA & R & Lega opzionalmente uno Stato Attivo all'Azione che lo ha scatenato. \\ \midrule 
+    ESECUZIONE & R & Lega un Partecipante alle Azioni che compie nel suo turno. \\ \midrule 
+    CONTRO & R & Lega un Partecipante alle Azioni che subisce, definendo danno ed esito. \\ \midrule 
+    USO & R & Lega un'Azione all'Oggetto che è stato utilizzato. \\ \midrule 
+    INVENTARIO & R & Lega un Partecipante agli Oggetti che possiede, definendone la quantità. \\ \midrule 
+    AVVENIMENTO & R & Lega una Campagna ai Combattimenti avvenuti al suo interno. \\ \midrule 
+    COMPOSIZIONE\_COMB & R & Lega un Combattimento ai Turni che lo compongono. \\ \midrule 
+    SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule 
 
 \end{longtable}
 
@@ -326,9 +328,12 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
 
 \section{Schema concettuale finale}
 
-*immagine gigaenorme*
-
-% \newgeometry{margin=1.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{er_completo.png}
+    \caption{Schema concettuale finale}
+    \label{fig:er_completo}
+\end{figure}
 
 \chapter{Progettazione logica}
 
@@ -800,6 +805,49 @@ L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole
 
 
 \section{Raffinamento dello schema}
+
+In questa fase procediamo alla trasformazione dello schema concettuale per rimuovere i costrutti non direttamente supportati dal modello relazionale (come le gerarchie di generalizzazione e gli identificatori esterni) e definiamo le chiavi primarie definitive per ciascuna entità.
+
+\subsubsection{Scelta delle chiavi primarie ed eliminazione degli identificatori esterni}
+Nello schema concettuale sono presenti diverse entità deboli che utilizzano un identificatore esterno. Per risolvere queste situazioni, importiamo la chiave primaria dell'entità forte identificante all'interno dell'entità debole, andando a formare una chiave primaria composta:
+
+\begin{itemize}
+    \item \textbf{CAMPAGNA}: identificata esternamente da \textit{UTENTE} tramite l'associazione \textit{MASTER}. La chiave primaria diventa la coppia \texttt{(Username\_Master, Nome\_Campagna)}.
+    \item \textbf{SESSIONE}: identificata esternamente da \textit{CAMPAGNA}. La chiave primaria diventa \texttt{(Username\_Master, Nome\_Campagna, Data\_svolgimento)}.
+    \item \textbf{COMBATTIMENTO}, \textbf{TURNO} e \textbf{AZIONE}: formano una catena di entità deboli dipendenti dalla \textit{CAMPAGNA}. Le loro chiavi primarie includeranno gli identificatori importati a cascata:
+    \begin{itemize}
+        \item COMBATTIMENTO: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento)}.
+        \item TURNO: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento, N\_Turno)}.
+        \item AZIONE: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento, N\_Turno, N\_Azione)}.
+    \end{itemize}
+    \item \textbf{PARTECIPANTE}: identificato esternamente da \textit{UTENTE} tramite l'associazione \textit{CREAZIONE}. La chiave primaria diventa \texttt{(Username\_Creatore, Nome\_Partecipante)}.
+    \item \textbf{SOTTOCLASSE}, \textbf{TRATTO\_CLASSE}, \textbf{RISORSA\_CLASSE}: identificate esternamente da \textit{CLASSE}. Le chiavi primarie saranno composte dal \texttt{Nome\_Classe} unito al rispettivo nome (\texttt{Nome\_Sottoclasse}, \texttt{Nome\_Tratto}, \texttt{Nome\_Risorsa}).
+    \item \textbf{PROGRESSO}: identificata esternamente tramite le relazioni \textit{RIFERIMENTO} (verso \textit{CLASSE}) e \textit{APPARTENENZA} (verso \textit{PERSONAGGIO}). La chiave primaria composta diventa \texttt{(Nome\_Classe, Username\_Creatore, Nome\_Personaggio)}.
+\end{itemize}
+
+Per le restanti entità (es. \textit{UTENTE}, \textit{OGGETTO}, \textit{MAGIA}, \textit{RAZZA}, \textit{CLASSE}, \textit{EFFETTO\_STATO}, ecc.), l'attributo identificatore singolo definito nello schema concettuale viene mantenuto come chiave primaria autonoma.
+
+\subsubsection{Eliminazione delle gerarchie di generalizzazione}
+Nello schema concettuale sono presenti due gerarchie di generalizzazione che devono essere eliminate per il corretto passaggio al modello logico.
+
+\textbf{1. Gerarchia di PARTECIPANTE (Personaggio, Mostro)} \\
+Si tratta di una generalizzazione totale ed esclusiva. Abbiamo scelto di adottare un \textbf{collasso verso l'alto} (accorpamento nell'entità padre \textit{PARTECIPANTE}). Questa scelta è motivata dal fatto che le due entità figlie condividono un gran numero di attributi e partecipano ad associazioni identiche (come la Presenza in campagna, l'Esecuzione di un'Azione e l'Inventario).
+Per implementare il collasso:
+\begin{itemize}
+    \item Aggiungiamo all'entità \textit{PARTECIPANTE} un attributo discriminante \texttt{Tipo\_Partecipante} (con valori di dominio 'Personaggio' o 'Mostro').
+    \item Importiamo in \textit{PARTECIPANTE} gli attributi specifici delle entità figlie, rendendoli opzionali (ammettono valore NULL). Avremo quindi gli attributi \texttt{Allineamento}, \texttt{Exp\_Accumulata} (utilizzati solo se è Personaggio) e \texttt{CR}, \texttt{Livello\_Mostro}, \texttt{Exp\_Rilasciata} (utilizzati solo se è Mostro).
+\end{itemize}
+
+\textbf{2. Gerarchia di OGGETTO (Arma, Armatura, Consumabile)} \\
+Anche in questo caso adottiamo il \textbf{collasso verso l'alto}, mantenendo un'unica entità \textit{OGGETTO}. La separazione in tre tabelle distinte frammenterebbe eccessivamente l'inventario dei partecipanti e complicherebbe le query relative al bottino o all'equipaggiamento.
+Per implementare il collasso:
+\begin{itemize}
+    \item Aggiungiamo un attributo discriminante \texttt{Categoria\_Oggetto} (con valori come 'Arma', 'Armatura', 'Consumabile', 'Generico').
+    \item Gli attributi specifici delle entità figlie migrano nell'entità \textit{OGGETTO} rendendoli opzionali. Tali attributi sono: \texttt{Danno}, \texttt{Tipo\_Arma}, \texttt{Proprietà} (per le armi), \texttt{CA\_Bonus}, \texttt{Requisito\_Armatura}, \texttt{Furtiva} (per le armature), e \texttt{Effetto\_Consumabile}, \texttt{Durata\_Consumabile} (per i consumabili).
+\end{itemize}
+
+\subsubsection{Eliminazione degli attributi composti e multi-valore}
+Dall'analisi dello schema concettuale finale non emergono attributi composti o multi-valore che richiedano uno sdoppiamento, in quanto tutte le proprietà delle entità sono già state normalizzate allo stato atomico durante l'analisi dei requisiti.
 
 \section{Analisi delle ridondanze}
 
