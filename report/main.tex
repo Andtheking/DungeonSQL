@@ -269,6 +269,7 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     CARATTERISTICA & E & Rappresenta le caratteristiche base (es. Forza, Destrezza) del sistema di gioco. \\ \midrule 
     SKILL & E & Rappresenta le abilità (Furtività, Agilità, ecc...) in cui si può avere competenza. \\ \midrule 
     RAZZA & E & Rappresenta la razza scelta nella creazione del Personaggio. \\ \midrule
+    BACKGROUND & E & Rappresenta il background (storia pregressa) scelto durante la creazione del Personaggio. \\ \midrule
     CLASSE & E & Rappresenta le classi giocabili (es. Mago, Guerriero). \\ \midrule 
     SOTTOCLASSE & E & Rappresenta la specializzazione a determinati livelli di una Classe. \\ \midrule 
     PROGRESSO & E & Entità debole che traccia l'avanzamento di un Personaggio in una Classe (permette il Multiclasse). \\ \midrule 
@@ -286,6 +287,7 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     STATO\_ATTIVO & E & Entità debole dinamica di un Effetto di Stato su un Partecipante. \\ \midrule
 
     CREAZIONE & R & Lega l'Utente ai Partecipanti che ha creato. \\ \midrule 
+    PARTE & R & Lega un Partecipante ai Combattimenti a cui prende parte, registrandone il valore di Iniziativa per lo scontro. \\ \midrule
     MASTER & R & Lega l'Utente (DM) alle Campagne che gestisce. \\ \midrule 
     PRESENZA & R & Lega il Partecipante alle Campagne in cui è presente. \\ \midrule 
     CREAZIONE\_MAGIA & R & Lega l'Utente alle Magie che ha creato per la piattaforma. \\ \midrule 
@@ -296,6 +298,8 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     TAG\_PARTECIPANTE & R & Lega la Sessione ai Partecipanti menzionati al suo interno. \\ \midrule 
     SOTTORAZZA & R & Lega ricorsivamente una Razza alle sue Sottorazze. \\ \midrule 
     APPARTENENZA\_RAZZA & R & Lega il Personaggio alla Razza a cui appartiene. \\ \midrule 
+    FONDAMENTO & R & Lega il Personaggio al Background scelto in fase di creazione. \\ \midrule
+    PERIZIA & R & Lega un Background alle Skill in cui garantisce competenza. \\ \midrule
     APPARTENENZA & R & Lega il Progresso al Personaggio giocante, definendone il livello accumulato. \\ \midrule 
     RIFERIMENTO & R & Lega il Progresso alla specifica Classe in cui il Personaggio sta avanzando. \\ \midrule 
     SCELTA & R & Lega il Progresso alla Sottoclasse intrapresa. \\ \midrule 
@@ -322,7 +326,6 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule 
 
 \end{longtable}
-
 \clearpage
 \restoregeometry
 
