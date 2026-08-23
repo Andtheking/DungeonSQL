@@ -232,8 +232,8 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     \end{figure}
 
     \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della quinta edizione, un \textbf{Personaggio}
-    può avere più di una \textbf{Classe}. Questa necessità sarà reificata nell'entità \textbf{Progresso}, che registra il livello per 
-    ogni \textbf{Classe} per ogni \textbf{Personaggio}. Inoltre, la \textbf{Sottoclasse} sarà una entità debole della \textbf{Classe}, 
+    può avere più di una \textbf{Classe}. Questa necessità sarà reificata nell'entità \textbf{Progresso}, che registra il livello 
+    di ogni \textbf{Classe} per ogni \textbf{Personaggio}. Inoltre, la \textbf{Sottoclasse} sarà una entità debole della \textbf{Classe}, 
     per garantire a livello strutturale che a un personaggio non venga mai assegnata una specializzazione incoerente.
 
     \begin{figure}[H]
@@ -276,7 +276,7 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     a \textbf{Utenti} diversi di usare gli stessi nomi.
     Saranno collegate all'entità Campagna tramite un'associazione 0-1, permettendo di distinguere il materiale ufficiale "globale" (valore nullo) 
     dal materiale personalizzato inventato da un \textbf{Utente} per una singola campagna.
-        
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=1\textwidth]{er-steps/equip.png}
@@ -284,19 +284,19 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
         \label{fig:equip}
     \end{figure}
 
-    \item \textbf{Log dei Combattimenti:} Per modellare i \textbf{Combattimenti} questi saranno divisi in base ad ogni fase di gioco:
+    \item \textbf{Combattimenti:} Per modellare i \textbf{Combattimenti} questi saranno divisi in base ad ogni fase di gioco:
     Un combattimento è diviso in \textbf{Turni} e ogni turno è composto da \textbf{Azioni}. I combattimenti sono identificati progressivamente
     in base alla \textbf{Campagna} in cui avvengono, i \textbf{Turni} progressivamente in base al \textbf{Combattimento} e le \textbf{Azioni}
     progressivamente in base al \textbf{Turno}. 
     Le \textbf{Azioni} possono essere molteplici: nel manuale della quinta edizione è possibile trovare abilità che forniscono multi-attacco oppure
     azioni secondarie come l'azione bonus che hanno tutti. 
     Dunque un partecipante effettuerà \textbf{Azioni} che poi risaliranno ad un combattimento attraverso tutta la catena appena definita.
-    
+
     \item \textbf{Mantenimento statistiche combattimenti:} Per gestire correttamente qualsiasi tipo di attacco, compresi quelli ad area, 
     l'\textbf{Azione} sarà legata a molteplici \textbf{Partecipanti} subenti. Gli attributi \textit{Danno}, \textit{Esito} e \textit{Sconfitto} 
     sono posizionati direttamente su questa associazione, permettendo di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa
     (ad esempio resistenze a certi elementi).
-    
+
     \item \textbf{Effetti di Stato:} L'applicazione degli \textbf{Effetti di Stato} sarà modellata tramite l'entità debole 
     \textbf{Stato Attivo}, che rappresenta l'istanza dinamica di una condizione nel tempo. Questa entità è collegata al 
     \textbf{Partecipante} che subisce la condizione, allo specifico \textbf{Effetto Stato} di riferimento e, in modo opzionale, 
@@ -304,6 +304,13 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     incrementale per ogni personaggio e effetto di stato. Questa scomposizione permette di gestire correttamente sia gli stati 
     applicati durante i turni di combattimento, sia quelli derivanti da fonti ambientali o esterne, slegandoli dall'obbligatorietà di 
     un'azione diretta, permettendo al \textbf{Master} di applicare \textbf{Effetti di Stato} quando vuole.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/combat.png}
+        \caption{\textbf{Combattimento}, \textbf{Effetti di stato} e \textbf{Statistiche}}
+        \label{fig:combat}
+    \end{figure}
 \end{itemize}
 
 \noindent
@@ -384,7 +391,7 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     CONTRO & R & Lega un Partecipante alle Azioni che subisce, definendo danno ed esito. \\ \midrule 
     USO & R & Lega un'Azione all'Oggetto che è stato utilizzato. \\ \midrule 
     INVENTARIO & R & Lega un Partecipante agli Oggetti che possiede, definendone la quantità. \\ \midrule 
-    AVVENIMENTO & R & Lega una Campagna ai Combattimenti avvenuti al suo interno. \\ \midrule 
+    AVVENIMENTO & R & Lega una Sessione ai Combattimenti avvenuti al suo interno. \\ \midrule 
     COMPOSIZIONE\_COMB & R & Lega un Combattimento ai Turni che lo compongono. \\ \midrule 
     SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule 
 
