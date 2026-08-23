@@ -48,7 +48,7 @@ La creazione del personaggio (scheda) seguirà la tipica creazione della quinta 
 scegliendo le caratteristiche principali e calcolando automaticamente i punti abilità di conseguenza. 
 %
 Ogni giocatore potrà inserire caratteri speciali o equipaggiamento che possono alterare le caratteristiche del 
-personaggio (ad esempio armature che alterano la Classe Armatura, ecc…).
+personaggio (ad esempio armature che alterano la Classe Armatura, background che aggiungono competenze in skill, ecc…).
 %
 I personaggi possono avere o non avere determinate sezioni per abilità speciali, quali ad esempio le magie per i 
 maghi o le suppliche occulte per i Warlock: queste sezioni potranno essere attivate o disattivate durante la 
@@ -79,6 +79,7 @@ riguardo tutti i suoi personaggi, come ad esempio i personaggi che hanno inflitt
 \begin{itemize}
     \item È opportuno evidenziare che con \enquote{Campagna} si intende un mondo di gioco che prevede un amministratore, ovvero il Dungeon Master (abbreviato in DM);
     \item Per \enquote{Giocatore} si intende un partecipante della campagna mentre con \enquote{DM} si identifica l'amministratore della Campagna;
+    \item Nell'intervista si è fatto riferimento a "caratteri speciali", si intenderanno come i "Tratti classe" di DnD
 \end{itemize}
 
 \section{Definizione delle specifiche in linguaggio naturale ed estrazione dei concetti principali}
@@ -174,16 +175,32 @@ A partire dallo scheletro, proponiamo i seguenti raffinamenti strutturali e
 l'aggiunta dei relativi identificatori e attributi per modellare tutte le specifiche:
 
 \begin{itemize}
+
     \item L'\textbf{Utente} dovrà essere identificato da un \textit{username} e possederà 
     attributi di base come \textit{email} e \textit{password}.
     
-    \item La \textbf{Campagna} avrà come identificativo il suo \textit{nome} e conterrà un attributo per la \textit{data di inizio}.
+    \item La \textbf{Campagna} avrà come identificativo il suo \textit{nome} e l'\textbf{Utente} che l'ha creata, 
+    in più conterrà un attributo per la \textit{data di inizio} e per la \textit{descrizione}.
     
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/user-campain.png}
+        \caption{\textbf{Utente} e \textbf{Campagna}}
+        \label{fig:user-campain}
+    \end{figure}
+
     \item Le \textbf{Sessioni:} Considerando che tipicamente le \textbf{Sessioni} si riferiscono ad una giornata 
     di gioco, saranno entità deboli identificate dalla \textit{data di svolgimento} e collegate alla campagna 
     di appartenenza. Conterranno un attributo testuale per il \textit{diario} e saranno legate tramite associazioni N-M 
     a Oggetti, Magie e Partecipanti per implementare un sistema di \enquote{tagging} dinamico del testo come richiesto.
     
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/session.png}
+        \caption{\textbf{Sessione}}
+        \label{fig:session}
+    \end{figure}
+
     \item \textbf{Mostri e Personaggi:} I combattimenti coinvolgono entità diverse tra loro. 
     Le statistiche base comuni saranno accomunate in una entità \textbf{Partecipante} che contiene  
     (\textit{HP}, la classe armatura chiamata \textit{CA} e \textit{Taglia}). Questa entità è identificata 
@@ -193,25 +210,64 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     ereditati dal padre in quanto hanno scopi strettamente diversi: la exp. accumulata da un personaggio andrà aumentata
     spesso, mentre la exp. rilasciata dai mostri è statica.
     
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/partecipant.png}
+        \caption{\textbf{Partecipante}}
+        \label{fig:partecipant}
+    \end{figure}
+
     \item \textbf{Gestione delle Caratteristiche:} Per le caratteristiche di Forza, Destrezza, ecc. 
     sarà creata un'entità \textbf{Caratteristica}. Questo per gestire le \textbf{Skill} che si basano su
-    determinate caratteristiche. Ci sarà una relazione che determina quali Skill dipendono da quale Caratteristica
-    e i Personaggi saranno relazionati con le Skill e le Caratteristiche in base alle loro competenze in esse.
+    determinate caratteristiche. Ci sarà la relazione \textit{Base} che determina quali \textbf{Skill} si basano su quale \textbf{Caratteristica}
+    e i \textbf{Personaggi} saranno relazionati con le \textbf{Skill} e le \textbf{Caratteristiche} in base alle loro competenze in esse. Le \textbf{Skill}
+    di un \textbf{Personaggio} potranno essere variate anche da determinati \textbf{Background} che possiede. Ogni \textbf{Background}
+    influenza sempre 2 \textbf{Skill}.
     
-    \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della quinta edizione, un personaggio 
-    può avere più di una classe. Questa necessità sarà reificata nell'entità \textbf{Progresso}, che registra il livello per 
-    ogni classe. Inoltre, la \textbf{Sottoclasse} sarà una entità debole della Classe, per garantire a livello 
-    strutturale che a un personaggio non venga mai assegnata una specializzazione incoerente.
-    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/proficiencies.png}
+        \caption{\textbf{Competenze} e \textbf{Skill}}
+        \label{fig:proficiencies}
+    \end{figure}
+
+    \item \textbf{Strutturazione delle Classi e Multiclasse:} Per rispettare le regole della quinta edizione, un \textbf{Personaggio}
+    può avere più di una \textbf{Classe}. Questa necessità sarà reificata nell'entità \textbf{Progresso}, che registra il livello per 
+    ogni \textbf{Classe} per ogni \textbf{Personaggio}. Inoltre, la \textbf{Sottoclasse} sarà una entità debole della \textbf{Classe}, 
+    per garantire a livello strutturale che a un personaggio non venga mai assegnata una specializzazione incoerente.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/class-progress.png}
+        \caption{\textbf{Progresso} e \textbf{Classe}}
+        \label{fig:class-progress}
+    \end{figure}
+
     \item \textbf{Risorse di Classe:} Privilegi e risorse (es. Punti Ki, Ira) sono legati tramite associazioni N-M 
     all'entità \textit{Progresso}. L'associazione avrà come attributi \textit{Quantità max} e \textit{Quantità attuale}, 
     in modo che il consumo delle risorse avvenga a livello di singolo personaggio e non alteri il catalogo globale.
+    Anche i \textbf{Tratti} forniti dalle classi saranno legati alla \textbf{Classe}. Le \textbf{Classi} forniscono
+    anche delle \textbf{Magie} che possono essere apprese.
     
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/class-resources.png}
+        \caption{\textbf{Tratti} e \textbf{Risorse} delle classi}
+        \label{fig:class-resources}
+    \end{figure}
+
     \item \textbf{Le Sottorazze:} Secondo le regole di gioco, le sottorazze derivano da razze genitrici. 
     Considerando che le Sottorazze non aggiungono dettagli troppo diversi da quelli delle razze normali,
     possono essere rappresentate dalla stessa entità \textbf{Razza}, ci sarà però una relazione ricorsiva
     per poter risalire correttamente alla razza \enquote{base}.
-    
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/races.png}
+        \caption{\textbf{Razze}}
+        \label{fig:races}
+    \end{figure}
+
     \item \textbf{Equipaggiamento:} In DnD sono presenti armi, armature, pozioni e oggetti di trama.
     Verrà inserita un'entità \textbf{Oggetto}, che si potrà specializzare in \textbf{Arma}, \textbf{Armatura} o 
     \textbf{Consumabile} tramite una gerarchia Parziale Esclusiva, permettendo quindi l'esistenza di oggetti semplici. 
@@ -220,7 +276,14 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
     a \textbf{Utenti} diversi di usare gli stessi nomi.
     Saranno collegate all'entità Campagna tramite un'associazione 0-1, permettendo di distinguere il materiale ufficiale "globale" (valore nullo) 
     dal materiale personalizzato inventato da un \textbf{Utente} per una singola campagna.
-    
+        
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/equip.png}
+        \caption{\textbf{Razze}}
+        \label{fig:equip}
+    \end{figure}
+
     \item \textbf{Log dei Combattimenti:} Per modellare i \textbf{Combattimenti} questi saranno divisi in base ad ogni fase di gioco:
     Un combattimento è diviso in \textbf{Turni} e ogni turno è composto da \textbf{Azioni}. I combattimenti sono identificati progressivamente
     in base alla \textbf{Campagna} in cui avvengono, i \textbf{Turni} progressivamente in base al \textbf{Combattimento} e le \textbf{Azioni}
