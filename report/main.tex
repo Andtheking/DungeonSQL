@@ -801,52 +801,173 @@ L'operazione interroga lo stato del Combattimento in corso all'interno della Ses
 
 \section{Raffinamento dello schema}
 
-In questa fase procediamo alla trasformazione dello schema concettuale per rimuovere i costrutti non direttamente supportati dal modello relazionale (come le gerarchie di generalizzazione e gli identificatori esterni) e definiamo le chiavi primarie definitive per ciascuna entità.
+In questa fase procediamo alla trasformazione dello schema concettuale per rimuovere i costrutti non direttamente supportati dal modello relazionale (come gli attributi composti e le gerarchie di generalizzazione) e definiamo le chiavi primarie definitive per ciascuna entità.
 
-\subsubsection{Scelta delle chiavi primarie ed eliminazione degli identificatori esterni}
-Nello schema concettuale sono presenti diverse entità deboli che utilizzano un identificatore esterno. Per risolvere queste situazioni, importiamo la chiave primaria dell'entità forte identificante all'interno dell'entità debole, andando a formare una chiave primaria composta:
-
-\begin{itemize}
-    \item \textbf{CAMPAGNA}: identificata esternamente da \textit{UTENTE} tramite l'associazione \textit{MASTER}. La chiave primaria diventa la coppia \texttt{(Username\_Master, Nome\_Campagna)}.
-    \item \textbf{SESSIONE}: identificata esternamente da \textit{CAMPAGNA}. La chiave primaria diventa \texttt{(Username\_Master, Nome\_Campagna, Data\_svolgimento)}.
-    \item \textbf{COMBATTIMENTO}, \textbf{TURNO} e \textbf{AZIONE}: formano una catena di entità deboli dipendenti dalla \textit{CAMPAGNA}. Le loro chiavi primarie includeranno gli identificatori importati a cascata:
-    \begin{itemize}
-        \item COMBATTIMENTO: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento)}.
-        \item TURNO: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento, N\_Turno)}.
-        \item AZIONE: \texttt{(Username\_Master, Nome\_Campagna, N\_Combattimento, N\_Turno, N\_Azione)}.
-    \end{itemize}
-    \item \textbf{PARTECIPANTE}: identificato esternamente da \textit{UTENTE} tramite l'associazione \textit{CREAZIONE}. La chiave primaria diventa \texttt{(Username\_Creatore, Nome\_Partecipante)}.
-    \item \textbf{SOTTOCLASSE}, \textbf{TRATTO\_CLASSE}, \textbf{RISORSA\_CLASSE}: identificate esternamente da \textit{CLASSE}. Le chiavi primarie saranno composte dal \texttt{Nome\_Classe} unito al rispettivo nome (\texttt{Nome\_Sottoclasse}, \texttt{Nome\_Tratto}, \texttt{Nome\_Risorsa}).
-    \item \textbf{PROGRESSO}: identificata esternamente tramite le relazioni \textit{RIFERIMENTO} (verso \textit{CLASSE}) e \textit{APPARTENENZA} (verso \textit{PERSONAGGIO}). La chiave primaria composta diventa \texttt{(Nome\_Classe, Username\_Creatore, Nome\_Personaggio)}.
-\end{itemize}
-
-Per le restanti entità (es. \textit{UTENTE}, \textit{OGGETTO}, \textit{MAGIA}, \textit{RAZZA}, \textit{CLASSE}, \textit{EFFETTO\_STATO}, ecc.), l'attributo identificatore singolo definito nello schema concettuale viene mantenuto come chiave primaria autonoma.
+\subsubsection{Eliminazione degli attributi composti e multi-valore}
+Dall'analisi dello schema concettuale finale non emergono attributi composti o multi-valore che richiedano un intervento, in quanto tutte le proprietà delle entità sono già state normalizzate allo stato atomico durante l'analisi dei requisiti.
 
 \subsubsection{Eliminazione delle gerarchie di generalizzazione}
 Nello schema concettuale sono presenti due gerarchie di generalizzazione che devono essere eliminate per il corretto passaggio al modello logico.
 
-\textbf{1. Gerarchia di PARTECIPANTE (Personaggio, Mostro)} \\
-Si tratta di una generalizzazione totale ed esclusiva. Abbiamo scelto di adottare un \textbf{collasso verso l'alto} (accorpamento nell'entità padre \textit{PARTECIPANTE}). Questa scelta è motivata dal fatto che le due entità figlie condividono un gran numero di attributi e partecipano ad associazioni identiche (come la Presenza in campagna, l'Esecuzione di un'Azione e l'Inventario).
-Per implementare il collasso:
+\textbf{1. Gerarchia di OGGETTO (Arma, Armatura, Consumabile)} \\
+In quanto tale gerarchia non è totale, non è possibile applicare il collasso verso il basso. Inoltre il mantenimento delle entità figlie con le associazioni avrebbe semplicemente appesantito quanto fatto in precedenza.
+
+Quindi per questa gerarchia si è optato per un \textbf{collasso verso l'alto}, mantenendo un'unica entità \textit{OGGETTO}. In dettaglio:
 \begin{itemize}
-    \item Aggiungiamo all'entità \textit{PARTECIPANTE} un attributo discriminante \texttt{Tipo\_Partecipante} (con valori di dominio 'Personaggio' o 'Mostro').
-    \item Importiamo in \textit{PARTECIPANTE} gli attributi specifici delle entità figlie, rendendoli opzionali (ammettono valore NULL). Avremo quindi gli attributi \texttt{Allineamento}, \texttt{Exp\_Accumulata} (utilizzati solo se è Personaggio) e \texttt{CR}, \texttt{Livello\_Mostro}, \texttt{Exp\_Rilasciata} (utilizzati solo se è Mostro).
+    \item Viene aggiunto un attributo selettore \texttt{TipoOggetto} (con valori come 'Arma', 'Armatura', 'Consumabile', 'Generico').
+    \item Gli attributi specifici delle entità figlie vengono inseriti nell'entità padre \textit{OGGETTO} rendendoli opzionali.
 \end{itemize}
 
-\textbf{2. Gerarchia di OGGETTO (Arma, Armatura, Consumabile)} \\
-Anche in questo caso adottiamo il \textbf{collasso verso l'alto}, mantenendo un'unica entità \textit{OGGETTO}. La separazione in tre tabelle distinte frammenterebbe eccessivamente l'inventario dei partecipanti e complicherebbe le query relative al bottino o all'equipaggiamento.
-Per implementare il collasso:
+\textbf{2. Gerarchia di SCHEDA (Personaggio, Mostro)} \\
+Tra le scelte applicabili per la ristruttura di questa gerarchia, il collasso verso l'alto avrebbe portato ad avere diverse associazioni opzionali legate direttamente alla scheda, mentre con il collasso verso il basso sarebbe stato necessario realizzare moltissime associazioni collegate sia a \textit{PERSONAGGIO} che a \textit{MOSTRO}, che sarebbero risultate pesanti.
+
+Quindi in questa gerarchia, invece, si è optato per un \textbf{mantenimento delle entità tramite associazioni}. In dettaglio:
 \begin{itemize}
-    \item Aggiungiamo un attributo discriminante \texttt{Categoria\_Oggetto} (con valori come 'Arma', 'Armatura', 'Consumabile', 'Generico').
-    \item Gli attributi specifici delle entità figlie migrano nell'entità \textit{OGGETTO} rendendoli opzionali. Tali attributi sono: \texttt{Danno}, \texttt{Tipo\_Arma}, \texttt{Proprietà} (per le armi), \texttt{CA\_Bonus}, \texttt{Requisito\_Armatura}, \texttt{Furtiva} (per le armature), e \texttt{Effetto\_Consumabile}, \texttt{Durata\_Consumabile} (per i consumabili).
+    \item Per collegare \textit{MOSTRO} con \textit{SCHEDA} si è aggiunta l'associazione \\ \textbf{NATURA\_MOSTRO}.
+    \item Per collegare \textit{PERSONAGGIO} con \textit{SCHEDA} si è aggiunta l'associazione \\ \textbf{NATURA\_PERSONAGGIO}.
 \end{itemize}
 
-\subsubsection{Eliminazione degli attributi composti e multi-valore}
-Dall'analisi dello schema concettuale finale non emergono attributi composti o multi-valore che richiedano uno sdoppiamento, in quanto tutte le proprietà delle entità sono già state normalizzate allo stato atomico durante l'analisi dei requisiti.
+\subsubsection{Scelta delle chiavi primarie}
+Osservando lo schema si dovrebbero già notare chiaramente le chiavi primarie di ogni entità.
+Bisogna giusto fare un'osservazione sulle entità \textit{MOSTRO} e \textit{PERSONAGGIO}, in quanto queste sono identificate esternamente dall'entità \textit{SCHEDA}, ma DB-main non permette di realizzare tali identificatori completamente esterni.
 
 \section{Analisi delle ridondanze}
+Da un'analisi aggiuntiva sotto sbucate le alcune ridondanze, che verranno gestite rispettivamente nei seguenti modi:
+\begin{itemize}
+    \item Nell'entità \textit{MOSTRO} sono presenti come attributi sia \texttt{CR} che \texttt{ExpRilasciata}, ma quest'ultima potrebbe risultare ridondante in quanto il CR di un mostro determina univocamente la sua ExpRilasciata. Si decide però di mantenere tale attributo in quanto l'applicazione dà anche la possibilità di realizzare dei mostri custom da parte del DM.
+    \item L'entità \textit{PERSONAGGIO} presenta l'attributo \texttt{ExpAccumulata} e l'entità \textit{PROGESSO} presenta l'attributo \texttt{Livello}. L'unione di questi due attributi potrebbe risultare ridonante in quanto l'ExpAccumulata da un personaggio determina il suo livello totale, però l'attributo in \textit{PROGRESSO} verrà mantenuto in quanto viene specificato il livello per ogni classe scelta.
+    \item Sia l'entità \textit{PERSONAGGIO} che l'entità \textit{ISTANZA\_COMB} presentano l'attributo HP che rappresenta i punti vita attuali. Questa ridondanza verrà mantenuta in quanto è possibile che un personaggio subisca modifiche alla propria vita anche al di fuori dei combattimenti (ad esempio durante i riposi oppure se casca in una trappola).
+\end{itemize}
 
 \section{Traduzione di entità e associazioni in relazioni}
+\noindent \texttt{UTENTI(\underline{Username}, Email, Password)} \\
+
+\noindent \texttt{CAMPAGNE(\underline{UsernameMaster}, \underline{NomeCampagna}, Descrizione, DataInizio)} \\
+\texttt{FK: UsernameMaster REFERENCES UTENTI(Username)} \\
+
+\noindent \texttt{SESSIONI(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, Diario\textsuperscript{*})} \\
+\texttt{FK: (UsernameMaster, NomeCampagna) REFERENCES CAMPAGNE(UsernameMaster, NomeCampagna)} \\
+
+\newpage
+
+\noindent \texttt{SCHEDE(\underline{CodiceScheda}, Nome, MaxHP, CA, Taglia, UsernameCreatore, UsernameMasterCampagna\textsuperscript{*}, NomeCampagna\textsuperscript{*})} \\
+\texttt{FK: UsernameCreatore REFERENCES UTENTE(Username)} \\
+\texttt{FK: (UsernameMasterCampagna, NomeCampagna) REFERENCES CAMPAGNA(UsernameMaster, NomeCampagna)} \\
+
+\noindent \texttt{PERSONAGGI(\underline{CodiceScheda}, Allineamento, HP, ExpAccumulata, NomeBackground, NomeRazza)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: NomeBackground REFERENCES BACKGROUNDS(Nome)} \\
+\texttt{FK: NomeRazza REFERENCES RAZZE(Nome)} \\
+
+\noindent \texttt{MOSTRI(\underline{CodiceScheda}, CR, ExpRilasciata, Velocita)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+
+\noindent \texttt{BACKGROUNDS(\underline{Nome}, Descrizione)} \\
+
+\noindent \texttt{RAZZE(\underline{Nome}, Descrizione, VelocitaBase, Scurovisione, NomeRazzaPadre\textsuperscript{*})} \\
+\texttt{FK: NomeRazzaPadre REFERENCES RAZZE(Nome)} \\
+
+\noindent \texttt{CARATTERISTICHE(\underline{Nome})} \\
+
+\noindent \texttt{SKILLS(\underline{Nome}, NomeCaratteristica)} \\
+\texttt{FK: NomeCaratteristica REFERENCES CARATTERISTICHE(Nome)} \\
+
+\noindent \texttt{CLASSI(\underline{NomeClasse})} \\
+
+\noindent \texttt{SOTTOCLASSI(\underline{NomeClasse}, \underline{NomeSottoclasse})} \\
+\texttt{FK: NomeClasse REFERENCES CLASSI(NomeClasse)} \\
+
+\noindent \texttt{PROGRESSI(\underline{CodiceScheda}, \underline{NomeClasse}, Livello, NomeSottoclasse\textsuperscript{*})} \\
+\texttt{FK: CodiceScheda REFERENCES PERSONAGGI(CodiceScheda)} \\
+\texttt{FK: NomeClasse REFERENCES CLASSI(NomeClasse)} \\
+\texttt{FK: (NomeClasse, NomeSottoclasse) REFERENCES SOTTOCLASSI(NomeClasse, NomeSottoclasse)} \\
+
+\noindent \texttt{TRATTI\_CLASSE(\underline{NomeClasse}, \underline{NomeTratto}, Descrizione, LivelloRichiesto)} \\
+\texttt{FK: NomeClasse REFERENCES CLASSI(NomeClasse)} \\
+
+\noindent \texttt{RISORSE\_CLASSE(\underline{NomeClasse}, \underline{NomeRisorsa}, Recupero)} \\
+\texttt{FK: NomeClasse REFERENCES CLASSI(NomeClasse)} \\
+
+\noindent \texttt{OGGETTI(\underline{CodiceOggetto}, Nome, Descrizione, Peso, EffettoMagico, TipoOggetto, Danno\textsuperscript{*}, TipoArma\textsuperscript{*}, ProprietaArma\textsuperscript{*}, BonusCA\textsuperscript{*}, ReqArmatura\textsuperscript{*}, Furtiva\textsuperscript{*}, EffettoCons\textsuperscript{*}, DurataCons\textsuperscript{*}, UsernameMasterCampagna\textsuperscript{*}, NomeCampagna\textsuperscript{*})} \\
+\texttt{FK: (UsernameMasterCampagna, NomeCampagna) REFERENCES CAMPAGNA(UsernameMaster, NomeCampagna)} \\
+
+\noindent \texttt{MAGIE(\underline{CodiceMagia}, Nome, Descrizione, Livello, Rituale, UsernameMasterCampagna\textsuperscript{*}, NomeCampagna\textsuperscript{*})} \\
+\texttt{FK: (UsernameMasterCampagna, NomeCampagna) REFERENCES CAMPAGNE(UsernameMaster, NomeCampagna)} \\
+
+\noindent \texttt{EFFETTI\_STATO(\underline{NomeEffettoStato}, Descrizione)} \\
+
+\noindent \texttt{STATI\_ATTIVI(\underline{NomeEffettoStato}, \underline{Numero}, Scaduto, Durata, Note\textsuperscript{*}, UsernameMasterAzione\textsuperscript{*}, NomeCampagnaAzione\textsuperscript{*}, DataSvolgimentoAzione\textsuperscript{*}, NumCombattimentoAzione\textsuperscript{*}, NumTurnoAzione\textsuperscript{*}, NumAzione, UsernameMasterIst, NomeCampagnaIst, DataSvolgimentoIst, NumCombattimentoIst, NumeroIstanza)} \\
+\texttt{FK: NomeEffettoStato REFERENCES EFFETTI\_STATO(NomeEffettoStato)} \\
+\texttt{FK: (UsernameMasterAzione, NomeCampagnaAzione, DataSvolgimentoAzione, NumCombattimentoAzione, NumTurnoAzione, NumAzione) REFERENCES AZIONI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione)} \\
+\texttt{FK: (UsernameMasterIst, NomeCampagnaIst, DataSvolgimentoIst, NumCombattimentoIst, NumeroIstanza) REFERENCES ISTANZE\_COMB(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, Numero)} \\
+
+\noindent \texttt{COMBATTIMENTI(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, \underline{NumCombattimento})} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento) REFERENCES SESSIONI(UsernameMaster, NomeCampagna, DataSvolgimento)} \\
+
+\noindent \texttt{TURNI(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, \underline{NumCombattimento}, \underline{NumTurno})} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento) REFERENCES COMBATTIMENTI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento)} \\
+
+\noindent \texttt{AZIONI(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, \underline{NumCombattimento}, \underline{NumTurno}, \underline{NumAzione}, Tipo, CodiceMagia\textsuperscript{*}, CodiceOggetto\textsuperscript{*}, NumeroIstanza\textsuperscript{*})} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno) REFERENCES TURNI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno)} \\
+\texttt{FK: CodiceMagia REFERENCES MAGIE(CodiceMagia)} \\
+\texttt{FK: CodiceOggetto REFERENCES OGGETTI(CodiceOggetto)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza) REFERENCES ISTANZE\_COMB(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, Numero)} \\
+
+\noindent \texttt{ISTANZE\_COMB(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, \underline{NumCombattimento}, \underline{Numero}, Iniziativa, HP, CodiceScheda)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento) REFERENCES COMBATTIMENTI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+
+\newpage
+
+\noindent \texttt{TAG\_PARTECIPANTI(\underline{CodiceScheda}, \underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento})} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento) REFERENCES SESSIONI(UsernameMaster, NomeCampagna, DataSvolgimento)} \\
+
+\noindent \texttt{TAG\_OGGETTI(\underline{CodiceOggetto}, \underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento})} \\
+\texttt{FK: CodiceOggetto REFERENCES OGGETTI(CodiceOggetto)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento) REFERENCES SESSIONI(UsernameMaster, NomeCampagna, DataSvolgimento)} \\
+
+\noindent \texttt{TAG\_MAGIE(\underline{CodiceMagia}, \underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento})} \\
+\texttt{FK: CodiceMagia REFERENCES MAGIE(CodiceMagia)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento) REFERENCES SESSIONI(UsernameMaster, NomeCampagna, DataSvolgimento)} \\
+
+\noindent \texttt{INVENTARI(\underline{CodiceScheda}, \underline{CodiceOggetto}, Quantita)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: CodiceOggetto REFERENCES OGGETTI(CodiceOggetto)} \\
+
+\noindent \texttt{POSSESSI(\underline{CodiceScheda}, \underline{NomeCaratteristica}, Punteggio, CompetenzaSalvezza)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: NomeCaratteristica REFERENCES CARATTERISTICHE(Nome)} \\
+
+\noindent \texttt{CAPACITA(\underline{CodiceScheda}, \underline{NomeSkill}, LivelloCapacita)} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: NomeSkill REFERENCES SKILLS(Nome)} \\
+
+\noindent \texttt{PROPENSIONI(\underline{NomeBackground}, \underline{NomeSkill})} \\
+\texttt{FK: NomeBackground REFERENCES BACKGROUNDS(Nome)} \\
+\texttt{FK: NomeSkill REFERENCES SKILLS(Nome)} \\
+
+\noindent \texttt{CONOSCENZE(\underline{CodiceScheda}, \underline{CodiceMagia})} \\
+\texttt{FK: CodiceScheda REFERENCES SCHEDE(CodiceScheda)} \\
+\texttt{FK: CodiceMagia REFERENCES MAGIE(CodiceMagia)} \\
+
+\noindent \texttt{ABILITAZIONI\_RISORSA(\underline{CodiceScheda}, \underline{NomeClasse}, \underline{NomeRisorsa})} \\
+\texttt{FK: (CodiceScheda, NomeClasse) REFERENCES PROGRESSI(CodiceScheda, NomeClasse)} \\
+\texttt{FK: (NomeClasse, NomeRisorsa) REFERENCES RISORSE\_CLASSE(NomeClasse, NomeRisorsa)} \\
+
+\noindent \texttt{ABILITAZIONI\_TRATTO(\underline{CodiceScheda}, \underline{NomeClasse}, \underline{NomeTratto}, MaxQuantita, Quantita)} \\
+\texttt{FK: (CodiceScheda, NomeClasse) REFERENCES PROGRESSI(CodiceScheda, NomeClasse)} \\
+\texttt{FK: (NomeClasse, NomeTratto) REFERENCES TRATTI\_CLASSE(NomeClasse, NomeTratto)} \\
+
+\noindent \texttt{APPRENDIMENTI(\underline{NomeClasse}, \underline{CodiceMagia})} \\
+\texttt{FK: NomeClasse REFERENCES CLASSI(NomeClasse)} \\
+\texttt{FK: CodiceMagia REFERENCES MAGIE(CodiceMagia)} \\
+
+\newpage
+
+\noindent \texttt{CONTRO(\underline{UsernameMaster}, \underline{NomeCampagna}, \underline{DataSvolgimento}, \underline{NumCombattimento}, \underline{NumTurno}, \underline{NumAzione}, \underline{NumeroIstanza}, Danno, Esito, Sconfitto)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione) REFERENCES AZIONI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione)} \\
+\texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza) REFERENCES ISTANZE\_COMB(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, Numero)} \\
 
 \section{Schema relazionale finale}
 
