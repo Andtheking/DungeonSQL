@@ -10,8 +10,6 @@ public class HibernateUtil {
         try {
             Configuration configuration = new Configuration().configure();
 
-            // Legge le credenziali dalle variabili d'ambiente del sistema (o del file .env)
-            // Se non le trova, usa dei fallback o lancia un errore esplicito
             String dbUrl = System.getenv("DB_URL");
             String dbUser = System.getenv("DB_USER");
             String dbPassword = System.getenv("DB_PASSWORD");

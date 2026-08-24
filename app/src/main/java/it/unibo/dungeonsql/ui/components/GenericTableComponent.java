@@ -1,4 +1,4 @@
-package it.unibo.dungeonsql.components;
+package it.unibo.dungeonsql.ui.components;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
