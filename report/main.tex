@@ -13,6 +13,7 @@
 \usepackage{changepage}
 \usepackage[autostyle=true]{csquotes}
 \DeclareQuoteAlias{english}{italian}
+\usepackage{lscape}
 
 \usepackage[italian]{babel}
 
@@ -395,18 +396,20 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     COMPOSIZIONE\_COMB & R & Lega un Combattimento ai Turni che lo compongono. \\ \midrule 
     SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule 
 
-\end{longtable}
-\clearpage
-\restoregeometry
-
-\section{Schema concettuale finale}
+\end{longtable}\section{Schema concettuale finale}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{er_completo.png}
+    \href[pdfnewwindow=true]{https://github.com/Andtheking/DungeonSQL/blob/main/report/media/er_completo.png}{
+        \includegraphics[angle=90, width=\textwidth, height=0.9\textheight, keepaspectratio]{er_completo.png}
+    }
     \caption{Schema concettuale finale}
+    
     \label{fig:er_completo}
 \end{figure}
+    
+\clearpage
+\restoregeometry
 
 \chapter{Progettazione logica}
 
@@ -415,7 +418,7 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
 Nella tabella sono riportate tutte le entità e le associazioni presenti nel database 
 
 \footnotesize
-\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.3\textwidth} >{\centering\arraybackslash}p{0.3\textwidth} >{\raggedright\arraybackslash}p{0.3\textwidth} @{}}
+\begin{longtable}{@{} >{\bfseries\raggedright\arraybackslash}p{0.37\textwidth} >{\centering\arraybackslash}p{0.3\textwidth} >{\raggedright\arraybackslash}p{0.3\textwidth} @{}}
     \toprule    
     \textbf{Nome} & \textbf{Tipo} & \textbf{Stima volume} \\     
     \midrule
@@ -425,72 +428,82 @@ Nella tabella sono riportate tutte le entità e le associazioni presenti nel dat
 
     \endlastfoot
 
-    UTENTE & E & 1.000 \\ \midrule
-    CAMPAGNA & E & 300 \\ \midrule
-    SESSIONE & E & 3.000 \\ \midrule
-    PARTECIPANTE & E & 18.000 \\ \midrule
-    PERSONAGGIO & E & 3.000 \\ \midrule
-    MOSTRO & E & 15.000 \\ \midrule
+    UTENTE & E & 5000 \\ \midrule
+    CAMPAGNA & E & 2000 \\ \midrule
+    SESSIONE & E & 30000 \\ \midrule
+    SCHEDA & E & 17000 \\ \midrule
+    ISTANZA\_COMB & E & 300000 \\ \midrule
+    PERSONAGGIO & E & 15000 \\ \midrule
+    MOSTRO & E & 2000 \\ \midrule
     CARATTERISTICA & E & 6 \\ \midrule
     SKILL & E & 18 \\ \midrule
-    RAZZA & E & 20 \\ \midrule
-    CLASSE & E & 12 \\ \midrule
-    SOTTOCLASSE & E & 40 \\ \midrule
-    PROGRESSO & E & 3.500 \\ \midrule
-    TRATTO\_CLASSE & E & 100 \\ \midrule
-    RISORSA\_CLASSE & E & 30 \\ \midrule
-    MAGIA & E & 800 \\ \midrule
-    OGGETTO & E & 1.000 \\ \midrule
+    RAZZA & E & 40 \\ \midrule
+    BACKGROUND & E & 50 \\ \midrule
+    CLASSE & E & 13 \\ \midrule
+    SOTTOCLASSE & E & 120 \\ \midrule
+    PROGRESSO & E & 18000 \\ \midrule
+    TRATTO\_CLASSE & E & 1500 \\ \midrule
+    RISORSA\_CLASSE & E & 100 \\ \midrule
+    MAGIA & E & 500 \\ \midrule
+    OGGETTO & E & 1500 \\ \midrule
     ARMA & E & 100 \\ \midrule
     ARMATURA & E & 50 \\ \midrule
-    CONSUMABILE & E & 150 \\ \midrule
-    COMBATTIMENTO & E & 900 \\ \midrule
-    TURNO & E & 4.500 \\ \midrule
-    AZIONE & E & 45.000 \\ \midrule
+    CONSUMABILE & E & 200 \\ \midrule
+    COMBATTIMENTO & E & 30000 \\ \midrule
+    TURNO & E & 600000 \\ \midrule
+    AZIONE & E & 900000 \\ \midrule
     EFFETTO\_STATO & E & 15 \\ \midrule
-    Ha Creato & R & 18.000 \\ \midrule
-    È master di & R & 300 \\ \midrule
-    Partecipa In & R & 2.500 \\ \midrule
-    Creata\_per & R & 500 \\ \midrule
-    Creato\_per & R & 600 \\ \midrule
-    Composta Da & R & 3.000 \\ \midrule
-    OggettoDiario & R & 4.000 \\ \midrule
-    MagiaDiario & R & 2.500 \\ \midrule
-    PartecipanteDiario & R & 8.000 \\ \midrule
-    Sottorazza\_di & R & 10 \\ \midrule
-    AppartieneR & R & 3.000 \\ \midrule
-    Appartiene & R & 3.500 \\ \midrule
-    Riferito a & R & 3.500 \\ \midrule
-    Scelta & R & 2.800 \\ \midrule
-    Sviluppa & R & 40 \\ \midrule
-    Fornisce & R & 30 \\ \midrule
-    Sblocca\_tratto & R & 15.000 \\ \midrule
-    Sblocca\_risorsa & R & 3.000 \\ \midrule
-    Offre & R & 100 \\ \midrule
-    Può imparare & R & 600 \\ \midrule
-    Conosce & R & 30.000 \\ \midrule
-    Castando & R & 15.000 \\ \midrule
-    Si basa su & R & 18 \\ \midrule
-    CapaceIn & R & 15.000 \\ \midrule
-    Ha & R & 108.000 \\ \midrule
-    Affetto\_da & R & 20.000 \\ \midrule
-    Esegue & R & 45.000 \\ \midrule
-    Contro & R & 60.000 \\ \midrule
-    Usando & R & 30.000 \\ \midrule
-    Inventario & R & 50.000 \\ \midrule
-    Avvenuti & R & 900 \\ \midrule
-    Si compone di & R & 4.500 \\ \midrule
-    In\_turno & R & 45.000 \\ \midrule
+    STATO\_ATTIVO & E & 20000 \\ \midrule
+
+    CREAZIONE & R & 17000 \\ \midrule
+    ISTANZA\_XOR & R & 300000 \\ \midrule
+    PARTE & R & 300000 \\ \midrule
+    MASTER & R & 2000 \\ \midrule
+    PRESENZA & R & 15000 \\ \midrule
+    CREAZIONE\_MAGIA & R & 1000 \\ \midrule
+    CREAZIONE\_OGGETTO & R & 1000 \\ \midrule
+    COMPOSIZIONE & R & 30000 \\ \midrule
+    TAG\_OGGETTO & R & 3000 \\ \midrule
+    TAG\_MAGIA & R & 1000 \\ \midrule
+    TAG\_PARTECIPANTE & R & 30000 \\ \midrule
+    SOTTORAZZA & R & 100 \\ \midrule
+    APPARTENENZA\_RAZZA & R & 15000 \\ \midrule
+    FONDAMENTO & R & 15000 \\ \midrule
+    PROPENSIONE & R & 100 \\ \midrule
+    APPARTENENZA & R & 18000 \\ \midrule
+    RIFERIMENTO & R & 18000 \\ \midrule
+    SCELTA & R & 14400 \\ \midrule
+    SVILUPPO & R & 120 \\ \midrule
+    FORNITURA & R & 100 \\ \midrule
+    ABILITAZIONE\_TRATTO & R & 90000 \\ \midrule
+    ABILITAZIONE\_RISORSA & R & 36000 \\ \midrule
+    OFFERTA & R & 1500 \\ \midrule
+    APPRENDIMENTO & R & 45000 \\ \midrule
+    CONOSCENZA & R & 85000 \\ \midrule
+    LANCIO & R & 200000 \\ \midrule
+    BASE & R & 18 \\ \midrule
+    CAPACITÀ & R & 306000 \\ \midrule
+    POSSESSO & R & 102000 \\ \midrule
+    AFFLIZIONE & R & 20000 \\ \midrule
+    ATTIVAZIONE & R & 20000 \\ \midrule
+    CAUSA & R & 15000 \\ \midrule
+    ESECUZIONE & R & 900000 \\ \midrule
+    CONTRO & R & 1080000 \\ \midrule
+    USO & R & 100000 \\ \midrule
+    INVENTARIO & R & 170000 \\ \midrule
+    AVVENIMENTO & R & 30000 \\ \midrule
+    COMPOSIZIONE\_COMB & R & 600000 \\ \midrule
+    SUDDIVISIONE & R & 900000 \\ \midrule
 
 \end{longtable}
 
-\subsection{Descrizione delle operazioni principali e stima della loro frequenza}
+\subsection{Descrizione delle operazioni e stima della loro frequenza}
 
 Le operazioni principali previste per il funzionamento del sistema sono elencate nella tabella sottostante. 
-Per ciascuna operazione viene indicata la frequenza di esecuzione stimata e la tipologia di elaborazione (I = Interattiva, B = Batch). 
+Per ciascuna operazione viene indicata la frequenza di esecuzione stimata e la tipologia di elaborazione. 
 Questi valori di carico si riveleranno fondamentali per calcolare i costi e le prestazioni nella successiva stesura delle tabelle degli accessi.
 
-\begin{longtable}{@{} >{\bfseries\centering\arraybackslash}p{0.1\textwidth} >{\raggedright\arraybackslash}p{0.55\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
+\begin{longtable}{@{} >{\bfseries\centering\arraybackslash}p{0.1\textwidth} >{\raggedright\arraybackslash}p{0.55\textwidth} >{\centering\arraybackslash}p{0.25\textwidth} @{}}
     \toprule    
     \textbf{Cod.} & \textbf{Nome Operazione} & \textbf{Frequenza} \\     
     \midrule
@@ -500,27 +513,25 @@ Questi valori di carico si riveleranno fondamentali per calcolare i costi e le p
 
     \endlastfoot
 
-    OP1 & Un giocatore crea un nuovo Personaggio (scelta razza, classe, ecc.) & 50 al giorno \\ \midrule
-    OP2 & Un giocatore visualizza la Scheda Personaggio (HP, risorse, statistiche) & 2.000 al giorno \\ \midrule 
-    OP3 & Un giocatore aggiunge o rimuove di un Oggetto dall'Inventario & 1.000 al giorno \\ \midrule 
-    OP4 & Un giocatore esegue un'Azione in Combattimento (Magia o Attacco) & 3.000 al giorno \\ \midrule 
-    OP5 & Un giocatore visualizza statistiche globali giocatore & 100 al giorno \\ \midrule
-
-    OP6 & Il DM crea di una nuova Campagna & 10 al giorno \\ \midrule 
-    OP7 & Il DM inserisce Magie o Oggetti personalizzati & 20 al giorno \\ \midrule 
-    OP8 & Il DM crea un nuovo Mostro o NPC giocabile per la campagna & 30 al giorno \\ \midrule 
-    OP9 & Il DM registra un nuovo Combattimento e dei relativi Turni & 150 al giorno \\ \midrule 
-    OP10 & Il DM scrive un Diario di Sessione con Tag a elementi di gioco & 50 al giorno \\ \midrule
-
-    OP11 & L'amministratore di sistema Inserimento di dati ufficiali base (nuove Classi, Razze, ecc.) & 2 al mese \\ \midrule 
+    OP1 & Lettura di una scheda giocatore & 3.000 al giorno \\ \midrule
+    OP2 & Creazione di una campagna & 10 al giorno \\ \midrule 
+    OP3 & Scrittura di una pagina del diario in una determinata sessione & 50 al giorno \\ \midrule 
+    OP4 & Creazione di un personaggio & 50 al giorno \\ \midrule 
+    OP5 & Lettura dei personaggi già creati da un utente & 500 al giorno \\ \midrule
+    OP6 & Inserimento di un personaggio in una campagna & 40 al giorno \\ \midrule 
+    OP7 & Creazione di un combattimento & 150 al giorno \\ \midrule 
+    OP8 & Lettura dell'inventario di un personaggio & 1.000 al giorno \\ \midrule 
+    OP9 & Imparare una magia dopo un certo livello di classe (o sottoclasse) & 100 al giorno \\ \midrule 
+    OP10 & Aggiornamento delle statistiche di un personaggio & 500 al giorno \\ \midrule
+    OP11 & Accesso al proprio turno di combattimento & 1.500 al giorno \\ \bottomrule 
 
 \end{longtable}
 
-\section{Schemi di navigazione e tabelle degli accessi}
+\section{Schemi di navigazione e tabelle degli accessi delle operazioni principali}
 
-\subsection{OP1 - Creazione di un nuovo Personaggio}
+\subsection{OP1 - Lettura scheda giocatore}
 
-La creazione richiede la lettura dei cataloghi di base e l'inserimento dei dati del Personaggio e del suo Progresso per la scelta della Classe.
+L'operazione interroga la base dati per recuperare la totalità delle informazioni di un Personaggio: statistiche base, background, razza, progressi di classe, inventario ed eventuali incantesimi conosciuti.
 
 \begin{figure}[H]
     \centering
@@ -529,37 +540,52 @@ La creazione richiede la lettura dei cataloghi di base e l'inserimento dei dati 
     \label{fig:op1}
 \end{figure}
 
-
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 13 L + 17 S. \textbf{Costo operazione:} 47 (13 + 17x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 2.350 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 139 L. \textbf{Costo operazione:} 139} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 3.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 417.000 accessi/giorno} \\
     \bottomrule
     
     \endlastfoot
 
-    UTENTE & E & 1 & L \\ \hline
-    PARTECIPANTE & E & 1 & S \\ \hline
-    PERSONAGGIO & E & 1 & S \\ \hline
-    RAZZA & E & 1 & L \\ \hline
-    CLASSE & E & 1 & L \\ \hline
+    SCHEDA & E & 1 & L \\ \hline
+    PERSONAGGIO & E & 1 & L \\ \hline
+    POSSESSO & R & 6 & L \\ \hline
     CARATTERISTICA & E & 6 & L \\ \hline
-    SKILL & E & 4 & L \\ \hline
-    PROGRESSO & E & 1 & S \\ \hline
-    CREAZIONE & R & 1 & S \\ \hline
-    APPARTENENZA\_RAZZA & R & 1 & S \\ \hline
-    APPARTENENZA & R & 1 & S \\ \hline
-    RIFERIMENTO & R & 1 & S \\ \hline
-    POSSESSO & R & 6 & S \\ \hline
-    CAPACITÀ & R & 4 & S \\ \hline
+    CAPACITÀ & R & 18 & L \\ \hline
+    SKILL & E & 18 & L \\ \hline
+    FONDAMENTO & R & 1 & L \\ \hline
+    BACKGROUND & E & 1 & L \\ \hline
+    PERIZIA & R & 2 & L \\ \hline
+    APPARTENENZA\_RAZZA & R & 1 & L \\ \hline
+    RAZZA (Base + Sottorazza) & E & 2 & L \\ \hline
+    SOTTORAZZA & R & 1 & L \\ \hline
+    APPARTENENZA & R & 1 & L \\ \hline
+    PROGRESSO & E & 1 & L \\ \hline
+    RIFERIMENTO & R & 1 & L \\ \hline
+    CLASSE & E & 1 & L \\ \hline
+    SCELTA & R & 1 & L \\ \hline
+    SOTTOCLASSE & E & 1 & L \\ \hline
+    ABILITAZIONE\_TRATTO & R & 5 & L \\ \hline
+    TRATTO\_CLASSE & E & 5 & L \\ \hline
+    ABILITAZIONE\_RISORSA & R & 3 & L \\ \hline
+    RISORSA\_CLASSE & E & 3 & L \\ \hline
+    INVENTARIO & R & 15 & L \\ \hline
+    OGGETTO & E & 15 & L \\ \hline
+    ARMA & E & 3 & L \\ \hline
+    ARMATURA & E & 1 & L \\ \hline
+    CONSUMABILE & E & 5 & L \\ \hline
+    CONOSCENZA & R & 10 & L \\ \hline
+    MAGIA & E & 10 & L \\ \hline
 \end{longtable}
 
-\subsection{OP2 - Visualizzazione della Scheda Personaggio}
 
-Operazione di lettura completa per recuperare statistiche, competenze, progressione, privilegi, risorse e incantesimi noti del personaggio.
+\subsection{OP2 - Creazione di una campagna}
+
+Il Master inizializza una nuova avventura, registrando i dati base della Campagna nel sistema e definendosi come creatore della stessa.
 
 \begin{figure}[H]
     \centering
@@ -573,41 +599,21 @@ Operazione di lettura completa per recuperare statistiche, competenze, progressi
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 114 L. \textbf{Costo operazione:} 114} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 2.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 228.000 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 L + 2 S. \textbf{Costo operazione:} 5 (1 + 2x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 10 al giorno $\rightarrow$ \textbf{Costo Totale:} 50 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    PARTECIPANTE & E & 1 & L \\ 
-    PERSONAGGIO & E & 1 & L \\ 
-    RAZZA & E & 1 & L \\ 
-    PROGRESSO & E & 1 & L \\ 
-    CLASSE & E & 1 & L \\ 
-    SOTTOCLASSE & E & 1 & L \\ 
-    CARATTERISTICA & E & 6 & L \\ 
-    SKILL & E & 18 & L \\ 
-    TRATTO\_CLASSE & E & 5 & L \\ 
-    RISORSA\_CLASSE & E & 2 & L \\ 
-    MAGIA & E & 8 & L \\ 
-    APPARTENENZA\_RAZZA & R & 1 & L \\ 
-    APPARTENENZA & R & 1 & L \\ 
-    RIFERIMENTO & R & 1 & L \\ 
-    SCELTA & R & 1 & L \\ 
-    SVILUPPO & R & 1 & L \\ 
-    POSSESSO & R & 6 & L \\ 
-    CAPACITÀ & R & 18 & L \\ 
-    BASE & R & 18 & L \\ 
-    OFFERTA & R & 5 & L \\ 
-    ABILITAZIONE\_TRATTO & R & 5 & L \\ 
-    FORNITURA & R & 2 & L \\ 
-    ABILITAZIONE\_RISORSA & R & 2 & L \\ 
-    CONOSCENZA & R & 8 & L \\ 
+    UTENTE & E & 1 & L \\ \hline
+    CAMPAGNA & E & 1 & S \\ \hline
+    MASTER & R & 1 & S \\ \hline
 \end{longtable}
 
-\subsection{OP3 - Aggiunta di un Oggetto dall'Inventario}
 
-Aggiornamento della quantità di un oggetto sull'associazione N-M dell'inventario.
+\subsection{OP3 - Scrittura di una pagina del diario in una determinata sessione}
+
+L'utente aggiorna il testo del diario per la Sessione corrente e registra i collegamenti (tag) per indicizzare le entità rilevanti menzionate nella narrazione (Schede, Magie e Oggetti con relative specializzazioni).
 
 \begin{figure}[H]
     \centering
@@ -621,21 +627,27 @@ Aggiornamento della quantità di un oggetto sull'associazione N-M dell'inventari
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 3 L + 1 S. \textbf{Costo operazione:} 5 (3 + 1x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 1.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 5.000 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 9 L + 7 S. \textbf{Costo operazione:} 23 (9 + 7x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 1.150 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    PARTECIPANTE & E & 1 & L \\ 
-    OGGETTO & E & 1 & L \\ 
-    INVENTARIO & R & 1 & L \\ 
-    INVENTARIO & R & 1 & S \\ 
+    SESSIONE & E & 1 & L \\ \hline
+    SESSIONE & E & 1 & S \\ \hline
+    TAG\_PARTECIPANTE & R & 3 & S \\ \hline
+    SCHEDA & E & 3 & L \\ \hline
+    TAG\_MAGIA & R & 1 & S \\ \hline
+    MAGIA & E & 1 & L \\ \hline
+    TAG\_OGGETTO & R & 2 & S \\ \hline
+    OGGETTO & E & 2 & L \\ \hline
+    ARMA & E & 1 & L \\ \hline
+    CONSUMABILE & E & 1 & L \\ \hline
 \end{longtable}
 
-\subsection{OP4 - Esecuzione di un'Azione in Combattimento}
+\subsection{OP4 - Creazione di un Personaggio}
 
-Registrazione di una nuova mossa (attacco con arma o magia) in un turno, con calcolo dei danni, esito e aggiornamento dei Punti Vita del bersaglio.
+L'operazione automatizza la creazione di un personaggio. Il sistema interroga i dizionari (Razze, Classi, Background) per inserire i dati anagrafici e popolare dinamicamente le statistiche base, i privilegi di classe del primo livello, le magie conosciute e l'equipaggiamento iniziale.
 
 \begin{figure}[H]
     \centering
@@ -649,81 +661,52 @@ Registrazione di una nuova mossa (attacco con arma o magia) in un turno, con cal
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 4 L + 6 S. \textbf{Costo operazione:} 16 (4 + 6x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 3.000 al giorno $\rightarrow$ \textbf{Costo Totale:} 48.000 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 49 L + 35 S. \textbf{Costo operazione:} 119 (49 + 35x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 5.950 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    TURNO & E & 1 & L \\ 
-    PARTECIPANTE & E & 2 & L \\ 
-    OGGETTO & E & 1 & L \\ 
-    AZIONE & E & 1 & S \\ 
-    PARTECIPANTE & E & 1 & S \\ 
-    SUDDIVISIONE & R & 1 & S \\ 
-    ESECUZIONE & R & 1 & S \\ 
-    USO & R & 1 & S \\ 
-    CONTRO & R & 1 & S \\ 
+    UTENTE & E & 1 & L \\ \hline
+    CREAZIONE & R & 1 & S \\ \hline
+    SCHEDA & E & 1 & S \\ \hline
+    PERSONAGGIO & E & 1 & S \\ \hline
+    APPARTENENZA\_RAZZA & R & 1 & S \\ \hline
+    RAZZA & E & 1 & L \\ \hline
+    SOTTORAZZA & E & 1 & L \\ \hline
+    FONDAMENTO & R & 1 & S \\ \hline
+    BACKGROUND & E & 1 & L \\ \hline
+    PERIZIA & R & 2 & L \\ \hline
+    POSSESSO & R & 6 & S \\ \hline
+    CARATTERISTICA & E & 6 & L \\ \hline
+    CAPACITÀ & R & 6 & S \\ \hline
+    SKILL & E & 6 & L \\ \hline
+    APPARTENENZA & R & 1 & S \\ \hline
+    PROGRESSO & E & 1 & S \\ \hline
+    RIFERIMENTO & R & 1 & S \\ \hline
+    CLASSE & E & 1 & L \\ \hline
+    SVILUPPO & R & 1 & L \\ \hline
+    SOTTOCLASSE & E & 1 & L \\ \hline
+    SCELTA & R & 1 & S \\ \hline
+    OFFERTA & R & 4 & L \\ \hline
+    TRATTO\_CLASSE & E & 4 & L \\ \hline
+    ABILITAZIONE\_TRATTO & R & 4 & S \\ \hline
+    FORNITURA & R & 2 & L \\ \hline
+    RISORSA\_CLASSE & E & 2 & L \\ \hline
+    ABILITAZIONE\_RISORSA & R & 2 & S \\ \hline
+    APPRENDIMENTO & R & 3 & L \\ \hline
+    MAGIA & E & 3 & L \\ \hline
+    CONOSCENZA & R & 3 & S \\ \hline
+    OGGETTO & E & 5 & L \\ \hline
+    ARMA & E & 2 & L \\ \hline
+    ARMATURA & E & 1 & L \\ \hline
+    CONSUMABILE & E & 2 & L \\ \hline
+    INVENTARIO & R & 5 & S \\ \hline
 \end{longtable}
 
-\subsection{OP5 - Visualizzazione statistiche globali giocatore}
+\subsection{OP7 - Creazione di un Combattimento}
 
-Lettura statistiche dei combattimenti storicizzati per sommare i danni inflitti e subiti da un personaggio.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{navigation/op5.png}
-    \caption{Navigazione OP5}
-    \label{fig:op5}
-\end{figure}
-
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 63 L. \textbf{Costo operazione:} 63} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 100 al giorno $\rightarrow$ \textbf{Costo Totale:} 6.300 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
-    PARTECIPANTE & E & 1 & L \\ 
-    ESECUZIONE & R & 20 & L \\ 
-    AZIONE & E & 20 & L \\ 
-    CONTRO & R & 22 & L \\ 
-\end{longtable}
-
-\subsection{OP6 - Creazione di una nuova Campagna} 
-
-L'Utente (in veste di Master) instanzia un nuovo mondo di gioco.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{navigation/op6.png}
-    \caption{Navigazione OP6}
-    \label{fig:op6}
-\end{figure}
-
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 L + 2 S. \textbf{Costo operazione:} 5 (1 + 2x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 10 al giorno $\rightarrow$ \textbf{Costo Totale:} 50 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
-    UTENTE & E & 1 & L \\ 
-    CAMPAGNA & E & 1 & S \\ 
-    MASTER & R & 1 & S \\ 
-\end{longtable}
-
-\subsection{OP7 - Inserimento di oggetti personalizzati}
-
-Il Master crea un nuovo Oggetto riservato esclusivamente alla sua campagna.
+Il Master inizializza uno scontro tattico. L'operazione recupera in automatico i Personaggi attivi nella Campagna e legge le statistiche dei Mostri dal bestiario. Successivamente, inserisce il Combattimento, inizializza il primo Turno e genera le Istanze (le pedine) sulla griglia per tutti i partecipanti.
 
 \begin{figure}[H]
     \centering
@@ -737,115 +720,32 @@ Il Master crea un nuovo Oggetto riservato esclusivamente alla sua campagna.
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 L + 2 S. \textbf{Costo operazione:} 5 (1 + 2x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 20 al giorno $\rightarrow$ \textbf{Costo Totale:} 100 accessi/giorno} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 28 L + 34 S. \textbf{Costo operazione:} 96 (28 + 34x2)} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 150 al giorno $\rightarrow$ \textbf{Costo Totale:} 14.400 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    CAMPAGNA & E & 1 & L \\ 
-    OGGETTO & E & 1 & S \\ 
-    CREAZIONE\_OGGETTO & R & 1 & S \\ 
-\end{longtable}
-
-\subsection{OP8 - Creazione di un nuovo Mostro per la Campagna}
-
-Il Dungeon Master crea una nuova creatura. Il DBMS legge l'account del DM e inserisce i dati sia nell'entità padre 
-(Partecipante) che nell'entità figlia (Mostro), collegandole all'utente tramite la relazione di creazione.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{navigation/op8.png}
-    \caption{Navigazione OP8}
-    \label{fig:op8}
-\end{figure}
-
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 L + 3 S. \textbf{Costo operazione:} 7 (1 + 3x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 30 al giorno $\rightarrow$ \textbf{Costo Totale:} 210 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
-    UTENTE & E & 1 & L \\ 
-    PARTECIPANTE & E & 1 & S \\ 
-    MOSTRO & E & 1 & S \\ 
-    CREAZIONE & R & 1 & S \\ 
-\end{longtable}
-
-\subsection{OP9 - Registrazione di un nuovo Combattimento e Turno iniziale}
-
-Il DM crea un nuovo combattimento all'interno di una Campagna e ne inizializza il primo turno.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{navigation/op9.png}
-    \caption{Navigazione OP9}
-    \label{fig:op9}
-\end{figure}
-
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 1 L + 4 S. \textbf{Costo operazione:} 9 (1 + 4x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 150 al giorno $\rightarrow$ \textbf{Costo Totale:} 1.350 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
+    SESSIONE & E & 1 & L \\ \hline
+    COMPOSIZIONE & R & 1 & L \\ \hline
     CAMPAGNA & E & 1 & L \\ \hline
-    COMBATTIMENTO & E & 1 & S \\ \hline
-    TURNO & E & 1 & S \\ \hline
+    PRESENZA & R & 5 & L \\ \hline
+    SCHEDA & E & 5 & L \\ \hline
+    PERSONAGGIO & E & 5 & L \\ \hline
+    SCHEDA & E & 5 & L \\ \hline
+    MOSTRO & E & 5 & L \\ \hline
     AVVENIMENTO & R & 1 & S \\ \hline
+    COMBATTIMENTO & E & 1 & S \\ \hline
     COMPOSIZIONE\_COMB & R & 1 & S \\ \hline
+    TURNO & E & 1 & S \\ \hline
+    PARTE & R & 10 & S \\ \hline
+    ISTANZA\_COMB & E & 10 & S \\ \hline
+    ISTANZA\_XOR & R & 10 & S \\ \hline
 \end{longtable}
 
-\subsection{OP10 - Stesura di un Diario di Sessione con Tag Multipli}
+\subsection{OP11 - Accesso al proprio Turno di Combattimento}
 
-Il Dungeon Master scrive il resoconto della sessione e collega nel testo 1 Oggetto, 1 Magia e 1 Personaggio, popolando le tre relazioni di tag dedicate.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{navigation/op10.png}
-    \caption{Navigazione OP10}
-    \label{fig:op10}
-\end{figure}
-
-
-\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
-    \toprule    
-    \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
-    \midrule
-    \endhead
-
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 4 L + 5 S. \textbf{Costo operazione:} 14 (4 + 5x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 50 al giorno $\rightarrow$ \textbf{Costo Totale:} 700 accessi/giorno} \\
-    \bottomrule
-    \endlastfoot
-
-    CAMPAGNA & E & 1 & L \\ \hline
-    OGGETTO & E & 1 & L \\ \hline
-    MAGIA & E & 1 & L \\ \hline
-    PARTECIPANTE & E & 1 & L \\ \hline
-    SESSIONE & E & 1 & S \\ \hline
-    COMPOSIZIONE & R & 1 & S \\ \hline
-    TAG\_OGGETTO & R & 1 & S \\ \hline
-    TAG\_MAGIA & R & 1 & S \\ \hline
-    TAG\_PARTECIPANTE & R & 1 & S \\ \hline
-\end{longtable}     
-
-\subsection{OP11 - Inserimento di dati base}
-
-L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole due Tratti di Classe, due Sottoclassi e una Risorsa Classe.
+L'operazione interroga lo stato del Combattimento in corso all'interno della Sessione. Recupera il Turno attuale e interroga le Azioni già registrate per determinare l'esecutore corrente. Carica inoltre tutte le Istanze partecipanti (con le relative Iniziative e HP correnti) risalendo alle Schede base per visualizzare il tracker dell'iniziativa completo.
 
 \begin{figure}[H]
     \centering
@@ -854,26 +754,38 @@ L'Amministratore inserisce a sistema una nuova classe dal manuale, agganciandole
     \label{fig:op11}
 \end{figure}
 
-
 \begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.15\textwidth} >{\centering\arraybackslash}p{0.2\textwidth} @{}}
     \toprule    
     \textbf{Concetto (Entità/Assoc.)} & \textbf{Costrutto} & \textbf{Accessi} & \textbf{Tipo (L/S)} \\     
     \midrule
     \endhead
-
-    \midrule
-    \multicolumn{4}{l}{\textbf{Totale accessi:} 11 S. \textbf{Costo operazione:} 22 (11x2)} \\
-    \multicolumn{4}{l}{\textbf{Frequenza:} 2 al mese $\rightarrow$ \textbf{Costo Totale:} 44 accessi/mese} \\
+    \multicolumn{4}{l}{\textbf{Totale accessi:} 67 L + 0 S. \textbf{Costo operazione:} 67} \\
+    \multicolumn{4}{l}{\textbf{Frequenza:} 1.500 al giorno $\rightarrow$ \textbf{Costo Totale:} 100.500 accessi/giorno} \\
     \bottomrule
+    
     \endlastfoot
 
-    CLASSE & E & 1 & S \\ \hline
-    TRATTO\_CLASSE & E & 2 & S \\ \hline
-    SOTTOCLASSE & E & 2 & S \\ \hline
-    RISORSA\_CLASSE & E & 1 & S \\ \hline
-    OFFERTA & R & 2 & S \\ \hline
-    SVILUPPO & R & 2 & S \\ \hline
-    FORNITURA & R & 1 & S \\
+    \multicolumn{4}{c}{\textit{--- Identificazione Combattimento e Turno ---}} \\ \hline
+    SESSIONE & E & 1 & L \\ \hline
+    AVVENIMENTO & R & 1 & L \\ \hline
+    COMBATTIMENTO & E & 1 & L \\ \hline
+    COMPOSIZIONE\_COMB & R & 1 & L \\ \hline
+    TURNO & E & 1 & L \\ \hline
+    \multicolumn{4}{c}{\textit{--- Verifica delle Azioni nel Turno ---}} \\ \hline
+    SUDDIVISIONE & R & 2 & L \\ \hline
+    AZIONE & E & 2 & L \\ \hline
+    ESECUZIONE & R & 2 & L \\ \hline
+    \multicolumn{4}{c}{\textit{--- Tracker Iniziativa (Lettura 10 Pedine) ---}} \\ \hline
+    PARTE & R & 10 & L \\ \hline
+    ISTANZA\_COMB & E & 10 & L \\ \hline
+    \multicolumn{4}{c}{\textit{--- Recupero Dati Anagrafici ---}} \\ \hline
+    ISTANZA\_XOR & R & 10 & L \\ \hline
+    SCHEDA & E & 10 & L \\ \hline
+    PERSONAGGIO & E & 5 & L \\ \hline
+    MOSTRO & E & 5 & L \\ \hline
+    \multicolumn{4}{c}{\textit{--- Contesto Campagna (Permessi) ---}} \\ \hline
+    PRESENZA & R & 5 & L \\ \hline
+    CAMPAGNA & E & 1 & L \\ \hline
 \end{longtable}
 
 
