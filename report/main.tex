@@ -285,33 +285,46 @@ l'aggiunta dei relativi identificatori e attributi per modellare tutte le specif
         \label{fig:equip}
     \end{figure}
 
-    \item \textbf{Combattimenti:} Per modellare i \textbf{Combattimenti} questi saranno divisi in base ad ogni fase di gioco:
-    Un combattimento è diviso in \textbf{Turni} e ogni turno è composto da \textbf{Azioni}. I combattimenti sono identificati progressivamente
-    in base alla \textbf{Campagna} in cui avvengono, i \textbf{Turni} progressivamente in base al \textbf{Combattimento} e le \textbf{Azioni}
-    progressivamente in base al \textbf{Turno}. 
-    Le \textbf{Azioni} possono essere molteplici: nel manuale della quinta edizione è possibile trovare abilità che forniscono multi-attacco oppure
-    azioni secondarie come l'azione bonus che hanno tutti. 
-    Dunque un partecipante effettuerà \textbf{Azioni} che poi risaliranno ad un combattimento attraverso tutta la catena appena definita.
+    \item \textbf{Combattimenti:} La modellazione degli scontri segue la tipica suddivisione in turni e azioni. Un combattimento si articola in 
+    \textbf{Turni}, i quali a loro volta si compongono di \textbf{Azioni}. Per gestire questa struttura si è usata una catena di entità deboli: 
+    i combattimenti sono identificati progressivamente rispetto alla \textbf{Sessione} in cui avvengono, i \textbf{Turni} rispetto al \textbf{Combattimento}
+    di appartenenza e, infine, le \textbf{Azioni} rispetto al \textbf{Turno}. Questa suddivisione permette di mappare fedelmente le meccaniche dei
+    combattimenti; un partecipante può infatti eseguire molteplici \textbf{Azioni} nel medesimo turno (ad esempio sfruttando privilegi di multi-attacco o 
+    azioni bonus). In questo modo, ogni singola mossa eseguita viene storicizzata e ricollegata allo scontro generale risalendo l'intera catena.
 
-    \item \textbf{Mantenimento statistiche combattimenti:} Per gestire correttamente qualsiasi tipo di attacco, compresi quelli ad area, 
-    l'\textbf{Azione} sarà legata a molteplici \textbf{Partecipanti} subenti. Gli attributi \textit{Danno}, \textit{Esito} e \textit{Sconfitto} 
-    sono posizionati direttamente su questa associazione, permettendo di registrare risultati individuali per ogni bersaglio colpito dalla stessa mossa
-    (ad esempio resistenze a certi elementi).
-
-    \item \textbf{Effetti di Stato:} L'applicazione degli \textbf{Effetti di Stato} sarà modellata tramite l'entità debole 
-    \textbf{Stato Attivo}, che rappresenta l'istanza dinamica di una condizione nel tempo. Questa entità è collegata al 
-    \textbf{Partecipante} che subisce la condizione, allo specifico \textbf{Effetto Stato} di riferimento e, in modo opzionale, 
-    all'\textbf{Azione} che lo ha scatenato. Per mantenere gli effetti applicati in passato, verrà introdotto un attributo Numero 
-    incrementale per ogni personaggio e effetto di stato. Questa scomposizione permette di gestire correttamente sia gli stati 
-    applicati durante i turni di combattimento, sia quelli derivanti da fonti ambientali o esterne, slegandoli dall'obbligatorietà di 
-    un'azione diretta, permettendo al \textbf{Master} di applicare \textbf{Effetti di Stato} quando vuole.
-    
     \begin{figure}[H]
         \centering
-        \includegraphics[width=1\textwidth]{er-steps/combat.png}
+        \includegraphics[width=.9\textwidth]{er-steps/combat.png}
         \caption{\textbf{Combattimento}, \textbf{Effetti di stato} e \textbf{Statistiche}}
         \label{fig:combat}
     \end{figure}
+
+    \item \textbf{Cambio chiave Partecipante:} Per consentire agli utenti di creare personaggi con lo stesso nome, si è scelto di rimuovere
+    l'identificazione debole tramite \textbf{CREAZIONE.UTENTE} e \textit{PARTECIPANTE.Nome} in favore di una chiave numerica incrementale e 
+    di rinominare PARTECIPANTE in \textbf{SCHEDA}, questo favorisce anche la creazione di ipotetici backup di schede prima di eventuali modifiche.
+
+    \item \textbf{Mantenimento delle statistiche di combattimento:} Al fine di gestire in modo accurato ogni tipologia di attacco, inclusi gli effetti ad 
+    area, una singola \textbf{Azione} può essere collegata a molteplici \textbf{Istanze di Combattimento} in veste di bersagli, che risolvono il problema
+    di salvare dati dinamici come \textit{HP} e \textit{Iniziativa}, separandoli da quelli statici delle schede. Gli attributi \textit{Danno}, 
+    \textit{Esito} e \textit{Sconfitto} sono collocati direttamente su questa associazione (denominata \textit{Contro}); questa scelta consente di 
+    storicizzare risultati individuali e differenziati per ciascun bersaglio coinvolto dalla medesima mossa, potendo così tenere traccia di variabili 
+    specifiche per ogni entità colpita (come il superamento di tiri salvezza o l'applicazione di resistenze e vulnerabilità elementali).
+
+    \item \textbf{Effetti di Stato:} L'applicazione degli \textbf{Effetti di Stato} sarà modellata tramite l'entità debole 
+    \textbf{Stato Attivo}, che rappresenta l'istanza dinamica di una condizione nel tempo. Questa entità è collegata all'\textbf{Istanza di Combattimento} 
+    che subisce la condizione, allo specifico \textbf{Effetto Stato} di riferimento e, in modo opzionale, all'\textbf{Azione} che lo ha scatenato. 
+    Per mantenere gli effetti applicati in passato, verrà introdotto un attributo Numero incrementale per ogni personaggio e effetto di stato. 
+    Questa scomposizione permette di gestire correttamente sia gli stati applicati durante i turni di combattimento, sia quelli derivanti da fonti 
+    ambientali o esterne, slegandoli dall'obbligatorietà di un'azione diretta, permettendo al \textbf{Master} di applicare \textbf{Effetti di Stato} 
+    quando vuole all'interno di un \textbf{Combattimento}.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{er-steps/combat-extended.png}
+        \caption{\textbf{Combattimento}, \textbf{Effetti di stato} e \textbf{Statistiche}}
+        \label{fig:combat-extended}
+    \end{figure}
+    
 \end{itemize}
 
 \noindent
@@ -334,9 +347,10 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     UTENTE & E & Rappresenta l'account del giocatore o del Dungeon Master. \\ \midrule
     CAMPAGNA & E & Rappresenta il mondo di gioco in cui avvengono sessioni e combattimenti. \\ \midrule 
     SESSIONE & E & Entità debole che rappresenta un singolo capitolo di gioco legato a una specifica Campagna. \\ \midrule 
-    PARTECIPANTE & E & Accomuna tutti i soggetti giocanti e non giocanti. \\ \midrule 
-    PERSONAGGIO & E & Entità specializzata di Partecipante, dotata di Esperienza e Allineamento. \\ \midrule 
-    MOSTRO & E & Entità specializzata di Partecipante, caratterizzata da Grado di Sfida (CR) ed Esperienza rilasciata. \\ \midrule 
+    SCHEDA & E & Generalizzazione che accomuna tutti i soggetti giocanti e non giocanti. \\ \midrule 
+    PERSONAGGIO & E & Entità specializzata di Scheda, dotata di Esperienza e Allineamento. \\ \midrule 
+    MOSTRO & E & Entità specializzata di Scheda, caratterizzata da Grado di Sfida (CR) ed Esperienza rilasciata. \\ \midrule 
+    ISTANZA\_COMB & E & Entità debole che rappresenta la partecipazione e lo stato attuale (HP, Iniziativa) di una Scheda in uno specifico Combattimento. \\ \midrule 
     CARATTERISTICA & E & Rappresenta le caratteristiche base (es. Forza, Destrezza) del sistema di gioco. \\ \midrule 
     SKILL & E & Rappresenta le abilità (Furtività, Agilità, ecc...) in cui si può avere competenza. \\ \midrule 
     RAZZA & E & Rappresenta la razza scelta nella creazione del Personaggio. \\ \midrule
@@ -355,22 +369,21 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     TURNO & E & Entità debole che rappresenta un turno temporale all'interno del Combattimento. \\ \midrule 
     AZIONE & E & Entità debole che rappresenta la singola mossa effettuata durante un Turno. \\ \midrule 
     EFFETTO\_STATO & E & Catalogo delle alterazioni possibili (es. Avvelenato, Prono). \\ \midrule
-    STATO\_ATTIVO & E & Entità debole dinamica di un Effetto di Stato su un Partecipante. \\ \midrule
+    STATO\_ATTIVO & E & Entità debole dinamica di un Effetto di Stato su un'Istanza di Combattimento. \\ \midrule
 
-    CREAZIONE & R & Lega l'Utente ai Partecipanti che ha creato. \\ \midrule 
-    PARTE & R & Lega un Partecipante ai Combattimenti a cui prende parte, registrandone il valore di Iniziativa per lo scontro. \\ \midrule
+    CREAZIONE & R & Lega l'Utente alle Schede che ha creato. \\ \midrule 
     MASTER & R & Lega l'Utente (DM) alle Campagne che gestisce. \\ \midrule 
-    PRESENZA & R & Lega il Partecipante alle Campagne in cui è presente. \\ \midrule 
+    PRESENZA & R & Lega la Scheda alle Campagne in cui è presente. \\ \midrule 
     CREAZIONE\_MAGIA & R & Lega l'Utente alle Magie che ha creato per la piattaforma. \\ \midrule 
     CREAZIONE\_OGGETTO & R & Lega l'Utente agli Oggetti creati. \\ \midrule 
     COMPOSIZIONE & R & Lega la Campagna alle Sessioni che la compongono temporalmente. \\ \midrule 
     TAG\_OGGETTO & R & Lega la Sessione agli Oggetti menzionati al suo interno. \\ \midrule 
     TAG\_MAGIA & R & Lega la Sessione alle Magie menzionate al suo interno. \\ \midrule 
-    TAG\_PARTECIPANTE & R & Lega la Sessione ai Partecipanti menzionati al suo interno. \\ \midrule 
+    TAG\_PARTECIPANTE & R & Lega la Sessione alle Schede menzionate al suo interno. \\ \midrule 
     SOTTORAZZA & R & Lega ricorsivamente una Razza alle sue Sottorazze. \\ \midrule 
     APPARTENENZA\_RAZZA & R & Lega il Personaggio alla Razza a cui appartiene. \\ \midrule 
     FONDAMENTO & R & Lega il Personaggio al Background scelto in fase di creazione. \\ \midrule
-    PERIZIA & R & Lega un Background alle Skill in cui garantisce competenza. \\ \midrule
+    PROPENSIONE & R & Lega un Background alle Skill in cui garantisce competenza (sostituisce Perizia). \\ \midrule
     APPARTENENZA & R & Lega il Progresso al Personaggio giocante, definendone il livello accumulato. \\ \midrule 
     RIFERIMENTO & R & Lega il Progresso alla specifica Classe in cui il Personaggio sta avanzando. \\ \midrule 
     SCELTA & R & Lega il Progresso alla Sottoclasse intrapresa. \\ \midrule 
@@ -380,21 +393,23 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     ABILITAZIONE\_RISORSA & R & Lega il Progresso alla Risorsa sbloccata, definendo la quantità massima disponibile. \\ \midrule 
     OFFERTA & R & Lega una Classe ai Tratti che offre di base. \\ \midrule 
     APPRENDIMENTO & R & Lega una Classe alle Magie che rientrano nella sua lista incantesimi. \\ \midrule 
-    CONOSCENZA & R & Lega una Magia ai Partecipanti che l'hanno imparata. \\ \midrule 
-    LANCIO & R & Lega una Magia all'Azione in cui è stata utilizzata/castata. \\ \midrule 
+    CONOSCENZA & R & Lega una Scheda alle Magie che ha imparato. \\ \midrule 
+    LANCIO & R & Lega una Magia all'Azione in cui è stata utilizzata. \\ \midrule 
     BASE & R & Lega una Skill alla Caratteristica su cui viene calcolata. \\ \midrule 
-    CAPACITÀ & R & Lega un Partecipante alle Skill in cui è capace, determinando il Livello di Capacità. \\ \midrule 
-    POSSESSO & R & Lega un Partecipante alle Caratteristiche, definendone il punteggio e la competenza nei tiri salvezza. \\ \midrule 
-    AFFLIZIONE & R & Lega un Partecipante allo Stato Attivo da cui è momentaneamente afflitto. \\ \midrule 
+    CAPACITÀ & R & Lega una Scheda alle Skill in cui è capace, determinando il Livello di Capacità. \\ \midrule 
+    POSSESSO & R & Lega una Scheda alle Caratteristiche, definendone il punteggio e la competenza nei tiri salvezza. \\ \midrule 
+    INVENTARIO & R & Lega una Scheda agli Oggetti che possiede, definendone la quantità. \\ \midrule 
+    ISTANZA\_XOR & R & Lega una Scheda alla sua specifica Istanza all'interno di un Combattimento. \\ \midrule 
+    PARTE & R & Lega un'Istanza di Combattimento ai Combattimenti a cui prende parte. \\ \midrule
+    AFFLIZIONE & R & Lega un'Istanza di Combattimento allo Stato Attivo da cui è momentaneamente afflitta. \\ \midrule 
+    ESECUZIONE & R & Lega un'Istanza di Combattimento alle Azioni che compie nel suo turno. \\ \midrule 
+    CONTRO & R & Lega un'Istanza di Combattimento alle Azioni che subisce, definendo danno ed esito. \\ \midrule 
     ATTIVAZIONE & R & Lega uno Stato Attivo all'Effetto di Stato corrispondente. \\ \midrule 
     CAUSA & R & Lega opzionalmente uno Stato Attivo all'Azione che lo ha scatenato. \\ \midrule 
-    ESECUZIONE & R & Lega un Partecipante alle Azioni che compie nel suo turno. \\ \midrule 
-    CONTRO & R & Lega un Partecipante alle Azioni che subisce, definendo danno ed esito. \\ \midrule 
     USO & R & Lega un'Azione all'Oggetto che è stato utilizzato. \\ \midrule 
-    INVENTARIO & R & Lega un Partecipante agli Oggetti che possiede, definendone la quantità. \\ \midrule 
     AVVENIMENTO & R & Lega una Sessione ai Combattimenti avvenuti al suo interno. \\ \midrule 
     COMPOSIZIONE\_COMB & R & Lega un Combattimento ai Turni che lo compongono. \\ \midrule 
-    SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule 
+    SUDDIVISIONE & R & Lega un Turno alle singole Azioni in esso eseguite. \\ \midrule
 
 \end{longtable}\section{Schema concettuale finale}
 
@@ -551,35 +566,35 @@ L'operazione interroga la base dati per recuperare la totalità delle informazio
     
     \endlastfoot
 
-    SCHEDA & E & 1 & L \\ \hline
-    PERSONAGGIO & E & 1 & L \\ \hline
-    POSSESSO & R & 6 & L \\ \hline
-    CARATTERISTICA & E & 6 & L \\ \hline
-    CAPACITÀ & R & 18 & L \\ \hline
-    SKILL & E & 18 & L \\ \hline
-    FONDAMENTO & R & 1 & L \\ \hline
-    BACKGROUND & E & 1 & L \\ \hline
-    PERIZIA & R & 2 & L \\ \hline
-    APPARTENENZA\_RAZZA & R & 1 & L \\ \hline
-    RAZZA (Base + Sottorazza) & E & 2 & L \\ \hline
-    SOTTORAZZA & R & 1 & L \\ \hline
-    APPARTENENZA & R & 1 & L \\ \hline
-    PROGRESSO & E & 1 & L \\ \hline
-    RIFERIMENTO & R & 1 & L \\ \hline
-    CLASSE & E & 1 & L \\ \hline
-    SCELTA & R & 1 & L \\ \hline
-    SOTTOCLASSE & E & 1 & L \\ \hline
-    ABILITAZIONE\_TRATTO & R & 5 & L \\ \hline
-    TRATTO\_CLASSE & E & 5 & L \\ \hline
-    ABILITAZIONE\_RISORSA & R & 3 & L \\ \hline
-    RISORSA\_CLASSE & E & 3 & L \\ \hline
-    INVENTARIO & R & 15 & L \\ \hline
-    OGGETTO & E & 15 & L \\ \hline
-    ARMA & E & 3 & L \\ \hline
-    ARMATURA & E & 1 & L \\ \hline
-    CONSUMABILE & E & 5 & L \\ \hline
-    CONOSCENZA & R & 10 & L \\ \hline
-    MAGIA & E & 10 & L \\ \hline
+    SCHEDA & E & 1 & L \\ \midrule
+    PERSONAGGIO & E & 1 & L \\ \midrule
+    POSSESSO & R & 6 & L \\ \midrule
+    CARATTERISTICA & E & 6 & L \\ \midrule
+    CAPACITÀ & R & 18 & L \\ \midrule
+    SKILL & E & 18 & L \\ \midrule
+    FONDAMENTO & R & 1 & L \\ \midrule
+    BACKGROUND & E & 1 & L \\ \midrule
+    PERIZIA & R & 2 & L \\ \midrule
+    APPARTENENZA\_RAZZA & R & 1 & L \\ \midrule
+    RAZZA (Base + Sottorazza) & E & 2 & L \\ \midrule
+    SOTTORAZZA & R & 1 & L \\ \midrule
+    APPARTENENZA & R & 1 & L \\ \midrule
+    PROGRESSO & E & 1 & L \\ \midrule
+    RIFERIMENTO & R & 1 & L \\ \midrule
+    CLASSE & E & 1 & L \\ \midrule
+    SCELTA & R & 1 & L \\ \midrule
+    SOTTOCLASSE & E & 1 & L \\ \midrule
+    ABILITAZIONE\_TRATTO & R & 5 & L \\ \midrule
+    TRATTO\_CLASSE & E & 5 & L \\ \midrule
+    ABILITAZIONE\_RISORSA & R & 3 & L \\ \midrule
+    RISORSA\_CLASSE & E & 3 & L \\ \midrule
+    INVENTARIO & R & 15 & L \\ \midrule
+    OGGETTO & E & 15 & L \\ \midrule
+    ARMA & E & 3 & L \\ \midrule
+    ARMATURA & E & 1 & L \\ \midrule
+    CONSUMABILE & E & 5 & L \\ \midrule
+    CONOSCENZA & R & 10 & L \\ \midrule
+    MAGIA & E & 10 & L \\ \midrule
 \end{longtable}
 
 
@@ -605,9 +620,9 @@ Il Master inizializza una nuova avventura, registrando i dati base della Campagn
     
     \endlastfoot
 
-    UTENTE & E & 1 & L \\ \hline
-    CAMPAGNA & E & 1 & S \\ \hline
-    MASTER & R & 1 & S \\ \hline
+    UTENTE & E & 1 & L \\ \midrule
+    CAMPAGNA & E & 1 & S \\ \midrule
+    MASTER & R & 1 & S \\ \midrule
 \end{longtable}
 
 
@@ -633,16 +648,16 @@ L'utente aggiorna il testo del diario per la Sessione corrente e registra i coll
     
     \endlastfoot
 
-    SESSIONE & E & 1 & L \\ \hline
-    SESSIONE & E & 1 & S \\ \hline
-    TAG\_PARTECIPANTE & R & 3 & S \\ \hline
-    SCHEDA & E & 3 & L \\ \hline
-    TAG\_MAGIA & R & 1 & S \\ \hline
-    MAGIA & E & 1 & L \\ \hline
-    TAG\_OGGETTO & R & 2 & S \\ \hline
-    OGGETTO & E & 2 & L \\ \hline
-    ARMA & E & 1 & L \\ \hline
-    CONSUMABILE & E & 1 & L \\ \hline
+    SESSIONE & E & 1 & L \\ \midrule
+    SESSIONE & E & 1 & S \\ \midrule
+    TAG\_PARTECIPANTE & R & 3 & S \\ \midrule
+    SCHEDA & E & 3 & L \\ \midrule
+    TAG\_MAGIA & R & 1 & S \\ \midrule
+    MAGIA & E & 1 & L \\ \midrule
+    TAG\_OGGETTO & R & 2 & S \\ \midrule
+    OGGETTO & E & 2 & L \\ \midrule
+    ARMA & E & 1 & L \\ \midrule
+    CONSUMABILE & E & 1 & L \\ \midrule
 \end{longtable}
 
 \subsection{OP4 - Creazione di un Personaggio}
@@ -667,41 +682,41 @@ L'operazione automatizza la creazione di un personaggio. Il sistema interroga i 
     
     \endlastfoot
 
-    UTENTE & E & 1 & L \\ \hline
-    CREAZIONE & R & 1 & S \\ \hline
-    SCHEDA & E & 1 & S \\ \hline
-    PERSONAGGIO & E & 1 & S \\ \hline
-    APPARTENENZA\_RAZZA & R & 1 & S \\ \hline
-    RAZZA & E & 1 & L \\ \hline
-    SOTTORAZZA & E & 1 & L \\ \hline
-    FONDAMENTO & R & 1 & S \\ \hline
-    BACKGROUND & E & 1 & L \\ \hline
-    PERIZIA & R & 2 & L \\ \hline
-    POSSESSO & R & 6 & S \\ \hline
-    CARATTERISTICA & E & 6 & L \\ \hline
-    CAPACITÀ & R & 6 & S \\ \hline
-    SKILL & E & 6 & L \\ \hline
-    APPARTENENZA & R & 1 & S \\ \hline
-    PROGRESSO & E & 1 & S \\ \hline
-    RIFERIMENTO & R & 1 & S \\ \hline
-    CLASSE & E & 1 & L \\ \hline
-    SVILUPPO & R & 1 & L \\ \hline
-    SOTTOCLASSE & E & 1 & L \\ \hline
-    SCELTA & R & 1 & S \\ \hline
-    OFFERTA & R & 4 & L \\ \hline
-    TRATTO\_CLASSE & E & 4 & L \\ \hline
-    ABILITAZIONE\_TRATTO & R & 4 & S \\ \hline
-    FORNITURA & R & 2 & L \\ \hline
-    RISORSA\_CLASSE & E & 2 & L \\ \hline
-    ABILITAZIONE\_RISORSA & R & 2 & S \\ \hline
-    APPRENDIMENTO & R & 3 & L \\ \hline
-    MAGIA & E & 3 & L \\ \hline
-    CONOSCENZA & R & 3 & S \\ \hline
-    OGGETTO & E & 5 & L \\ \hline
-    ARMA & E & 2 & L \\ \hline
-    ARMATURA & E & 1 & L \\ \hline
-    CONSUMABILE & E & 2 & L \\ \hline
-    INVENTARIO & R & 5 & S \\ \hline
+    UTENTE & E & 1 & L \\ \midrule
+    CREAZIONE & R & 1 & S \\ \midrule
+    SCHEDA & E & 1 & S \\ \midrule
+    PERSONAGGIO & E & 1 & S \\ \midrule
+    APPARTENENZA\_RAZZA & R & 1 & S \\ \midrule
+    RAZZA & E & 1 & L \\ \midrule
+    SOTTORAZZA & E & 1 & L \\ \midrule
+    FONDAMENTO & R & 1 & S \\ \midrule
+    BACKGROUND & E & 1 & L \\ \midrule
+    PERIZIA & R & 2 & L \\ \midrule
+    POSSESSO & R & 6 & S \\ \midrule
+    CARATTERISTICA & E & 6 & L \\ \midrule
+    CAPACITÀ & R & 6 & S \\ \midrule
+    SKILL & E & 6 & L \\ \midrule
+    APPARTENENZA & R & 1 & S \\ \midrule
+    PROGRESSO & E & 1 & S \\ \midrule
+    RIFERIMENTO & R & 1 & S \\ \midrule
+    CLASSE & E & 1 & L \\ \midrule
+    SVILUPPO & R & 1 & L \\ \midrule
+    SOTTOCLASSE & E & 1 & L \\ \midrule
+    SCELTA & R & 1 & S \\ \midrule
+    OFFERTA & R & 4 & L \\ \midrule
+    TRATTO\_CLASSE & E & 4 & L \\ \midrule
+    ABILITAZIONE\_TRATTO & R & 4 & S \\ \midrule
+    FORNITURA & R & 2 & L \\ \midrule
+    RISORSA\_CLASSE & E & 2 & L \\ \midrule
+    ABILITAZIONE\_RISORSA & R & 2 & S \\ \midrule
+    APPRENDIMENTO & R & 3 & L \\ \midrule
+    MAGIA & E & 3 & L \\ \midrule
+    CONOSCENZA & R & 3 & S \\ \midrule
+    OGGETTO & E & 5 & L \\ \midrule
+    ARMA & E & 2 & L \\ \midrule
+    ARMATURA & E & 1 & L \\ \midrule
+    CONSUMABILE & E & 2 & L \\ \midrule
+    INVENTARIO & R & 5 & S \\ \midrule
 \end{longtable}
 
 \subsection{OP7 - Creazione di un Combattimento}
@@ -726,21 +741,21 @@ Il Master inizializza uno scontro tattico. L'operazione recupera in automatico i
     
     \endlastfoot
 
-    SESSIONE & E & 1 & L \\ \hline
-    COMPOSIZIONE & R & 1 & L \\ \hline
-    CAMPAGNA & E & 1 & L \\ \hline
-    PRESENZA & R & 5 & L \\ \hline
-    SCHEDA & E & 5 & L \\ \hline
-    PERSONAGGIO & E & 5 & L \\ \hline
-    SCHEDA & E & 5 & L \\ \hline
-    MOSTRO & E & 5 & L \\ \hline
-    AVVENIMENTO & R & 1 & S \\ \hline
-    COMBATTIMENTO & E & 1 & S \\ \hline
-    COMPOSIZIONE\_COMB & R & 1 & S \\ \hline
-    TURNO & E & 1 & S \\ \hline
-    PARTE & R & 10 & S \\ \hline
-    ISTANZA\_COMB & E & 10 & S \\ \hline
-    ISTANZA\_XOR & R & 10 & S \\ \hline
+    SESSIONE & E & 1 & L \\ \midrule
+    COMPOSIZIONE & R & 1 & L \\ \midrule
+    CAMPAGNA & E & 1 & L \\ \midrule
+    PRESENZA & R & 5 & L \\ \midrule
+    SCHEDA & E & 5 & L \\ \midrule
+    PERSONAGGIO & E & 5 & L \\ \midrule
+    SCHEDA & E & 5 & L \\ \midrule
+    MOSTRO & E & 5 & L \\ \midrule
+    AVVENIMENTO & R & 1 & S \\ \midrule
+    COMBATTIMENTO & E & 1 & S \\ \midrule
+    COMPOSIZIONE\_COMB & R & 1 & S \\ \midrule
+    TURNO & E & 1 & S \\ \midrule
+    PARTE & R & 10 & S \\ \midrule
+    ISTANZA\_COMB & E & 10 & S \\ \midrule
+    ISTANZA\_XOR & R & 10 & S \\ \midrule
 \end{longtable}
 
 \subsection{OP11 - Accesso al proprio Turno di Combattimento}
@@ -765,27 +780,22 @@ L'operazione interroga lo stato del Combattimento in corso all'interno della Ses
     
     \endlastfoot
 
-    \multicolumn{4}{c}{\textit{--- Identificazione Combattimento e Turno ---}} \\ \hline
-    SESSIONE & E & 1 & L \\ \hline
-    AVVENIMENTO & R & 1 & L \\ \hline
-    COMBATTIMENTO & E & 1 & L \\ \hline
-    COMPOSIZIONE\_COMB & R & 1 & L \\ \hline
-    TURNO & E & 1 & L \\ \hline
-    \multicolumn{4}{c}{\textit{--- Verifica delle Azioni nel Turno ---}} \\ \hline
-    SUDDIVISIONE & R & 2 & L \\ \hline
-    AZIONE & E & 2 & L \\ \hline
-    ESECUZIONE & R & 2 & L \\ \hline
-    \multicolumn{4}{c}{\textit{--- Tracker Iniziativa (Lettura 10 Pedine) ---}} \\ \hline
-    PARTE & R & 10 & L \\ \hline
-    ISTANZA\_COMB & E & 10 & L \\ \hline
-    \multicolumn{4}{c}{\textit{--- Recupero Dati Anagrafici ---}} \\ \hline
-    ISTANZA\_XOR & R & 10 & L \\ \hline
-    SCHEDA & E & 10 & L \\ \hline
-    PERSONAGGIO & E & 5 & L \\ \hline
-    MOSTRO & E & 5 & L \\ \hline
-    \multicolumn{4}{c}{\textit{--- Contesto Campagna (Permessi) ---}} \\ \hline
-    PRESENZA & R & 5 & L \\ \hline
-    CAMPAGNA & E & 1 & L \\ \hline
+    SESSIONE & E & 1 & L \\ \midrule
+    AVVENIMENTO & R & 1 & L \\ \midrule
+    COMBATTIMENTO & E & 1 & L \\ \midrule
+    COMPOSIZIONE\_COMB & R & 1 & L \\ \midrule
+    TURNO & E & 1 & L \\ \midrule
+    SUDDIVISIONE & R & 2 & L \\ \midrule
+    AZIONE & E & 2 & L \\ \midrule
+    ESECUZIONE & R & 2 & L \\ \midrule
+    PARTE & R & 10 & L \\ \midrule
+    ISTANZA\_COMB & E & 10 & L \\ \midrule
+    ISTANZA\_XOR & R & 10 & L \\ \midrule
+    SCHEDA & E & 10 & L \\ \midrule
+    PERSONAGGIO & E & 5 & L \\ \midrule
+    MOSTRO & E & 5 & L \\ \midrule
+    PRESENZA & R & 5 & L \\ \midrule
+    CAMPAGNA & E & 1 & L \\ \midrule
 \end{longtable}
 
 
