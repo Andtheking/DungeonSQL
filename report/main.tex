@@ -19,6 +19,30 @@
 
 \usepackage[italian]{cleveref}
 
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{language=SQL,
+  basicstyle={\small\ttfamily},
+  belowskip=3mm,
+  breakatwhitespace=true,
+  breaklines=true,
+  classoffset=0,
+  columns=flexible,
+  commentstyle=\color{dkgreen},
+  framexleftmargin=0.25em,
+  frameshape={}{}{}{}, %To remove to vertical lines on left, set `frameshape={}{}{}{}`
+  keywordstyle=\color{blue},
+  numbers=left, %If you want line numbers, set `numbers=left`
+  numberstyle=\tiny\color{gray},
+  showstringspaces=false,
+  stringstyle=\color{mauve},
+  tabsize=3,
+  xleftmargin =1em
+}
+
 \graphicspath{ {./media/} }
 
 \title{Relazione DungeonSQL}
@@ -851,5 +875,120 @@ Dall'analisi dello schema concettuale finale non emergono attributi composti o m
 \section{Schema relazionale finale}
 
 \section{Traduzione delle operazioni in query SQL}
+
+\subsection{OP1 - Lettura scheda giocatore}
+
+\begin{lstlisting}
+    BEGIN TRANSACTION;
+
+    SELECT S.CodiceScheda, S.Nome, S.MaxHP, S.CA, S.Taglia, 
+        P.Allineamento, P.HP, P.ExpAccumulata, P.FON_Nome AS Background, P.APP_Nome AS Razza
+    FROM SCHEDA S
+    JOIN PERSONAGGIO P ON S.CodiceScheda = P.CodiceScheda
+    WHERE S.CodiceScheda = %;
+
+    SELECT Nome AS Caratteristica, Punteggio, CompetenzaSalvezza
+    FROM POSSESSO
+    WHERE CodiceScheda = %;
+
+    SELECT Nome AS Skill, LivelloCapacita
+    FROM CAPACITA
+    WHERE CodiceScheda = %;
+
+    SELECT Livello, NomeClasse, NomeSottoclasse
+    FROM PROGRESSO
+    WHERE CodiceScheda = %;
+
+    SELECT O.Nome, I.Quantita, O.TipoOggetto, O.Peso, O.Descrizione
+    FROM INVENTARIO I
+    JOIN OGGETTO O ON I.CodiceOggetto = O.CodiceOggetto
+    WHERE I.CodiceScheda = %;
+
+    SELECT M.Nome, M.Livello, M.Descrizione
+    FROM CONOSCENZA C
+    JOIN MAGIA M ON C.CodiceMagia = M.CodiceMagia
+    WHERE C.CodiceScheda = %;
+
+    COMMIT; 
+\end{lstlisting}
+
+\subsection{OP2 - Creazione di una campagna}
+
+\begin{lstlisting}
+    INSERT INTO CAMPAGNA (Username, Nome, Descrizione, DataInizio)
+    VALUES (%, %, %, CURRENT_DATE);
+\end{lstlisting}
+
+\subsection{OP3 - Scrittura di una pagina del diario in una determinata sessione}
+
+\begin{lstlisting}
+    BEGIN TRANSACTION;
+
+    UPDATE SESSIONE
+    SET Diario = :testo_diario
+    WHERE Username = :username_master 
+    AND Nome = :nome_campagna 
+    AND DataSvolgimento = :data_sessione;
+
+    INSERT INTO TAG_PARTECIPANTE (Username, Nome, DataSvolgimento, CodiceScheda)
+    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_scheda);
+
+    INSERT INTO TAG_OGGETTO (Username, Nome, DataSvolgimento, CodiceOggetto)
+    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_oggetto);
+
+    INSERT INTO TAG_MAGIA (Username, Nome, DataSvolgimento, CodiceMagia)
+    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_magia);
+
+    COMMIT;
+\end{lstlisting}
+
+\subsection{OP4 - Creazione di un Personaggio}
+
+\begin{lstlisting}
+    BEGIN TRANSACTION;
+
+    INSERT INTO SCHEDA (CodiceScheda, Nome, MaxHP, CA, Taglia, CRE_Username, PRE_Username, PRE_Nome)
+    VALUES (%, %, %, %, %, %, NULL, NULL);
+
+    INSERT INTO PERSONAGGIO (CodiceScheda, Allineamento, HP, ExpAccumulata, FON_Nome, APP_Nome)
+    VALUES (%, %, %, 0, %, %);
+
+    INSERT INTO POSSESSO (Nome, CodiceScheda, Punteggio, CompetenzaSalvezza)
+    VALUES ('Forza', %, %, %);
+
+    INSERT INTO PROGRESSO (CodiceScheda, RIF_NomeClasse, Livello, NomeClasse, NomeSottoclasse)
+    VALUES (%, %, 1, %, NULL);
+
+    INSERT INTO CAPACITA (CodiceScheda, Nome, LivelloCapacita)
+    VALUES (%, %, %);
+
+    INSERT INTO INVENTARIO (CodiceOggetto, CodiceScheda, Quantita)
+    VALUES (%, %, 1);
+
+    COMMIT;
+\end{lstlisting}
+
+\subsection{OP7 - Creazione di un Combattimento}
+
+\begin{lstlisting}
+BEGIN TRANSACTION;
+
+INSERT INTO COMBATTIMENTO (Username, Nome, DataSvolgimento, NumCombattimento)
+VALUES (%, %, %, %);
+
+INSERT INTO TURNO (Username, Nome, DataSvolgimento, NumCombattimento, NumTurno)
+VALUES (%, %, %, %, 1);
+
+INSERT INTO ISTANZA_COMB (Username, Nome, DataSvolgimento, NumCombattimento, Numero, Iniziativa, HP)
+VALUES (%, %, %, %, %, %, %);
+
+-- Tabella XOR per determinare se e' PC o Mostro
+-- Se e' un Personaggio: I_P_CodiceScheda = :id, I_M_CodiceScheda = NULL
+-- Se e' un Mostro:      I_P_CodiceScheda = NULL, I_M_CodiceScheda = :id
+INSERT INTO ISTANZA_XOR (Username, Nome, DataSvolgimento, NumCombattimento, Numero, I_P_CodiceScheda, I_M_CodiceScheda)
+VALUES (%, %, %, %, %, %, NULL);
+
+COMMIT;
+\end{lstlisting}
 
 \end{document}
