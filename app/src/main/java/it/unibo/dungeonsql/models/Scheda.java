@@ -1,0 +1,65 @@
+package it.unibo.dungeonsql.models;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "SCHEDA")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Scheda {
+
+    @Id
+    @Column(name = "CodiceScheda", nullable = false)
+    private String codiceScheda;
+
+    @Column(name = "Nome", nullable = false)
+    private String nome;
+
+    @Column(name = "MaxHP", nullable = false)
+    private String maxHp;
+
+    @Column(name = "CA", nullable = false)
+    private String ca;
+
+    @Column(name = "Taglia", nullable = false)
+    private String taglia;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+        name = "UsernameCreatore",
+        nullable = false
+    )
+    private Utente creatore;
+
+    /*
+     * CAMPAGNA ha una chiave composta:
+     * (UsernameMaster, Nome)
+     *
+     * SCHEDA la referenzia tramite:
+     * (UsernameMaster, NomeCampagna)
+     */
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+        @JoinColumn(
+            name = "UsernameMaster",
+            referencedColumnName = "UsernameMaster",
+            nullable = false
+        ),
+        @JoinColumn(
+            name = "NomeCampagna",
+            referencedColumnName = "Nome",
+            nullable = false
+        )
+    })
+    private Campagna campagna;
+
+    @OneToOne(
+        mappedBy = "scheda",
+        fetch = FetchType.LAZY
+    )
+    private Personaggio personaggio;
+}

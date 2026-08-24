@@ -3,7 +3,7 @@
 -- *--------------------------------------------
 -- * DB-MAIN version: 11.0.2              
 -- * Generator date: Sep 20 2021              
--- * Generation date: Mon Aug 24 21:36:46 2026 
+-- * Generation date: Mon Aug 24 19:45:55 2026 
 -- * LUN file: /home/andrea/studio/database/DungeonSQL/report/docs/DungeonSQL+.lun 
 -- * Schema: RELATIONAL/1 
 -- ********************************************* 
@@ -48,13 +48,12 @@ create table AZIONE (
      CodiceOggetto char(1),
      CodiceMagia char(1),
      NumeroIstanza char(1) not null,
-     CodiceScheda char(1) not null,
      constraint ID_AZIONE primary key (Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione));
 
 create table BACKGROUND (
-     NomeBackground char(1) not null,
+     Nome char(1) not null,
      Descrizione char(1) not null,
-     constraint ID_BACKGROUND primary key (NomeBackground));
+     constraint ID_BACKGROUND_ID primary key (Nome));
 
 create table CAMPAGNA (
      UsernameMaster char(1) not null,
@@ -70,8 +69,8 @@ create table CAPACITA (
      constraint ID_CAPACITA primary key (NomeSkill, CodiceScheda));
 
 create table CARATTERISTICA (
-     NomeCaratteristica char(1) not null,
-     constraint ID_CARATTERISTICA_ID primary key (NomeCaratteristica));
+     Nome char(1) not null,
+     constraint ID_CARATTERISTICA_ID primary key (Nome));
 
 create table CLASSE (
      NomeClasse char(1) not null,
@@ -100,7 +99,6 @@ create table CONTRO (
      Danno char(1) not null,
      Esito char(1) not null,
      Sconfitto char(1) not null,
-     CodiceScheda char(1) not null,
      constraint ID_CONTRO primary key (NumeroIstanza, Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione));
 
 create table EFFETTO_STATO (
@@ -119,11 +117,21 @@ create table ISTANZA_COMB (
      Nome char(1) not null,
      DataSvolgimento char(1) not null,
      NumCombattimento char(1) not null,
-     NumeroIstanza char(1) not null,
+     Numero char(1) not null,
      Iniziativa char(1) not null,
      HP char(1) not null,
      CodiceScheda char(1) not null,
-     constraint ID_ISTANZA_COMB primary key (CodiceScheda, Username, Nome, DataSvolgimento, NumCombattimento, NumeroIstanza));
+     constraint ID_ISTANZA_COMB_ID primary key (Username, Nome, DataSvolgimento, NumCombattimento, Numero));
+
+create table ISTANZA_XOR (
+     Username char(1) not null,
+     Nome char(1) not null,
+     DataSvolgimento char(1) not null,
+     NumCombattimento char(1) not null,
+     Numero char(1) not null,
+     CodiceSchedaPersonaggio char(1) not null,
+     CodiceSchedaMostro char(1) not null,
+     constraint FKIST_IST_ID primary key (Username, Nome, DataSvolgimento, NumCombattimento, Numero));
 
 create table MAGIA (
      CodiceMagia char(1) not null,
@@ -190,18 +198,18 @@ create table PROPENSIONE (
      constraint ID_PROPENSIONE primary key (NomeBackground, NomeSkill));
 
 create table RAZZA (
-     NomeRazza char(1) not null,
+     Nome char(1) not null,
      Descrizione char(1) not null,
      VelocitaBase char(1) not null,
      Scurovisione char(1) not null,
      NomeRazzaPadre char(1),
-     constraint ID_RAZZA primary key (NomeRazza));
+     constraint ID_RAZZA primary key (Nome));
 
 create table RISORSA_CLASSE (
      NomeClasse char(1) not null,
-     NomeRisorsa char(1) not null,
+     Nome char(1) not null,
      Recupero char(1) not null,
-     constraint ID_RISORSA_CLASSE primary key (NomeClasse, NomeRisorsa));
+     constraint ID_RISORSA_CLASSE primary key (NomeClasse, Nome));
 
 create table SCHEDA (
      CodiceScheda char(1) not null,
@@ -222,9 +230,9 @@ create table SESSIONE (
      constraint ID_SESSIONE primary key (Username, NomeCampagna, DataSvolgimento));
 
 create table SKILL (
-     NomeSkill char(1) not null,
+     Nome char(1) not null,
      NomeCaratteristica char(1) not null,
-     constraint ID_SKILL primary key (NomeSkill));
+     constraint ID_SKILL primary key (Nome));
 
 create table SOTTOCLASSE (
      NomeClasse char(1) not null,
@@ -242,7 +250,6 @@ create table STATO_ATTIVO (
      AFF_DataSvolgimento char(1) not null,
      AFF_NumCombattimento char(1) not null,
      AFF_Numero char(1) not null,
-     CodiceScheda char(1) not null,
      SUD_Username char(1),
      SUD_Nome char(1),
      SUD_DataSvolgimento char(1),
@@ -274,10 +281,10 @@ create table TAG_PARTECIPANTE (
 
 create table TRATTO_CLASSE (
      NomeClasse char(1) not null,
-     NomeTratto char(1) not null,
+     Nome char(1) not null,
      Descrizione char(1) not null,
      LivelloRichiesto char(1) not null,
-     constraint ID_TRATTO_CLASSE primary key (NomeClasse, NomeTratto));
+     constraint ID_TRATTO_CLASSE primary key (NomeClasse, Nome));
 
 create table TURNO (
      Username char(1) not null,
@@ -298,7 +305,7 @@ create table UTENTE (
 -- ___________________ 
 
 alter table ABILITAZIONE_RISORSA add constraint FKABI_RIS
-     foreign key (NomeClasse, NomeRisorsa)
+     foreign key (NomeRisorsa)
      references RISORSA_CLASSE;
 
 alter table ABILITAZIONE_RISORSA add constraint FKABI_PRO_1
@@ -306,7 +313,7 @@ alter table ABILITAZIONE_RISORSA add constraint FKABI_PRO_1
      references PROGRESSO;
 
 alter table ABILITAZIONE_TRATTO add constraint FKABI_TRA
-     foreign key (NomeClasse, NomeTratto)
+     foreign key (NomeTratto)
      references TRATTO_CLASSE;
 
 alter table ABILITAZIONE_TRATTO add constraint FKABI_PRO
@@ -330,12 +337,17 @@ alter table AZIONE add constraint FKLANCIO
      references MAGIA;
 
 alter table AZIONE add constraint FKESECUZIONE
-     foreign key (CodiceScheda, Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza)
+     foreign key (Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza)
      references ISTANZA_COMB;
 
 alter table AZIONE add constraint FKSUDDIVISIONE
      foreign key (Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno)
      references TURNO;
+
+--Not implemented
+--alter table BACKGROUND add constraint ID_BACKGROUND_CHK
+--     check(exists(select * from PROPENSIONE
+--                  where PROPENSIONE.NomeSkill = Nome)); 
 
 alter table CAMPAGNA add constraint FKMASTER
      foreign key (UsernameMaster)
@@ -352,7 +364,7 @@ alter table CAPACITA add constraint FKCAP_SCH
 --Not implemented
 --alter table CARATTERISTICA add constraint ID_CARATTERISTICA_CHK
 --     check(exists(select * from SKILL
---                  where SKILL.NomeCaratteristica = NomeCaratteristica)); 
+--                  where SKILL.NomeCaratteristica = Nome)); 
 
 --Not implemented
 --alter table COMBATTIMENTO add constraint ID_COMBATTIMENTO_CHK
@@ -377,7 +389,7 @@ alter table CONOSCENZA add constraint FKCON_MAG
      references MAGIA;
 
 alter table CONTRO add constraint FKCON_IST
-     foreign key (CodiceScheda, Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza)
+     foreign key (Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza)
      references ISTANZA_COMB;
 
 alter table CONTRO add constraint FKCON_AZI
@@ -392,6 +404,11 @@ alter table INVENTARIO add constraint FKINV_OGG
      foreign key (CodiceOggetto)
      references OGGETTO;
 
+--Not implemented
+--alter table ISTANZA_COMB add constraint ID_ISTANZA_COMB_CHK
+--     check(exists(select * from ISTANZA_XOR
+--                  where ISTANZA_XOR.Username = Username and ISTANZA_XOR.Nome = Nome and ISTANZA_XOR.DataSvolgimento = DataSvolgimento and ISTANZA_XOR.NumCombattimento = NumCombattimento and ISTANZA_XOR.Numero = Numero)); 
+
 alter table ISTANZA_COMB add constraint FKPARTE
      foreign key (Username, Nome, DataSvolgimento, NumCombattimento)
      references COMBATTIMENTO;
@@ -399,6 +416,18 @@ alter table ISTANZA_COMB add constraint FKPARTE
 alter table ISTANZA_COMB add constraint GRISTANZA_COMB
      foreign key (CodiceScheda)
      references SCHEDA;
+
+alter table ISTANZA_XOR add constraint FKIST_PER
+     foreign key (CodiceSchedaPersonaggio)
+     references PERSONAGGIO;
+
+alter table ISTANZA_XOR add constraint FKIST_MOS
+     foreign key (CodiceSchedaMostro)
+     references MOSTRO;
+
+alter table ISTANZA_XOR add constraint FKIST_IST_FK
+     foreign key (Username, Nome, DataSvolgimento, NumCombattimento, Numero)
+     references ISTANZA_COMB;
 
 --Not implemented
 --alter table MAGIA add constraint ID_MAGIA_CHK
@@ -450,9 +479,13 @@ alter table POSSESSO add constraint FKPOS_CAR
      foreign key (NomeCaratteristica)
      references CARATTERISTICA;
 
-alter table PROGRESSO add constraint FKSCELTA
-     foreign key (NomeClasse, NomeSottoclasse)
+alter table PROGRESSO add constraint FKSCELTA_FK
+     foreign key (NomeSottoclasse)
      references SOTTOCLASSE;
+
+alter table PROGRESSO add constraint FKSCELTA_CHK
+     check((NomeSottoclasse is not null)
+           or (NomeSottoclasse is null)); 
 
 alter table PROGRESSO add constraint FKRIFERIMENTO
      foreign key (NomeClasse)
@@ -464,11 +497,11 @@ alter table PROGRESSO add constraint FKAPPARTENENZA
 
 alter table PROPENSIONE add constraint FKPRO_SKI
      foreign key (NomeBackground)
-     references BACKGROUND;
+     references SKILL;
 
 alter table PROPENSIONE add constraint FKPRO_BAC
      foreign key (NomeSkill)
-     references SKILL;
+     references BACKGROUND;
 
 alter table RAZZA add constraint FKSOTTORAZZA
      foreign key (NomeRazzaPadre)
@@ -508,7 +541,7 @@ alter table STATO_ATTIVO add constraint FKATTIVAZIONE
      references EFFETTO_STATO;
 
 alter table STATO_ATTIVO add constraint FKAFFLIZIONE
-     foreign key (CodiceScheda, AFF_Username, AFF_Nome, AFF_DataSvolgimento, AFF_NumCombattimento, AFF_Numero)
+     foreign key (AFF_Username, AFF_Nome, AFF_DataSvolgimento, AFF_NumCombattimento, AFF_Numero)
      references ISTANZA_COMB;
 
 alter table STATO_ATTIVO add constraint FKCAUSA_FK

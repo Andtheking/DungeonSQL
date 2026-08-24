@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Driver e Dialetto PostgreSQL -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Strategia di validazione (il DB esiste già, valida solo lo schema) -->
+        <property name="hbm2ddl.auto">validate</property>
+
+        <!-- Debug e visualizzazione query -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- Mapping di tutte le Entity del progetto -->
+        <mapping class="it.unibo.dungeonsql.models.Utente"/>
+        <mapping class="it.unibo.dungeonsql.models.Campagna"/>
+        <mapping class="it.unibo.dungeonsql.models.Sessione"/>
+        <mapping class="it.unibo.dungeonsql.models.Combattimento"/>
+        <mapping class="it.unibo.dungeonsql.models.Turno"/>
+        <mapping class="it.unibo.dungeonsql.models.IstanzaComb"/>
+        <mapping class="it.unibo.dungeonsql.models.Azione"/>
+        <mapping class="it.unibo.dungeonsql.models.Contro"/>
+        <mapping class="it.unibo.dungeonsql.models.EffettoStato"/>
+        <mapping class="it.unibo.dungeonsql.models.StatoAttivo"/>
+        
+        <mapping class="it.unibo.dungeonsql.models.Scheda"/>
+        <mapping class="it.unibo.dungeonsql.models.Personaggio"/>
+        <mapping class="it.unibo.dungeonsql.models.Mostro"/>
+        <mapping class="it.unibo.dungeonsql.models.Razza"/>
+        <mapping class="it.unibo.dungeonsql.models.Background"/>
+        <mapping class="it.unibo.dungeonsql.models.Caratteristica"/>
+        <mapping class="it.unibo.dungeonsql.models.Skill"/>
+        <mapping class="it.unibo.dungeonsql.models.Possesso"/>
+        <mapping class="it.unibo.dungeonsql.models.Capacita"/>
+        <mapping class="it.unibo.dungeonsql.models.Propensione"/>
+
+        <mapping class="it.unibo.dungeonsql.models.Classe"/>
+        <mapping class="it.unibo.dungeonsql.models.Sottoclasse"/>
+        <mapping class="it.unibo.dungeonsql.models.Progresso"/>
+        <mapping class="it.unibo.dungeonsql.models.TrattoClasse"/>
+        <mapping class="it.unibo.dungeonsql.models.RisorsaClasse"/>
+        <mapping class="it.unibo.dungeonsql.models.AbilitazioneTratto"/>
+        <mapping class="it.unibo.dungeonsql.models.AbilitazioneRisorsa"/>
+
+        <mapping class="it.unibo.dungeonsql.models.Oggetto"/>
+        <mapping class="it.unibo.dungeonsql.models.Inventario"/>
+        <mapping class="it.unibo.dungeonsql.models.Magia"/>
+        <mapping class="it.unibo.dungeonsql.models.Conoscenza"/>
+        <mapping class="it.unibo.dungeonsql.models.Apprendimento"/>
+
+        <mapping class="it.unibo.dungeonsql.models.TagMagia"/>
+        <mapping class="it.unibo.dungeonsql.models.TagOggetto"/>
+        <mapping class="it.unibo.dungeonsql.models.TagPartecipante"/>
+    </session-factory>
+</hibernate-configuration>
