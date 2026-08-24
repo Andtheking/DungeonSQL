@@ -41,6 +41,10 @@ dependencies {
     // Hibernate ORM
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
 
+    val lombokVersion = "1.18.32"
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
