@@ -14,7 +14,7 @@ public class Personaggio {
 
     @Id
     @Column(name = "CodiceScheda", nullable = false)
-    private String codiceScheda;
+    private int codiceScheda;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId
@@ -28,7 +28,7 @@ public class Personaggio {
     private String allineamento;
 
     @Column(name = "HP", nullable = false)
-    private String hp;
+    private int hp;
 
     @Column(name = "ExpAccumulata", nullable = false)
     private String expAccumulata;

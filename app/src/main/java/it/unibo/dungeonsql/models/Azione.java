@@ -20,7 +20,7 @@ public class Azione {
     private String tipo;
 
     @Column(name = "NumeroIstanza", nullable = false)
-    private String numeroIstanza;
+    private int numeroIstanza;
 
     // Relazione opzionale con Oggetto
     @ManyToOne(fetch = FetchType.LAZY)

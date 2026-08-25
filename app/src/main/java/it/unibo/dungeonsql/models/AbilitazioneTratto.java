@@ -13,10 +13,10 @@ public class AbilitazioneTratto {
     private AbilitazioneTrattoId id;
 
     @Column(name = "MaxQuantita", nullable = false)
-    private String maxQuantita;
+    private int maxQuantita;
 
     @Column(name = "Quantita", nullable = false)
-    private String quantita;
+    private int quantita;
 
     // Relazione con Progresso (CodiceScheda, NomeClasse)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

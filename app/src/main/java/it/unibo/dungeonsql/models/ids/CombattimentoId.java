@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -19,11 +20,11 @@ public class CombattimentoId implements Serializable {
     private String username;
 
     @Column(name = "Nome")
-    private String nomeCampagna; // Corrisponde al nome della campagna/sessione nello schema
+    private String nomeCampagna;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private LocalDate dataSvolgimento;
 
     @Column(name = "NumCombattimento")
-    private String numCombattimento;
+    private int numCombattimento;
 }

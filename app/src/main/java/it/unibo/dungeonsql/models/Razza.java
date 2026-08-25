@@ -26,7 +26,7 @@ public class Razza {
     private String velocitaBase;
 
     @Column(name = "Scurovisione", nullable = false)
-    private String scurovisione;
+    private Boolean scurovisione;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NomeRazzaPadre")

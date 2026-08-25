@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class SchedaPersonaggio {
+    private final Scheda scheda;
     private final Personaggio personaggio;
     private final List<Possesso> caratteristiche;
     private final List<Capacita> capacita;

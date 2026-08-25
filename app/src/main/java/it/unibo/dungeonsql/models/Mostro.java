@@ -14,7 +14,7 @@ public class Mostro {
 
     @Id
     @Column(name = "CodiceScheda")
-    private String codiceScheda;
+    private int codiceScheda;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId

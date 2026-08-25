@@ -14,16 +14,16 @@ public class Scheda {
 
     @Id
     @Column(name = "CodiceScheda", nullable = false)
-    private String codiceScheda;
+    private int codiceScheda;
 
     @Column(name = "Nome", nullable = false)
     private String nome;
 
     @Column(name = "MaxHP", nullable = false)
-    private String maxHp;
+    private int maxHp;
 
     @Column(name = "CA", nullable = false)
-    private String ca;
+    private int ca;
 
     @Column(name = "Taglia", nullable = false)
     private String taglia;

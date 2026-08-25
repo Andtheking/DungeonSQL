@@ -22,7 +22,7 @@ public class TurnoId implements Serializable {
     private String nome;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private int dataSvolgimento;
 
     @Column(name = "NumCombattimento")
     private String numCombattimento;

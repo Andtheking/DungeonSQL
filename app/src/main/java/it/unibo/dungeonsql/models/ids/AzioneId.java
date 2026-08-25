@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.io.Serializable;
 
 @Embeddable
@@ -22,14 +23,14 @@ public class AzioneId implements Serializable {
     private String nomeCampagna;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private LocalDate dataSvolgimento;
 
     @Column(name = "NumCombattimento")
-    private String numCombattimento;
+    private int numCombattimento;
 
     @Column(name = "NumTurno")
-    private String numTurno;
+    private int numTurno;
 
     @Column(name = "NumAzione")
-    private String numAzione;
+    private int numAzione;
 }

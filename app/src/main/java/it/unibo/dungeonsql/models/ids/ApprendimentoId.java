@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class ApprendimentoId implements Serializable {
 
     @Column(name = "CodiceMagia", nullable = false)
-    private String codiceMagia;
+    private int codiceMagia;
 
     @Column(name = "NomeClasse", nullable = false)
     private String nomeClasse;

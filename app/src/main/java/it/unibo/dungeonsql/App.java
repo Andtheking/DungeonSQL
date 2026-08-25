@@ -1,44 +1,66 @@
 package it.unibo.dungeonsql;
 
+import java.util.concurrent.CompletableFuture;
+
 import it.unibo.dungeonsql.ui.MainLayout;
+import it.unibo.dungeonsql.ui.controllers.LogInController;
+import it.unibo.dungeonsql.ui.controllers.SignInController;
 import it.unibo.dungeonsql.util.HibernateUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-
-import org.hibernate.Session;
 
 public class App extends Application {
 
+    private StackPane rootContainer; 
+
     @Override
     public void start(Stage primaryStage) {
-        testHibernateConnection();
 
-        MainLayout mainLayout = new MainLayout();
+        CompletableFuture.runAsync(() -> {
+            System.out.println("Avvio connessione al DB in background...");
+            HibernateUtil.getSessionFactory(); 
+            System.out.println("Database pronto all'uso!");
+        });
 
-        Scene scene = new Scene(mainLayout, 1000, 650);
+        rootContainer = new StackPane();
+        
+        Scene scene = new Scene(rootContainer, 1000, 700);
+
         primaryStage.setTitle("DungeonSQL - Gestionale D&D");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
-        
+
+        mostraSchermataLogin();
     }
 
-    private void testHibernateConnection() {
-        System.out.println("Tentativo di connessione a Hibernate e validazione dello schema...");
-        
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            System.out.println("La connessione va :3");
-        } catch (Exception e) {
-            System.err.println("ERRORE CRITICO: Impossibile connettersi al database o validare lo schema!");
-            e.printStackTrace();
-        }
+    private void mostraSchermataLogin() {
+        LogInController loginView = new LogInController(
+            () -> mostraMainLayout(),
+            () -> mostraSchermataSignIn() 
+        );
+
+        rootContainer.getChildren().clear();
+        rootContainer.getChildren().add(loginView);
     }
 
-    @Override
-    public void stop() {
-        HibernateUtil.shutdown();
-        System.out.println("Connessione Hibernate chiusa correttamente.");
+    private void mostraSchermataSignIn() {
+        SignInController signInView = new SignInController(
+            () -> mostraMainLayout(),
+            () -> mostraSchermataLogin() 
+        );
+
+        rootContainer.getChildren().clear();
+        rootContainer.getChildren().add(signInView);
+    }
+
+    private void mostraMainLayout() {
+        MainLayout mainLayout = new MainLayout();
+        
+        rootContainer.getChildren().clear();
+        rootContainer.getChildren().add(mainLayout);
     }
 
     public static void main(String[] args) {

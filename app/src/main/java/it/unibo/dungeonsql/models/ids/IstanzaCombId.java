@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -22,11 +23,11 @@ public class IstanzaCombId implements Serializable {
     private String nome;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private LocalDate dataSvolgimento;
 
     @Column(name = "NumCombattimento")
-    private String numCombattimento;
+    private int numCombattimento;
 
     @Column(name = "NumeroIstanza")
-    private String numero;
+    private int numero;
 }

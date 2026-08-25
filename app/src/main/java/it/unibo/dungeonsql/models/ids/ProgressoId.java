@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class ProgressoId implements Serializable {
 
     @Column(name = "CodiceScheda", nullable = false)
-    private String codiceScheda;
+    private int codiceScheda;
 
     @Column(name = "NomeClasse", nullable = false)
     private String nomeClasse;

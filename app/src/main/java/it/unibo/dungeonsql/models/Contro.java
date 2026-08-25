@@ -17,13 +17,13 @@ public class Contro {
     private ControId id;
 
     @Column(name = "Danno", nullable = false)
-    private String danno;
+    private int danno;
 
     @Column(name = "Esito", nullable = false)
     private String esito;
 
     @Column(name = "Sconfitto", nullable = false)
-    private String sconfitto;
+    private Boolean sconfitto;
 
     // Relazione con l'azione
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

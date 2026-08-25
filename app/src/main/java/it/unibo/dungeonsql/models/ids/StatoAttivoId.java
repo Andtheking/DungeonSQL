@@ -19,5 +19,5 @@ public class StatoAttivoId implements Serializable {
     private String nome;
 
     @Column(name = "Numero")
-    private String numero;
+    private int numero;
 }

@@ -1,5 +1,7 @@
 package it.unibo.dungeonsql.models;
 
+import java.time.LocalDate;
+
 import it.unibo.dungeonsql.models.ids.CampagnaId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,5 +30,5 @@ public class Campagna {
     private String descrizione;
 
     @Column(name = "DataInizio", nullable = false)
-    private String dataInizio;
+    private LocalDate dataInizio;
 }

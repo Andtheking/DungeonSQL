@@ -27,5 +27,5 @@ public class Inventario {
     private Oggetto oggetto;
 
     @Column(name = "Quantita", nullable = false)
-    private String quantita;
+    private int quantita;
 }

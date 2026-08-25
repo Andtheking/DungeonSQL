@@ -17,7 +17,7 @@ public class StatoAttivo {
     private StatoAttivoId id;
 
     @Column(name = "Scaduto", nullable = false)
-    private String scaduto;
+    private Boolean scaduto;
 
     @Column(name = "Durata", nullable = false)
     private String durata;

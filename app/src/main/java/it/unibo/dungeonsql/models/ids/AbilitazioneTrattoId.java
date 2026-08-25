@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode @Builder
 public class AbilitazioneTrattoId implements Serializable {
     @Column(name = "CodiceScheda")
-    private String codiceScheda;
+    private int codiceScheda;
 
     @Column(name = "NomeClasse")
     private String nomeClasse;

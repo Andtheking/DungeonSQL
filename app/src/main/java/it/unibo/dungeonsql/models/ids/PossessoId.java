@@ -19,5 +19,5 @@ public class PossessoId implements Serializable {
     private String nomeCaratteristica;
 
     @Column(name = "CodiceScheda", nullable = false)
-    private String codiceScheda;
+    private int codiceScheda;
 }

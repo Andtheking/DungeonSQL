@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class InventarioId implements Serializable {
 
     @Column(name = "CodiceScheda")
-    private String codiceScheda;
+    private int codiceScheda;
 
     @Column(name = "CodiceOggetto")
-    private String codiceOggetto;
+    private int codiceOggetto;
 }

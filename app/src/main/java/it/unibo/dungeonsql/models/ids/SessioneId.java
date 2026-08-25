@@ -22,5 +22,5 @@ public class SessioneId implements Serializable {
     private String nomeCampagna;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private int dataSvolgimento;
 }

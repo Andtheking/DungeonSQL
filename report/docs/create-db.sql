@@ -1,15 +1,6 @@
 -- *********************************************
--- * SQL PostgreSQL generation                 
--- *--------------------------------------------
--- * DB-MAIN version: 11.0.2              
--- * Generator date: Sep 20 2021              
--- * Generation date: Mon Aug 24 21:36:46 2026 
--- * LUN file: /home/andrea/studio/database/DungeonSQL/report/docs/DungeonSQL+.lun 
--- * Schema: RELATIONAL/1 
+-- * SQL PostgreSQL generation (Corretto)
 -- ********************************************* 
-
--- Database Section
--- ________________ 
 
 -- create database dungeonsql;
 
@@ -17,52 +8,52 @@
 -- _____________ 
 
 create table ABILITAZIONE_RISORSA (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda integer not null,
      NomeClasse VARCHAR(255) not null,
      NomeRisorsa VARCHAR(255) not null,
      constraint ID_ABILITAZIONE_RISORSA primary key (CodiceScheda, NomeClasse, NomeRisorsa));
 
 create table ABILITAZIONE_TRATTO (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda integer not null,
      NomeClasse VARCHAR(255) not null,
      NomeTratto VARCHAR(255) not null,
-     MaxQuantita VARCHAR(255) not null,
-     Quantita VARCHAR(255) not null,
+     MaxQuantita integer not null,
+     Quantita integer not null,
      constraint ID_ABILITAZIONE_TRATTO primary key (NomeTratto, CodiceScheda, NomeClasse));
 
 create table APPRENDIMENTO (
      NomeClasse VARCHAR(255) not null,
-     CodiceMagia VARCHAR(255) not null,
+     CodiceMagia integer not null,
      constraint ID_APPRENDIMENTO primary key (CodiceMagia, NomeClasse));
 
 create table AZIONE (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     NumCombattimento VARCHAR(255) not null,
-     NumTurno VARCHAR(255) not null,
-     NumAzione VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     NumCombattimento integer not null,
+     NumTurno integer not null,
+     NumAzione integer not null,
      Tipo VARCHAR(255) not null,
-     CodiceOggetto VARCHAR(255),
-     CodiceMagia VARCHAR(255),
-     NumeroIstanza VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     CodiceOggetto integer,
+     CodiceMagia integer,
+     NumeroIstanza integer not null,
+     CodiceScheda integer not null,
      constraint ID_AZIONE primary key (Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione));
 
 create table BACKGROUND (
      NomeBackground VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
+     Descrizione TEXT not null,
      constraint ID_BACKGROUND primary key (NomeBackground));
 
 create table CAMPAGNA (
      UsernameMaster VARCHAR(255) not null,
      Nome VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
-     DataInizio VARCHAR(255) not null,
+     Descrizione TEXT not null,
+     DataInizio date not null,
      constraint ID_CAMPAGNA primary key (UsernameMaster, Nome));
 
 create table CAPACITA (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda integer not null,
      NomeSkill VARCHAR(255) not null,
      LivelloCapacita VARCHAR(255) not null,
      constraint ID_CAPACITA primary key (NomeSkill, CodiceScheda));
@@ -78,81 +69,81 @@ create table CLASSE (
 create table COMBATTIMENTO (
      Username VARCHAR(255) not null,
      Nome VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     NumCombattimento VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     NumCombattimento integer not null,
      constraint ID_COMBATTIMENTO_ID primary key (Username, Nome, DataSvolgimento, NumCombattimento));
 
 create table CONOSCENZA (
-     CodiceMagia VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     CodiceMagia integer not null,
+     CodiceScheda integer not null,
      constraint ID_CONOSCENZA primary key (CodiceScheda, CodiceMagia));
 
 create table CONTRO (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     NumCombattimento VARCHAR(255) not null,
-     NumTurno VARCHAR(255) not null,
-     NumAzione VARCHAR(255) not null,
-     NumeroIstanza VARCHAR(255) not null,
-     Danno VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     NumCombattimento integer not null,
+     NumTurno integer not null,
+     NumAzione integer not null,
+     NumeroIstanza integer not null,
+     Danno integer not null,
      Esito VARCHAR(255) not null,
-     Sconfitto VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     Sconfitto BOOLEAN not null,
+     CodiceScheda integer not null,
      constraint ID_CONTRO primary key (NumeroIstanza, Username, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione));
 
 create table EFFETTO_STATO (
      Nome VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
+     Descrizione TEXT not null,
      constraint ID_EFFETTO_STATO primary key (Nome));
 
 create table INVENTARIO (
-     CodiceOggetto VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
-     Quantita VARCHAR(255) not null,
+     CodiceOggetto integer not null,
+     CodiceScheda integer not null,
+     Quantita integer not null,
      constraint ID_INVENTARIO primary key (CodiceScheda, CodiceOggetto));
 
 create table ISTANZA_COMB (
      Username VARCHAR(255) not null,
      Nome VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     NumCombattimento VARCHAR(255) not null,
-     NumeroIstanza VARCHAR(255) not null,
-     Iniziativa VARCHAR(255) not null,
-     HP VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     NumCombattimento integer not null, 
+     NumeroIstanza integer not null,    
+     Iniziativa integer not null,       
+     HP integer not null,
+     CodiceScheda integer not null,
      constraint ID_ISTANZA_COMB primary key (CodiceScheda, Username, Nome, DataSvolgimento, NumCombattimento, NumeroIstanza));
 
 create table MAGIA (
-     CodiceMagia VARCHAR(255) not null,
+     CodiceMagia SERIAL,
      Nome VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
-     Livello VARCHAR(255) not null,
-     Rituale VARCHAR(255) not null,
+     Descrizione TEXT not null, 
+     Livello integer not null,
+     Rituale boolean not null,
      UsernameMasterCampagna VARCHAR(255),
      NomeCampagna VARCHAR(255),
      constraint ID_MAGIA_ID primary key (CodiceMagia));
 
 create table MOSTRO (
-     CodiceScheda VARCHAR(255) not null,
-     CR VARCHAR(255) not null,
-     ExpRilasciata VARCHAR(255) not null,
-     Velocita VARCHAR(255) not null,
+     CodiceScheda integer not null,
+     CR VARCHAR(10) not null,
+     ExpRilasciata integer not null,
+     Velocita integer not null,
      constraint FKNATURA_MOSTRO_ID primary key (CodiceScheda));
 
 create table OGGETTO (
-     CodiceOggetto VARCHAR(255) not null,
+     CodiceOggetto integer not null,
      Nome VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
-     Peso VARCHAR(255) not null,
+     Descrizione TEXT not null,         
+     Peso numeric(5,2) not null,        
      EffettoMagico VARCHAR(255) not null,
      TipoOggetto VARCHAR(255) not null,
-     Danno VARCHAR(255),
+     Danno VARCHAR(20),                 
      TipoArma VARCHAR(255),
      ProprietaArma VARCHAR(255),
-     BonusCA VARCHAR(255),
+     BonusCA integer,
      ReqArmatura VARCHAR(255),
-     Furtiva VARCHAR(255),
+     Furtiva BOOLEAN,
      EffettoCons VARCHAR(255),
      DurataCons VARCHAR(255),
      UsernameMasterCampagna VARCHAR(255),
@@ -160,25 +151,25 @@ create table OGGETTO (
      constraint ID_OGGETTO primary key (CodiceOggetto));
 
 create table PERSONAGGIO (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda integer not null,
      Allineamento VARCHAR(255) not null,
-     HP VARCHAR(255) not null,
-     ExpAccumulata VARCHAR(255) not null,
+     HP integer not null,
+     ExpAccumulata integer not null, 
      NomeBackground VARCHAR(255) not null,
      NomeRazza VARCHAR(255) not null,
      constraint FKNATURA_PERSONAGGIO_ID primary key (CodiceScheda));
 
 create table POSSESSO (
      NomeCaratteristica VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
-     Punteggio VARCHAR(255) not null,
-     CompetenzaSalvezza VARCHAR(255) not null,
+     CodiceScheda integer not null,
+     Punteggio integer not null,          
+     CompetenzaSalvezza BOOLEAN not null,
      constraint ID_POSSESSO primary key (NomeCaratteristica, CodiceScheda));
 
 create table PROGRESSO (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda integer not null,
      NomeClasse VARCHAR(255) not null,
-     Livello VARCHAR(255) not null,
+     Livello integer not null,            
      NomeSottoclasse VARCHAR(255),
      constraint ID_PROGRESSO primary key (CodiceScheda, NomeClasse));
 
@@ -189,9 +180,9 @@ create table PROPENSIONE (
 
 create table RAZZA (
      NomeRazza VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
-     VelocitaBase VARCHAR(255) not null,
-     Scurovisione VARCHAR(255) not null,
+     Descrizione TEXT not null,      
+     VelocitaBase integer not null,  
+     Scurovisione BOOLEAN not null,  
      NomeRazzaPadre VARCHAR(255),
      constraint ID_RAZZA primary key (NomeRazza));
 
@@ -202,10 +193,10 @@ create table RISORSA_CLASSE (
      constraint ID_RISORSA_CLASSE primary key (NomeClasse, NomeRisorsa));
 
 create table SCHEDA (
-     CodiceScheda VARCHAR(255) not null,
+     CodiceScheda SERIAL,
      Nome VARCHAR(255) not null,
-     MaxHP VARCHAR(255) not null,
-     CA VARCHAR(255) not null,
+     MaxHP integer not null,
+     CA integer not null,
      Taglia VARCHAR(255) not null,
      UsernameCreatore VARCHAR(255) not null,
      UsernameMaster VARCHAR(255) not null,
@@ -215,8 +206,8 @@ create table SCHEDA (
 create table SESSIONE (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     Diario VARCHAR(255),
+     DataSvolgimento date not null,
+     Diario TEXT,
      constraint ID_SESSIONE primary key (Username, NomeCampagna, DataSvolgimento));
 
 create table SKILL (
@@ -231,58 +222,58 @@ create table SOTTOCLASSE (
 
 create table STATO_ATTIVO (
      Nome VARCHAR(255) not null,
-     Numero VARCHAR(255) not null,
-     Scaduto VARCHAR(255) not null,
-     Durata VARCHAR(255) not null,
-     Note VARCHAR(255),
+     Numero integer not null,
+     Scaduto BOOLEAN not null,
+     Durata integer not null,
+     Note TEXT, -- Modificato in TEXT
      AFF_Username VARCHAR(255) not null,
      AFF_Nome VARCHAR(255) not null,
-     AFF_DataSvolgimento VARCHAR(255) not null,
-     AFF_NumCombattimento VARCHAR(255) not null,
-     AFF_Numero VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     AFF_DataSvolgimento date not null,
+     AFF_NumCombattimento integer not null,
+     AFF_Numero integer not null,
+     CodiceScheda integer not null,
      SUD_Username VARCHAR(255),
      SUD_Nome VARCHAR(255),
-     SUD_DataSvolgimento VARCHAR(255),
-     SUD_NumCombattimento VARCHAR(255),
-     SUD_NumTurno VARCHAR(255),
-     NumAzione VARCHAR(255),
+     SUD_DataSvolgimento date,
+     SUD_NumCombattimento integer,
+     SUD_NumTurno integer,
+     NumAzione integer,
      constraint ID_STATO_ATTIVO primary key (Nome, Numero));
 
 create table TAG_MAGIA (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     CodiceMagia VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     CodiceMagia integer not null,
      constraint ID_TAG_MAGIA primary key (CodiceMagia, Username, NomeCampagna, DataSvolgimento));
 
 create table TAG_OGGETTO (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     CodiceOggetto VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     CodiceOggetto integer not null,
      constraint ID_TAG_OGGETTO primary key (CodiceOggetto, Username, NomeCampagna, DataSvolgimento));
 
 create table TAG_PARTECIPANTE (
      Username VARCHAR(255) not null,
      NomeCampagna VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     CodiceScheda VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     CodiceScheda integer not null,
      constraint ID_TAG_PARTECIPANTE primary key (CodiceScheda, Username, NomeCampagna, DataSvolgimento));
 
 create table TRATTO_CLASSE (
      NomeClasse VARCHAR(255) not null,
      NomeTratto VARCHAR(255) not null,
-     Descrizione VARCHAR(255) not null,
-     LivelloRichiesto VARCHAR(255) not null,
+     Descrizione TEXT not null,      
+     LivelloRichiesto integer not null, 
      constraint ID_TRATTO_CLASSE primary key (NomeClasse, NomeTratto));
 
 create table TURNO (
      Username VARCHAR(255) not null,
      Nome VARCHAR(255) not null,
-     DataSvolgimento VARCHAR(255) not null,
-     NumCombattimento VARCHAR(255) not null,
-     NumTurno VARCHAR(255) not null,
+     DataSvolgimento date not null,
+     NumCombattimento integer not null,
+     NumTurno integer not null,
      constraint ID_TURNO_ID primary key (Username, Nome, DataSvolgimento, NumCombattimento, NumTurno));
 
 create table UTENTE (
@@ -347,21 +338,6 @@ alter table CAPACITA add constraint FKCAP_SCH
      foreign key (CodiceScheda)
      references SCHEDA;
 
---Not implemented
---alter table CARATTERISTICA add constraint ID_CARATTERISTICA_CHK
---     check(exists(select * from SKILL
---                  where SKILL.NomeCaratteristica = NomeCaratteristica)); 
-
---Not implemented
---alter table COMBATTIMENTO add constraint ID_COMBATTIMENTO_CHK
---     check(exists(select * from TURNO
---                  where TURNO.Username = Username and TURNO.Nome = Nome and TURNO.DataSvolgimento = DataSvolgimento and TURNO.NumCombattimento = NumCombattimento)); 
-
---Not implemented
---alter table COMBATTIMENTO add constraint ID_COMBATTIMENTO_CHK
---     check(exists(select * from ISTANZA_COMB
---                  where ISTANZA_COMB.Username = Username and ISTANZA_COMB.Nome = Nome and ISTANZA_COMB.DataSvolgimento = DataSvolgimento and ISTANZA_COMB.NumCombattimento = NumCombattimento)); 
-
 alter table COMBATTIMENTO add constraint FKAVVENIMENTO
      foreign key (Username, Nome, DataSvolgimento)
      references SESSIONE;
@@ -398,11 +374,6 @@ alter table ISTANZA_COMB add constraint GRISTANZA_COMB
      foreign key (CodiceScheda)
      references SCHEDA;
 
---Not implemented
---alter table MAGIA add constraint ID_MAGIA_CHK
---     check(exists(select * from APPRENDIMENTO
---                  where APPRENDIMENTO.CodiceMagia = CodiceMagia)); 
-
 alter table MAGIA add constraint FKCREAZIONE_MAGIA_FK
      foreign key (UsernameMasterCampagna, NomeCampagna)
      references CAMPAGNA;
@@ -426,11 +397,6 @@ alter table OGGETTO add constraint FKCREAZIONE_OGGETTO_CHK
 alter table PERSONAGGIO add constraint FKNATURA_PERSONAGGIO_FK
      foreign key (CodiceScheda)
      references SCHEDA;
-
---Not implemented
---alter table PERSONAGGIO add constraint FKNATURA_PERSONAGGIO_CHK
---     check(exists(select * from PROGRESSO
---                  where PROGRESSO.CodiceScheda = CodiceScheda)); 
 
 alter table PERSONAGGIO add constraint FKFONDAMENTO
      foreign key (NomeBackground)
@@ -475,11 +441,6 @@ alter table RAZZA add constraint FKSOTTORAZZA
 alter table RISORSA_CLASSE add constraint FKFORNITURA
      foreign key (NomeClasse)
      references CLASSE;
-
---Not implemented
---alter table SCHEDA add constraint ID_SCHEDA_CHK
---     check(exists(select * from POSSESSO
---                  where POSSESSO.CodiceScheda = CodiceScheda)); 
 
 alter table SCHEDA add constraint FKCREAZIONE
      foreign key (UsernameCreatore)
@@ -545,16 +506,6 @@ alter table TRATTO_CLASSE add constraint FKOFFERTA
      foreign key (NomeClasse)
      references CLASSE;
 
---Not implemented
---alter table TURNO add constraint ID_TURNO_CHK
---     check(exists(select * from AZIONE
---                  where AZIONE.Username = Username and AZIONE.NomeCampagna = Nome and AZIONE.DataSvolgimento = DataSvolgimento and AZIONE.NumCombattimento = NumCombattimento and AZIONE.NumTurno = NumTurno)); 
-
 alter table TURNO add constraint FKCOMPOSIZIONE_COMB
      foreign key (Username, Nome, DataSvolgimento, NumCombattimento)
      references COMBATTIMENTO;
-
-
--- Index Section
--- _____________ 
-

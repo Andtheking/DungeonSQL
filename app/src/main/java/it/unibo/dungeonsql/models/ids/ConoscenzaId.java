@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class ConoscenzaId implements Serializable {
 
     @Column(name = "CodiceScheda")
-    private String codiceScheda;
+    private int codiceScheda;
 
     @Column(name = "CodiceMagia")
-    private String codiceMagia;
+    private int codiceMagia;
 }

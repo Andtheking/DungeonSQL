@@ -20,7 +20,7 @@ public class IstanzaComb {
     private String iniziativa;
 
     @Column(name = "HP", nullable = false)
-    private String hp;
+    private int hp;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({

@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="VBox" alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <VBox spacing="10.0" styleClass="sheet-header">
+            <padding>
+                <Insets top="16.0" right="18.0" bottom="14.0" left="18.0"/>
+            </padding>
+
+            <HBox spacing="14.0" alignment="CENTER_LEFT">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="NOME DEL PERSONAGGIO" styleClass="field-caption"/>
+                    <Label fx:id="characterNameLabel" text="Nome Personaggio" styleClass="character-name">
+                        <font>
+                            <Font size="30.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+
+                <VBox prefWidth="190.0">
+                    <Label text="BACKGROUND" styleClass="field-caption"/>
+                    <Label fx:id="backgroundLabel" text="—" styleClass="header-field-value"/>
+                </VBox>
+
+                <VBox prefWidth="190.0">
+                    <Label text="GIOCATORE" styleClass="field-caption"/>
+                    <Label fx:id="creatorLabel" text="—" styleClass="header-field-value"/>
+                </VBox>
+
+                <VBox prefWidth="150.0">
+                    <Label text="RAZZA" styleClass="field-caption"/>
+                    <Label fx:id="raceLabel" text="—" styleClass="header-field-value"/>
+                </VBox>
+
+                <VBox prefWidth="150.0">
+                    <Label text="ALLINEAMENTO" styleClass="field-caption"/>
+                    <Label fx:id="alignmentLabel" text="—" styleClass="header-field-value"/>
+                </VBox>
+
+                <VBox prefWidth="110.0">
+                    <Label text="ESPERIENZA" styleClass="field-caption"/>
+                    <Label fx:id="experienceLabel" text="0" styleClass="header-field-value"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="false" hbarPolicy="NEVER" styleClass="sheet-scroll">
+            <content>
+                <GridPane hgap="12.0" vgap="12.0" styleClass="sheet-grid">
+                    <padding>
+                        <Insets top="14.0" right="18.0" bottom="18.0" left="18.0"/>
+                    </padding>
+
+                    <!-- ===================== LEFT COLUMN ===================== -->
+                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="330.0" spacing="12.0">
+
+                        <!-- Characteristics -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <Label text="CARATTERISTICHE" styleClass="section-title"/>
+
+                            <GridPane hgap="6.0" vgap="6.0">
+                                <columnConstraints>
+                                    <ColumnConstraints halignment="CENTER" minWidth="48.0" prefWidth="52.0"/>
+                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                    <ColumnConstraints halignment="CENTER" minWidth="48.0" prefWidth="52.0"/>
+                                    <ColumnConstraints halignment="CENTER" minWidth="42.0" prefWidth="46.0"/>
+                                </columnConstraints>
+
+                                <Label text="MOD" GridPane.columnIndex="0" styleClass="table-header"/>
+                                <Label text="CARATTERISTICA" GridPane.columnIndex="1" styleClass="table-header"/>
+                                <Label text="VALORE" GridPane.columnIndex="2" styleClass="table-header"/>
+                                <Label text="T.S." GridPane.columnIndex="3" styleClass="table-header"/>
+
+                                <Label text="FOR" GridPane.rowIndex="1" styleClass="ability-abbreviation"/>
+                                <Label fx:id="strengthNameLabel" text="Forza" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label fx:id="strengthScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="ability-score"/>
+                                <Label fx:id="strengthModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="ability-modifier"/>
+                                <Label fx:id="strengthSavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="saving-value"/>
+
+                                <Label text="DES" GridPane.rowIndex="2" styleClass="ability-abbreviation"/>
+                                <Label fx:id="dexterityNameLabel" text="Destrezza" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label fx:id="dexterityScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="ability-score"/>
+                                <Label fx:id="dexterityModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="ability-modifier"/>
+                                <Label fx:id="dexteritySavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="2" styleClass="saving-value"/>
+
+                                <Label text="COS" GridPane.rowIndex="3" styleClass="ability-abbreviation"/>
+                                <Label fx:id="constitutionNameLabel" text="Costituzione" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <Label fx:id="constitutionScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="ability-score"/>
+                                <Label fx:id="constitutionModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="ability-modifier"/>
+                                <Label fx:id="constitutionSavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="saving-value"/>
+
+                                <Label text="INT" GridPane.rowIndex="4" styleClass="ability-abbreviation"/>
+                                <Label fx:id="intelligenceNameLabel" text="Intelligenza" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <Label fx:id="intelligenceScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="ability-score"/>
+                                <Label fx:id="intelligenceModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="ability-modifier"/>
+                                <Label fx:id="intelligenceSavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="4" styleClass="saving-value"/>
+
+                                <Label text="SAG" GridPane.rowIndex="5" styleClass="ability-abbreviation"/>
+                                <Label fx:id="wisdomNameLabel" text="Saggezza" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <Label fx:id="wisdomScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="5" styleClass="ability-score"/>
+                                <Label fx:id="wisdomModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="ability-modifier"/>
+                                <Label fx:id="wisdomSavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="5" styleClass="saving-value"/>
+
+                                <Label text="CAR" GridPane.rowIndex="6" styleClass="ability-abbreviation"/>
+                                <Label fx:id="charismaNameLabel" text="Carisma" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                <Label fx:id="charismaScoreLabel" text="10" GridPane.columnIndex="2" GridPane.rowIndex="6" styleClass="ability-score"/>
+                                <Label fx:id="charismaModifierLabel" text="+0" GridPane.columnIndex="0" GridPane.rowIndex="6" styleClass="ability-modifier"/>
+                                <Label fx:id="charismaSavingLabel" text="+0" GridPane.columnIndex="3" GridPane.rowIndex="6" styleClass="saving-value"/>
+                            </GridPane>
+
+                            <HBox spacing="8.0" alignment="CENTER_LEFT" styleClass="proficiency-row">
+                                <Label text="Bonus competenza"/>
+                                <Label fx:id="proficiencyBonusLabel" text="+2" styleClass="proficiency-value"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Skills -->
+                        <VBox spacing="7.0" styleClass="section-card">
+                            <Label text="ABILITÀ" styleClass="section-title"/>
+                            <Label text="Bonus = modificatore caratteristica + competenza (quando presente)" styleClass="section-subtitle" wrapText="true"/>
+
+                            <GridPane hgap="7.0" vgap="5.0">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="20.0" prefWidth="22.0" halignment="CENTER"/>
+                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                    <ColumnConstraints minWidth="48.0" prefWidth="52.0" halignment="RIGHT"/>
+                                </columnConstraints>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="acrobaticsProfMark"/>
+                                <Label text="Acrobazia (Des)" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <Label text="+0" fx:id="acrobaticsBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="animalHandlingProfMark"/>
+                                <Label text="Addestrare Animali (Sag)" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label text="+0" fx:id="animalHandlingBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="arcanaProfMark"/>
+                                <Label text="Arcano (Int)" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="+0" fx:id="arcanaBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="3" fx:id="athleticsProfMark"/>
+                                <Label text="Atletica (For)" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <Label text="+0" fx:id="athleticsBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="4" fx:id="deceptionProfMark"/>
+                                <Label text="Inganno (Car)" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <Label text="+0" fx:id="deceptionBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="5" fx:id="historyProfMark"/>
+                                <Label text="Storia (Int)" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <Label text="+0" fx:id="historyBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="5" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="6" fx:id="insightProfMark"/>
+                                <Label text="Intuizione (Sag)" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                <Label text="+0" fx:id="insightBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="6" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="7" fx:id="intimidationProfMark"/>
+                                <Label text="Intimidire (Car)" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                                <Label text="+0" fx:id="intimidationBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="7" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="8" fx:id="investigationProfMark"/>
+                                <Label text="Investigazione (Int)" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+                                <Label text="+0" fx:id="investigationBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="8" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="9" fx:id="medicineProfMark"/>
+                                <Label text="Medicina (Sag)" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                                <Label text="+0" fx:id="medicineBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="9" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="10" fx:id="natureProfMark"/>
+                                <Label text="Natura (Int)" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+                                <Label text="+0" fx:id="natureBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="10" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="11" fx:id="perceptionProfMark"/>
+                                <Label text="Percezione (Sag)" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+                                <Label text="+0" fx:id="perceptionBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="11" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="12" fx:id="performanceProfMark"/>
+                                <Label text="Intrattenere (Car)" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+                                <Label text="+0" fx:id="performanceBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="12" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="13" fx:id="persuasionProfMark"/>
+                                <Label text="Persuasione (Car)" GridPane.columnIndex="1" GridPane.rowIndex="13"/>
+                                <Label text="+0" fx:id="persuasionBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="13" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="14" fx:id="religionProfMark"/>
+                                <Label text="Religione (Int)" GridPane.columnIndex="1" GridPane.rowIndex="14"/>
+                                <Label text="+0" fx:id="religionBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="14" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="15" fx:id="sleightOfHandProfMark"/>
+                                <Label text="Rapidità di mano (Des)" GridPane.columnIndex="1" GridPane.rowIndex="15"/>
+                                <Label text="+0" fx:id="sleightOfHandBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="15" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="16" fx:id="stealthProfMark"/>
+                                <Label text="Furtività (Des)" GridPane.columnIndex="1" GridPane.rowIndex="16"/>
+                                <Label text="+0" fx:id="stealthBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="16" styleClass="skill-bonus"/>
+
+                                <Label text="□" GridPane.columnIndex="0" GridPane.rowIndex="17" fx:id="survivalProfMark"/>
+                                <Label text="Sopravvivenza (Sag)" GridPane.columnIndex="1" GridPane.rowIndex="17"/>
+                                <Label text="+0" fx:id="survivalBonusLabel" GridPane.columnIndex="2" GridPane.rowIndex="17" styleClass="skill-bonus"/>
+                            </GridPane>
+
+                            <Separator/>
+                            <HBox spacing="12.0">
+                                <Label text="Percezione passiva" styleClass="field-caption"/>
+                                <Label fx:id="passivePerceptionLabel" text="10" styleClass="passive-value"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                    <!-- ===================== CENTER COLUMN ===================== -->
+                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="360.0" spacing="12.0">
+
+                        <!-- Combat stats -->
+                        <VBox spacing="10.0" styleClass="section-card">
+                            <Label text="COMBATTIMENTO" styleClass="section-title"/>
+
+                            <HBox spacing="10.0" alignment="TOP_CENTER">
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="stat-box">
+                                    <Label text="CLASSE ARMATURA" styleClass="field-caption" wrapText="true" textAlignment="CENTER"/>
+                                    <Label fx:id="armorClassLabel" text="10" styleClass="combat-stat"/>
+                                </VBox>
+
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="stat-box">
+                                    <Label text="INIZIATIVA" styleClass="field-caption"/>
+                                    <Label fx:id="initiativeLabel" text="+0" styleClass="combat-stat"/>
+                                </VBox>
+
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="stat-box">
+                                    <Label text="VELOCITÀ" styleClass="field-caption"/>
+                                    <Label fx:id="speedLabel" text="9 m" styleClass="combat-stat"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="10.0" alignment="CENTER">
+                                <VBox alignment="CENTER" prefWidth="225.0" styleClass="hit-points-box">
+                                    <Label text="PUNTI FERITA" styleClass="field-caption"/>
+                                    <Label fx:id="currentHpLabel" text="0" styleClass="hp-current"/>
+                                    <Label fx:id="maxHpLabel" text="/ 0" styleClass="hp-max"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="10.0" alignment="CENTER">
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="mini-stat-box">
+                                    <Label text="DADI VITA" styleClass="field-caption" wrapText="true"/>
+                                    <Label fx:id="hitDiceLabel" text="—" styleClass="mini-stat-value"/>
+                                </VBox>
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="mini-stat-box">
+                                    <Label text="TAGLIA" styleClass="field-caption"/>
+                                    <Label fx:id="sizeLabel" text="Media" styleClass="mini-stat-value"/>
+                                </VBox>
+                                <VBox alignment="CENTER" prefWidth="105.0" styleClass="mini-stat-box">
+                                    <Label text="BONUS PROF." styleClass="field-caption" wrapText="true"/>
+                                    <Label fx:id="combatProficiencyBonusLabel" text="+2" styleClass="mini-stat-value"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Attacks -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <Label text="ATTACCHI" styleClass="section-title"/>
+                            <TableView fx:id="attacksTable" prefHeight="220.0" columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+                                <columns>
+                                    <TableColumn fx:id="attackNameColumn" text="Nome" prefWidth="120.0"/>
+                                    <TableColumn fx:id="attackBonusColumn" text="Bonus" prefWidth="65.0"/>
+                                    <TableColumn fx:id="attackDamageColumn" text="Danno / Tipo" prefWidth="130.0"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Nessun attacco disponibile"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Spells -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="MAGIE" styleClass="section-title" HBox.hgrow="ALWAYS"/>
+                                <Label text="Bonus attacco" styleClass="field-caption"/>
+                                <Label fx:id="spellAttackBonusLabel" text="+0" styleClass="inline-stat"/>
+                                <Label text="  CD" styleClass="field-caption"/>
+                                <Label fx:id="spellSaveDcLabel" text="10" styleClass="inline-stat"/>
+                            </HBox>
+                            <TableView fx:id="spellsTable" prefHeight="245.0" columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+                                <columns>
+                                    <TableColumn fx:id="spellNameColumn" text="Magia" prefWidth="110.0"/>
+                                    <TableColumn fx:id="spellLevelColumn" text="Liv." prefWidth="45.0"/>
+                                    <TableColumn fx:id="spellRitualColumn" text="R" prefWidth="35.0"/>
+                                    <TableColumn fx:id="spellDescriptionColumn" text="Descrizione" prefWidth="170.0"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Nessuna magia disponibile"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+
+                    <!-- ===================== RIGHT COLUMN ===================== -->
+                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefWidth="430.0" spacing="12.0">
+
+                        <!-- Classes / subclasses -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <Label text="CLASSI E SOTTOCLASSI" styleClass="section-title"/>
+                            <TableView fx:id="classesTable" prefHeight="210.0" columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+                                <columns>
+                                    <TableColumn fx:id="classNameColumn" text="Classe" prefWidth="150.0"/>
+                                    <TableColumn fx:id="subclassNameColumn" text="Sottoclasse" prefWidth="150.0"/>
+                                    <TableColumn fx:id="classLevelColumn" text="Liv." prefWidth="55.0"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Nessuna classe disponibile"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Class traits -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <Label text="TRATTI DELLE CLASSI" styleClass="section-title"/>
+                            <ListView fx:id="classTraitsList" prefHeight="300.0"/>
+                        </VBox>
+
+                        <!-- Class resources -->
+                        <VBox spacing="8.0" styleClass="section-card">
+                            <Label text="RISORSE DI CLASSE" styleClass="section-title"/>
+                            <TableView fx:id="classResourcesTable" prefHeight="180.0" columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+                                <columns>
+                                    <TableColumn fx:id="resourceNameColumn" text="Risorsa" prefWidth="160.0"/>
+                                    <TableColumn fx:id="resourceRecoveryColumn" text="Recupero" prefWidth="100.0"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Nessuna risorsa"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+
+                    <!-- ===================== BOTTOM ===================== -->
+                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3" spacing="12.0">
+
+                        <HBox spacing="12.0" alignment="TOP_LEFT">
+                            <!-- Equipment -->
+                            <VBox spacing="8.0" styleClass="section-card" HBox.hgrow="ALWAYS">
+                                <Label text="EQUIPAGGIAMENTO" styleClass="section-title"/>
+                                <TableView fx:id="inventoryTable" prefHeight="220.0" columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+                                    <columns>
+                                        <TableColumn fx:id="itemNameColumn" text="Oggetto" prefWidth="240.0"/>
+                                        <TableColumn fx:id="itemQuantityColumn" text="Qtà" prefWidth="60.0"/>
+                                        <TableColumn fx:id="itemWeightColumn" text="Peso" prefWidth="90.0"/>
+                                        <TableColumn fx:id="itemDescriptionColumn" text="Descrizione" prefWidth="320.0"/>
+                                    </columns>
+                                    <placeholder>
+                                        <Label text="Inventario vuoto"/>
+                                    </placeholder>
+                                </TableView>
+                            </VBox>
+
+                            <!-- Character notes -->
+                            <VBox spacing="8.0" prefWidth="430.0" styleClass="section-card">
+                                <Label text="INFORMAZIONI PERSONAGGIO" styleClass="section-title"/>
+                                <GridPane hgap="8.0" vgap="8.0">
+                                    <Label text="Background" styleClass="field-caption" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <Label fx:id="backgroundDescriptionLabel" text="—" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                    <Label text="Razza" styleClass="field-caption" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <Label fx:id="raceDescriptionLabel" text="—" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                    <Label text="Velocità base" styleClass="field-caption" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <Label fx:id="baseSpeedLabel" text="—" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                    <Label text="Scurovisione" styleClass="field-caption" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                    <Label fx:id="darkvisionLabel" text="—" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                </GridPane>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="23.0" minWidth="310.0"/>
+                        <ColumnConstraints percentWidth="32.0" minWidth="350.0"/>
+                        <ColumnConstraints percentWidth="45.0" minWidth="400.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="NEVER"/>
+                        <RowConstraints vgrow="NEVER"/>
+                    </rowConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </center>
+</fx:root>

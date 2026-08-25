@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -22,17 +23,17 @@ public class ControId implements Serializable {
     private String nomeCampagna;
 
     @Column(name = "DataSvolgimento")
-    private String dataSvolgimento;
+    private LocalDate dataSvolgimento;
 
     @Column(name = "NumCombattimento")
-    private String numCombattimento;
+    private int numCombattimento;
 
     @Column(name = "NumTurno")
-    private String numTurno;
+    private int numTurno;
 
     @Column(name = "NumAzione")
-    private String numAzione;
+    private int numAzione;
 
     @Column(name = "NumeroIstanza")
-    private String numeroIstanza;
+    private int numeroIstanza;
 }

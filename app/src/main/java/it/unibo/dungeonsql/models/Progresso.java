@@ -33,7 +33,7 @@ public class Progresso {
     private Classe classe;
 
     @Column(name = "Livello", nullable = false)
-    private String livello;
+    private int livello;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({

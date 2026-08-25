@@ -17,6 +17,8 @@ public class SchedaService {
         // try-with-resources: chiude automaticamente la sessione Hibernate alla fine
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             
+            Scheda scheda = session.get(Scheda.class, codiceScheda);
+
             Personaggio personaggio = session.get(Personaggio.class, codiceScheda);
             
             if (personaggio == null) {
@@ -58,6 +60,7 @@ public class SchedaService {
                     .progressi(progressi)
                     .inventario(inventario)
                     .magie(magie)
+                    .scheda(scheda)
                     .build();
         }
     }

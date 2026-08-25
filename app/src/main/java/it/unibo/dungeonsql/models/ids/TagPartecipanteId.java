@@ -8,8 +8,8 @@ import java.io.Serializable;
 @Embeddable
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode @Builder
 public class TagPartecipanteId implements Serializable {
-    @Column(name = "CodiceScheda") private String codiceScheda;
+    @Column(name = "CodiceScheda") private int codiceScheda;
     @Column(name = "Username") private String username;
     @Column(name = "NomeCampagna") private String nomeCampagna;
-    @Column(name = "DataSvolgimento") private String dataSvolgimento;
+    @Column(name = "DataSvolgimento") private int dataSvolgimento;
 }

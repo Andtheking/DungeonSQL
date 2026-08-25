@@ -4,18 +4,15 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- Driver e Dialetto PostgreSQL -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
-        <!-- Strategia di validazione (il DB esiste già, valida solo lo schema) -->
         <property name="hbm2ddl.auto">validate</property>
 
-        <!-- Debug e visualizzazione query -->
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
+        <property name="generate_statistics = true">true</property>
 
-        <!-- Mapping di tutte le Entity del progetto -->
         <mapping class="it.unibo.dungeonsql.models.Utente"/>
         <mapping class="it.unibo.dungeonsql.models.Campagna"/>
         <mapping class="it.unibo.dungeonsql.models.Sessione"/>

@@ -16,7 +16,7 @@ public class TrattoClasse {
     private String descrizione;
 
     @Column(name = "LivelloRichiesto", nullable = false)
-    private String livelloRichiesto;
+    private int livelloRichiesto;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("nomeClasse")

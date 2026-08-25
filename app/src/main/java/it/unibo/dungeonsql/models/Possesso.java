@@ -33,7 +33,7 @@ public class Possesso {
     private Scheda scheda;
 
     @Column(name = "Punteggio", nullable = false)
-    private String punteggio;
+    private int punteggio;
 
     @Column(name = "CompetenzaSalvezza", nullable = false)
     private String competenzaSalvezza;

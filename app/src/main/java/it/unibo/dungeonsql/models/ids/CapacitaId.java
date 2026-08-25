@@ -19,5 +19,5 @@ public class CapacitaId implements Serializable {
     private String nomeSkill;
 
     @Column(name = "CodiceScheda", nullable = false)
-    private String codiceScheda;
+    private int codiceScheda;
 }

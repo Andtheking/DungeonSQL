@@ -14,7 +14,7 @@ public class Oggetto {
 
     @Id
     @Column(name = "CodiceOggetto", nullable = false)
-    private String codiceOggetto;
+    private int codiceOggetto;
 
     @Column(name = "Nome", nullable = false)
     private String nome;

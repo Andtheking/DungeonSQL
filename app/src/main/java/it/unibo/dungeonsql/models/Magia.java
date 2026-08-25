@@ -14,7 +14,7 @@ public class Magia {
 
     @Id
     @Column(name = "CodiceMagia", nullable = false)
-    private String codiceMagia;
+    private int codiceMagia;
 
     @Column(name = "Nome", nullable = false)
     private String nome;
