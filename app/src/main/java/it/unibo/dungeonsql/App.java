@@ -2,8 +2,13 @@ package it.unibo.dungeonsql;
 
 import java.util.concurrent.CompletableFuture;
 
+import it.unibo.dungeonsql.models.Combattimento;
 import it.unibo.dungeonsql.ui.MainLayout;
+import it.unibo.dungeonsql.ui.controllers.CampagnaController;
+import it.unibo.dungeonsql.ui.controllers.CombattimentoController;
+import it.unibo.dungeonsql.ui.controllers.DiarioController;
 import it.unibo.dungeonsql.ui.controllers.LogInController;
+import it.unibo.dungeonsql.ui.controllers.PersonaggioController;
 import it.unibo.dungeonsql.ui.controllers.SignInController;
 import it.unibo.dungeonsql.util.HibernateUtil;
 import javafx.application.Application;
@@ -57,10 +62,10 @@ public class App extends Application {
     }
 
     private void mostraMainLayout() {
-        MainLayout mainLayout = new MainLayout();
-        
+        CombattimentoController combattimentoController = new CombattimentoController(STYLESHEET_CASPIAN, null, null);
+
         rootContainer.getChildren().clear();
-        rootContainer.getChildren().add(mainLayout);
+        rootContainer.getChildren().add(combattimentoController);
     }
 
     public static void main(String[] args) {

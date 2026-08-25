@@ -1,7 +1,7 @@
 package it.unibo.dungeonsql.ui;
 
 import it.unibo.dungeonsql.services.SchedaService;
-import it.unibo.dungeonsql.ui.controllers.PersonaggioController;
+import it.unibo.dungeonsql.ui.controllers.SchedaPersonaggioController;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Menu;
@@ -67,7 +67,7 @@ public class MainLayout extends BorderPane {
                     .thenAcceptAsync(schedaDto -> {
                         Platform.runLater(() -> {
                             // Sostituiamo il centro con la vera SchedaView del personaggio!
-                            sp.setCenter(new PersonaggioController(schedaDto));
+                            sp.setCenter(new SchedaPersonaggioController(schedaDto));
                         });
                     });
             }

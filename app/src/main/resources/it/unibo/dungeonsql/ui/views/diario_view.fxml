@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="VBox" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+    </padding>
+
+    <Label text="DungeonSQL - Diario di Sessione" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <HBox spacing="15.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Nome Campagna:"/>
+            <TextField fx:id="txtNomeCampagna" promptText="Es. Curse of Strahd"/>
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Data Sessione:"/>
+            <DatePicker fx:id="dpDataSessione" promptText="Seleziona data"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+        <Label text="Avvenimenti della Sessione:"/>
+        <TextArea fx:id="txtDiario" promptText="Scrivi qui cosa è successo..." wrapText="true" prefRowCount="6"/>
+    </VBox>
+
+    <Separator/>
+
+    <Label text="Aggiungi Tag (Opzionali):" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <HBox spacing="15.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Codice Scheda:"/>
+            <TextField fx:id="txtTagScheda" promptText="Es. CHR-001"/>
+        </VBox>
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Codice Oggetto:"/>
+            <TextField fx:id="txtTagOggetto" promptText="Es. ITM-045"/>
+        </VBox>
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Codice Magia:"/>
+            <TextField fx:id="txtTagMagia" promptText="Es. SPL-012"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#handleAnnulla" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        <Button text="Salva Diario" onAction="#handleSalvaDiario" defaultButton="true" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <VBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label fx:id="lblError" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;"/>
+        <Label fx:id="lblSuccess" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
+    </VBox>
+</fx:root>

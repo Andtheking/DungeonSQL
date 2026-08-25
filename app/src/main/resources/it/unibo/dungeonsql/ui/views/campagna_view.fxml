@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="VBox" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+    </padding>
+
+    <Label text="DungeonSQL - Creazione Campagna" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <VBox spacing="5.0" maxWidth="400.0">
+        <Label text="Nome Campagna:"/>
+        <TextField fx:id="txtNomeCampagna" promptText="Es. Curse of Strahd"/>
+    </VBox>
+
+    <VBox spacing="5.0" maxWidth="400.0">
+        <Label text="Descrizione:"/>
+        <TextArea fx:id="txtDescrizione" promptText="Descrivi la campagna..." wrapText="true" prefRowCount="4"/>
+    </VBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Annulla" onAction="#handleAnnulla" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        <Button text="Crea Campagna" onAction="#handleCreaCampagna" defaultButton="true" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <VBox spacing="5.0">
+        <Label fx:id="lblError" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;"/>
+        <Label fx:id="lblSuccess" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
+    </VBox>
+</fx:root>
