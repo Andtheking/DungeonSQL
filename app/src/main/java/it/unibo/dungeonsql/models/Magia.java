@@ -23,10 +23,10 @@ public class Magia {
     private String descrizione;
 
     @Column(name = "Livello", nullable = false)
-    private String livello;
+    private int livello;
 
     @Column(name = "Rituale", nullable = false)
-    private String rituale;
+    private Boolean rituale;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({

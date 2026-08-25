@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode @Builder
@@ -11,5 +12,5 @@ public class TagOggettoId implements Serializable {
     @Column(name = "CodiceOggetto") private int codiceOggetto;
     @Column(name = "Username") private String username;
     @Column(name = "NomeCampagna") private String nomeCampagna;
-    @Column(name = "DataSvolgimento") private int dataSvolgimento;
+    @Column(name = "DataSvolgimento") private LocalDate dataSvolgimento;
 }

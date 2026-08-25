@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -22,5 +23,5 @@ public class SessioneId implements Serializable {
     private String nomeCampagna;
 
     @Column(name = "DataSvolgimento")
-    private int dataSvolgimento;
+    private LocalDate dataSvolgimento;
 }

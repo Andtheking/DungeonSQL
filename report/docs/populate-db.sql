@@ -160,11 +160,11 @@ INSERT INTO APPRENDIMENTO (NomeClasse, CodiceMagia) VALUES
 INSERT INTO CONOSCENZA (CodiceMagia, CodiceScheda) VALUES (2, 3);
 
 -- INVENTARIO (Rimosso il terzo valore Quantità perchè non esiste nello schema)
-INSERT INTO INVENTARIO (CodiceOggetto, CodiceScheda) VALUES 
-(1, 1),
-(2, 2),
-(4, 3),
-(3, 4);
+INSERT INTO INVENTARIO (CodiceOggetto, CodiceScheda, Quantita) VALUES 
+(1, 1, 1),
+(2, 2, 1),
+(4, 3, 1),
+(3, 4, 1);
 
 INSERT INTO COMBATTIMENTO (Username, Nome, DataSvolgimento, NumCombattimento) VALUES 
 ('Fabri Fibra', 'La Miniera Perduta', '2026-08-24', 1),

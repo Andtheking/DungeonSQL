@@ -22,8 +22,8 @@ public class Oggetto {
     @Column(name = "Descrizione", nullable = false)
     private String descrizione;
 
-    @Column(name = "Peso", nullable = false)
-    private String peso;
+    @Column(name = "Peso", columnDefinition = "NUMERIC", nullable = false)
+    private Double peso;
 
     @Column(name = "EffettoMagico", nullable = false)
     private String effettoMagico;
@@ -41,13 +41,13 @@ public class Oggetto {
     private String proprietaArma;
 
     @Column(name = "BonusCA")
-    private String bonusCA;
+    private int bonusCA;
 
     @Column(name = "ReqArmatura")
     private String reqArmatura;
 
     @Column(name = "Furtiva")
-    private String furtiva;
+    private Boolean furtiva;
 
     @Column(name = "EffettoCons")
     private String effettoCons;

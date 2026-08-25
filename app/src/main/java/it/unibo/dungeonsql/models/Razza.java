@@ -23,7 +23,7 @@ public class Razza {
     private String descrizione;
 
     @Column(name = "VelocitaBase", nullable = false)
-    private String velocitaBase;
+    private int velocitaBase;
 
     @Column(name = "Scurovisione", nullable = false)
     private Boolean scurovisione;

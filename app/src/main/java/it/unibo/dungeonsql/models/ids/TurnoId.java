@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -22,11 +23,11 @@ public class TurnoId implements Serializable {
     private String nome;
 
     @Column(name = "DataSvolgimento")
-    private int dataSvolgimento;
+    private LocalDate dataSvolgimento;
 
     @Column(name = "NumCombattimento")
-    private String numCombattimento;
+    private int numCombattimento;
 
     @Column(name = "NumTurno")
-    private String numTurno;
+    private int numTurno;
 }

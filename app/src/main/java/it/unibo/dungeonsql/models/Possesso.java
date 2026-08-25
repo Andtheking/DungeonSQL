@@ -36,5 +36,5 @@ public class Possesso {
     private int punteggio;
 
     @Column(name = "CompetenzaSalvezza", nullable = false)
-    private String competenzaSalvezza;
+    private Boolean competenzaSalvezza;
 }

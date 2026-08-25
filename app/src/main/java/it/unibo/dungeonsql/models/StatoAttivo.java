@@ -20,7 +20,7 @@ public class StatoAttivo {
     private Boolean scaduto;
 
     @Column(name = "Durata", nullable = false)
-    private String durata;
+    private int durata;
 
     @Column(name = "Note")
     private String note;

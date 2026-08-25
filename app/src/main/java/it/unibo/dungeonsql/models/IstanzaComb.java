@@ -17,7 +17,7 @@ public class IstanzaComb {
     private IstanzaCombId id;
 
     @Column(name = "Iniziativa", nullable = false)
-    private String iniziativa;
+    private int iniziativa;
 
     @Column(name = "HP", nullable = false)
     private int hp;

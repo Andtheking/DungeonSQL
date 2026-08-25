@@ -25,8 +25,8 @@ public class Mostro {
     private String cr;
 
     @Column(name = "ExpRilasciata", nullable = false)
-    private String expRilasciata;
+    private int expRilasciata;
 
     @Column(name = "Velocita", nullable = false)
-    private String velocita;
+    private int velocita;
 }

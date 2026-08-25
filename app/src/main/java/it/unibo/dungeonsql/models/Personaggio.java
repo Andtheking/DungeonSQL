@@ -31,7 +31,7 @@ public class Personaggio {
     private int hp;
 
     @Column(name = "ExpAccumulata", nullable = false)
-    private String expAccumulata;
+    private int expAccumulata;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
