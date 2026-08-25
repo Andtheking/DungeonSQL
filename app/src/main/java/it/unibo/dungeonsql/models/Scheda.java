@@ -35,13 +35,6 @@ public class Scheda {
     )
     private Utente creatore;
 
-    /*
-     * CAMPAGNA ha una chiave composta:
-     * (UsernameMaster, Nome)
-     *
-     * SCHEDA la referenzia tramite:
-     * (UsernameMaster, NomeCampagna)
-     */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(

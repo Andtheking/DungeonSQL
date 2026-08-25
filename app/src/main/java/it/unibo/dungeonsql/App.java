@@ -2,11 +2,15 @@ package it.unibo.dungeonsql;
 
 import java.util.concurrent.CompletableFuture;
 
-import it.unibo.dungeonsql.ui.MainLayout;
+import it.unibo.dungeonsql.dtos.SchedaPersonaggio;
 import it.unibo.dungeonsql.ui.controllers.LogInController;
+import it.unibo.dungeonsql.ui.controllers.SchedaController;
 import it.unibo.dungeonsql.ui.controllers.SignInController;
+import it.unibo.dungeonsql.ui.layouts.ListaSchedeLayout;
+import it.unibo.dungeonsql.ui.layouts.MenuLayout;
 import it.unibo.dungeonsql.util.HibernateUtil;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -14,6 +18,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private StackPane rootContainer; 
+    private String loggedInUsername;
 
     @Override
     public void start(Stage primaryStage) {
@@ -38,29 +43,51 @@ public class App extends Application {
 
     private void mostraSchermataLogin() {
         LogInController loginView = new LogInController(
-            () -> mostraMainLayout(),
+            (u) -> {
+                this.loggedInUsername = u;
+                mostraMenuLayout();
+            },
             () -> mostraSchermataSignIn() 
         );
 
-        rootContainer.getChildren().clear();
-        rootContainer.getChildren().add(loginView);
+        replaceMainNode(loginView);
     }
 
     private void mostraSchermataSignIn() {
+        this.loggedInUsername = null;
+
         SignInController signInView = new SignInController(
-            () -> mostraMainLayout(),
+            (u) -> {
+                this.loggedInUsername = u;
+                mostraMenuLayout();
+            },
             () -> mostraSchermataLogin() 
         );
-
-        rootContainer.getChildren().clear();
-        rootContainer.getChildren().add(signInView);
+ 
+        replaceMainNode(signInView);
     }
 
-    private void mostraMainLayout() {
-        MainLayout mainLayout = new MainLayout();
+    private void mostraListaSchede() {
+        ListaSchedeLayout schedeLayout = new ListaSchedeLayout(this.loggedInUsername, this::mostraMenuLayout, this::mostraScheda);
+
+        replaceMainNode(schedeLayout);
+    }
+
+    private void mostraScheda(SchedaPersonaggio sp) {
+        SchedaController sc = new SchedaController(sp);
         
+        replaceMainNode(sc);
+    }
+
+    private void mostraMenuLayout() {
+        MenuLayout mainLayout = new MenuLayout(loggedInUsername, this::mostraSchermataLogin, this::mostraListaSchede);
+        
+        replaceMainNode(mainLayout);
+    }
+
+    private void replaceMainNode(Node replaceWith) {
         rootContainer.getChildren().clear();
-        rootContainer.getChildren().add(mainLayout);
+        rootContainer.getChildren().add(replaceWith);
     }
 
     public static void main(String[] args) {

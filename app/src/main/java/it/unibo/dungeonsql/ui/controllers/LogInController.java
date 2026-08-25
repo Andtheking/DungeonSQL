@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class LogInController extends VBox {
 
@@ -15,12 +16,12 @@ public class LogInController extends VBox {
     @FXML private PasswordField txtPass;
     @FXML private Label lblError;
 
-    private Runnable onLoginSuccess;
+    private Consumer<String> onLoginSuccess;
     private Runnable onGoToSignIn;
     
     private final LoginService loginService = new LoginService();
 
-    public LogInController(Runnable onLoginSuccess, Runnable onGoToSignIn) {
+    public LogInController(Consumer<String> onLoginSuccess, Runnable onGoToSignIn) {
         this.onLoginSuccess = onLoginSuccess;
         this.onGoToSignIn = onGoToSignIn;
 
@@ -41,7 +42,8 @@ public class LogInController extends VBox {
         String password = txtPass.getText();
         
         if (loginService.autentica(user, password)) {
-            if (onLoginSuccess != null) onLoginSuccess.run();
+            if (onLoginSuccess != null) 
+                onLoginSuccess.accept(user);
         } else {
             lblError.setText("Username o password errati!");
         }

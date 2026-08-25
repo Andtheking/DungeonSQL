@@ -1,5 +1,7 @@
 package it.unibo.dungeonsql.models;
 
+import java.util.List;
+
 import it.unibo.dungeonsql.models.ids.ProgressoId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,4 +53,12 @@ public class Progresso {
         )
     })
     private Sottoclasse sottoclasse;
+
+    // Aggiungi queste righe in Progresso.java
+    @OneToMany(mappedBy = "progresso", fetch = FetchType.LAZY)
+    private List<AbilitazioneRisorsa> abilitazioniRisorse;
+
+    @OneToMany(mappedBy = "progresso", fetch = FetchType.LAZY)
+    private List<AbilitazioneTratto> abilitazioniTratti;
+    
 }

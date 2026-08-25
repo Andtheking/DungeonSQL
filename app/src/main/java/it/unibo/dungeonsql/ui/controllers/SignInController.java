@@ -1,6 +1,6 @@
 package it.unibo.dungeonsql.ui.controllers;
 
-import it.unibo.dungeonsql.services.SignInService; // O RegistrazioneService, come l'hai chiamato
+import it.unibo.dungeonsql.services.SignInService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class SignInController extends VBox {
 
@@ -16,12 +17,12 @@ public class SignInController extends VBox {
     @FXML private TextField txtMail;
     @FXML private Label lblFeedback;
 
-    private Runnable onSignInSuccess;
+    private Consumer<String> onSignInSuccess;
     private Runnable onGoToLogin;
     
     private final SignInService signInService = new SignInService();
 
-    public SignInController(Runnable onSignInSuccess, Runnable onGoToLogin) {
+    public SignInController(Consumer<String> onSignInSuccess, Runnable onGoToLogin) {
         this.onSignInSuccess = onSignInSuccess;
         this.onGoToLogin = onGoToLogin;
 
@@ -43,7 +44,7 @@ public class SignInController extends VBox {
         String email = txtMail.getText();
         
         if (signInService.registraUtente(user, email, password)) {
-            if (onSignInSuccess != null) onSignInSuccess.run();
+            if (onSignInSuccess != null) onSignInSuccess.accept(user);
         } else {
             lblFeedback.setStyle("-fx-text-fill: #c0392b;"); // Rosso errore
             lblFeedback.setText("Username già in uso o campi vuoti!");
