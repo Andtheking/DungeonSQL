@@ -62,10 +62,10 @@ public class App extends Application {
     }
 
     private void mostraMainLayout() {
-        CombattimentoController combattimentoController = new CombattimentoController(STYLESHEET_CASPIAN, null, null);
-
+        PersonaggioController personaggioController = new PersonaggioController("Fabri Fibra", null, null);
+        
         rootContainer.getChildren().clear();
-        rootContainer.getChildren().add(combattimentoController);
+        rootContainer.getChildren().add(personaggioController);
     }
 
     public static void main(String[] args) {
