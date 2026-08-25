@@ -332,8 +332,6 @@ TSWLatexianTemp*
 
 **lock**
 
-.gradle/
-build/
 .vscode/
 # Ignore Gradle project-specific cache directory
 .gradle
