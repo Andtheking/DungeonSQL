@@ -74,13 +74,17 @@ public class App extends Application {
     }
 
     private void mostraScheda(SchedaPersonaggio sp) {
-        SchedaController sc = new SchedaController(sp);
+        SchedaController sc = new SchedaController(sp, () -> mostraListaSchede());
         
         replaceMainNode(sc);
     }
 
     private void mostraMenuLayout() {
-        MenuLayout mainLayout = new MenuLayout(loggedInUsername, this::mostraSchermataLogin, this::mostraListaSchede);
+        MenuLayout mainLayout = new MenuLayout(
+            loggedInUsername, 
+            this::mostraSchermataLogin, 
+            this::mostraListaSchede
+        );
         
         replaceMainNode(mainLayout);
     }

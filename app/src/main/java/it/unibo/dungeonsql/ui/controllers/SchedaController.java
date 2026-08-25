@@ -1,40 +1,12 @@
 package it.unibo.dungeonsql.ui.controllers;
 
-/*
- * ASSUNZIONI SUI GETTER (verifica e correggi i nomi non giusti):
- *
- *  Personaggio        -> getScheda(), getAllineamento(), getExpAccumulata(), getHp(), getBackground(), getRazza()
- *  Scheda             -> getNome(), getCa(), getMaxHp(), getTaglia(), getCreatore() -> Utente
- *  Utente             -> getUsername()
- *  Background         -> getNome(), getDescrizione()
- *  Razza              -> getNome(), getDescrizione(), getVelocitaBase(), getScurovisione()
- *  Possesso           -> getId() -> PossessoId.getNomeCaratteristica(), getPunteggio(), getCompetenzaSalvezza()
- *  Capacita           -> getId() -> CapacitaId.getNomeSkill(), getLivelloCapacita() [0=nessuna,1=competente,2=esperto]
- *  Progresso          -> getId() -> ProgressoId.getNomeClasse(), getSottoclasse() -> Sottoclasse, getLivello(),
- *                         getAbilitazioniTratto(), getAbilitazioniRisorsa()
- *  Sottoclasse        -> getNome()
- *  AbilitazioneTratto -> getTrattoClasse() -> TrattoClasse
- *  TrattoClasse       -> getNome(), getDescrizione(), getLivelloRichiesto()
- *  AbilitazioneRisorsa-> getRisorsaClasse() -> RisorsaClasse
- *  RisorsaClasse      -> getNome(), getRecupero()
- *  Magia              -> getNome(), getLivello(), getRituale(), getDescrizione()
- *  RigaInventario     -> getNome(), getQuantita(), getPeso(), getDescrizione(), getTipo(), getDanno()
- *
- *  SchedaPersonaggio (DTO) -> getPersonaggio(), getCaratteristiche() : List<Possesso>,
- *                             getCapacita() : List<Capacita>, getMagie() : List<Magia>,
- *                             getProgressi() : List<Progresso>, getInventario() : List<RigaInventario>
- *
- *  Ho tolto le liste di alias italiano/inglese sui nomi delle caratteristiche (es. "forza"/"strength"/"for")
- *  assumendo che CARATTERISTICA.Nome in DB sia sempre in italiano. Se non è così, va reintrodotta
- *  una piccola mappa di alias in normalize()/scoreOf().
- */
-
 import it.unibo.dungeonsql.dtos.SchedaPersonaggio;
 import it.unibo.dungeonsql.models.*;
 import it.unibo.dungeonsql.services.SchedaService.RigaInventario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -161,10 +133,15 @@ public class SchedaController extends ScrollPane {
     @FXML private Label baseSpeedLabel;
     @FXML private Label darkvisionLabel;
 
+    @FXML private Button backBtn;
+
+    private final Runnable goBack;
+
     private final SchedaPersonaggio scheda;
 
-    public SchedaController(SchedaPersonaggio scheda) {
+    public SchedaController(SchedaPersonaggio scheda, Runnable goBack) {
         this.scheda = scheda;
+        this.goBack = goBack;
 
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/it/unibo/dungeonsql/ui/views/scheda_view.fxml")
@@ -183,8 +160,9 @@ public class SchedaController extends ScrollPane {
         }
     }
 
-    public SchedaController() {
-        this.scheda = null;
+    @FXML
+    private void backBtnHandler() {
+        this.goBack.run();
     }
 
     @FXML

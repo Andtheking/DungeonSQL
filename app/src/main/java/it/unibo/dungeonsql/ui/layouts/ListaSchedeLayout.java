@@ -78,13 +78,11 @@ public class ListaSchedeLayout extends VBox {
     @FXML
     private void apriScheda(ActionEvent event) {
         Scheda selezionata = listaSchede.getSelectionModel().getSelectedItem();
-        
 
         if (selezionata != null) {
             System.out.println("Apertura scheda: " + selezionata.getNome());
             onApriScheda.accept(schedaService.getSchedaCompleta(selezionata.getCodiceScheda()));
         } else {
-            // Mostra un popup di errore se l'utente non ha cliccato su nessuna scheda
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Nessuna selezione");
             alert.setHeaderText(null);

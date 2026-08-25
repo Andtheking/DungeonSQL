@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.VBox" spacing="15.0" prefWidth="600.0" 
+         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
+    </padding>
+
+    <Label text="DungeonSQL - Creazione Combattimento" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <TitledPane text="Dati Sessione" expanded="true">
+        <VBox spacing="10">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Scegli Campagna" onAction="#handleScegliCampagna"/>
+                <TextField fx:id="txtCampagnaSelezionata" editable="false" promptText="Nessuna campagna scelta" prefWidth="200"/>
+            </HBox>
+            <HBox spacing="15">
+                <VBox spacing="5">
+                    <Label text="Data Sessione:"/>
+                    <DatePicker fx:id="dpDataSessione"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="N° Combattimento:"/>
+                    <Spinner fx:id="spnNumCombattimento" initialValue="1" min="1" max="999" editable="true"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <TitledPane text="Primo Partecipante in Iniziativa" expanded="true">
+        <VBox spacing="10">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            
+            <GridPane hgap="15" vgap="10">
+                <Label text="N° Istanza:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Spinner fx:id="spnNumeroIstanza" initialValue="1" min="1" max="99" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Iniziativa:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                <Spinner fx:id="spnIniziativa" initialValue="15" min="-5" max="40" editable="true" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+                <Label text="HP Attuali:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Spinner fx:id="spnHp" initialValue="30" min="1" max="999" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+
+            <Separator/>
+
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <Label text="Tipo:" style="-fx-font-weight: bold;"/>
+                <RadioButton fx:id="radioPersonaggio" text="Personaggio (PC)" selected="true">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="tgTipoPartecipante"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="radioMostro" text="Mostro" toggleGroup="$tgTipoPartecipante"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="lblCodice" text="Codice Scheda PG:" prefWidth="130"/>
+                <TextField fx:id="txtCodiceScheda" promptText="Es. SCH-001" HBox.hgrow="ALWAYS"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Bottoni e Messaggi di Stato -->
+    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#handleAnnulla" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        <Button text="Avvia Combattimento" onAction="#handleAvviaCombattimento" defaultButton="true" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <VBox alignment="CENTER" spacing="5.0">
+        <Label fx:id="lblError" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;" wrapText="true"/>
+        <Label fx:id="lblSuccess" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;" wrapText="true"/>
+    </VBox>
+
+</fx:root>
