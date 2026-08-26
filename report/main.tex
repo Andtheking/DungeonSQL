@@ -1059,19 +1059,19 @@ Da un'analisi aggiuntiva sotto sbucate le alcune ridondanze, che verranno gestit
     BEGIN TRANSACTION;
 
     UPDATE SESSIONE
-    SET Diario = :testo_diario
-    WHERE Username = :username_master 
-    AND Nome = :nome_campagna 
-    AND DataSvolgimento = :data_sessione;
+    SET Diario = %
+    WHERE Username = % 
+    AND Nome = % 
+    AND DataSvolgimento = %;
 
     INSERT INTO TAG_PARTECIPANTE (Username, Nome, DataSvolgimento, CodiceScheda)
-    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_scheda);
+    VALUES (%, %, %, %);
 
     INSERT INTO TAG_OGGETTO (Username, Nome, DataSvolgimento, CodiceOggetto)
-    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_oggetto);
+    VALUES (%, %, %, %);
 
     INSERT INTO TAG_MAGIA (Username, Nome, DataSvolgimento, CodiceMagia)
-    VALUES (:username_master, :nome_campagna, :data_sessione, :codice_magia);
+    VALUES (%, %, %, %);
 
     COMMIT;
 \end{lstlisting}
