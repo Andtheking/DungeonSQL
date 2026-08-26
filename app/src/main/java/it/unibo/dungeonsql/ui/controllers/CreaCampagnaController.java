@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class CampagnaController extends VBox {
+public class CreaCampagnaController extends VBox {
 
     @FXML private TextField txtNomeCampagna;
     @FXML private TextArea txtDescrizione;
@@ -24,19 +24,19 @@ public class CampagnaController extends VBox {
     // Istanza del service per la comunicazione con il DB
     private final CampagnaService campagnaService = new CampagnaService();
 
-    public CampagnaController(String loggedUsername, Runnable onCampagnaCreated, Runnable onCancel) {
+    public CreaCampagnaController(String loggedUsername, Runnable onCampagnaCreated, Runnable onCancel) {
         this.loggedUsername = loggedUsername;
         this.onCampagnaCreated = onCampagnaCreated;
         this.onCancel = onCancel;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unibo/dungeonsql/ui/views/campagna_view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unibo/dungeonsql/ui/views/creacampagna_view.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
         try {
             loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("Errore nel caricamento di creazione_campagna_view.fxml", e);
+            throw new RuntimeException("Errore nel caricamento di creacampagna_view.fxml", e);
         }
     }
 
@@ -50,8 +50,7 @@ public class CampagnaController extends VBox {
 
         if (successo) {
             lblSuccess.setText("Campagna creata con successo!");
-            txtNomeCampagna.clear();
-            txtDescrizione.clear();
+            svuotaCampi();
             if (onCampagnaCreated != null) onCampagnaCreated.run();
         } else {
             lblError.setText("Errore di creazione su PostgreSQL.");

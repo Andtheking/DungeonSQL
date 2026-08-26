@@ -37,13 +37,7 @@
       </font>
    </Button>
 
-   <Button mnemonicParsing="false" onAction="#gestisciCampagne" prefHeight="50.0" prefWidth="250.0" text="Le Mie Campagne">
-      <font>
-         <Font size="14.0" />
-      </font>
-   </Button>
-
-   <Button mnemonicParsing="false" onAction="#gestisciCombattimenti" prefHeight="50.0" prefWidth="250.0" text="Nuovo Combattimento">
+   <Button mnemonicParsing="false" onAction="#gestisciCampagne" prefHeight="50.0" prefWidth="250.0" text="Vedi Campagne">
       <font>
          <Font size="14.0" />
       </font>

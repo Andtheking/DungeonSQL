@@ -3,9 +3,13 @@ package it.unibo.dungeonsql;
 import java.util.concurrent.CompletableFuture;
 
 import it.unibo.dungeonsql.dtos.SchedaPersonaggio;
+import it.unibo.dungeonsql.models.Campagna;
+import it.unibo.dungeonsql.ui.controllers.CreaCampagnaController;
 import it.unibo.dungeonsql.ui.controllers.LogInController;
 import it.unibo.dungeonsql.ui.controllers.SchedaController;
 import it.unibo.dungeonsql.ui.controllers.SignInController;
+import it.unibo.dungeonsql.ui.controllers.VediCampagnaController;
+import it.unibo.dungeonsql.ui.layouts.ListaCampagneLayout;
 import it.unibo.dungeonsql.ui.layouts.ListaSchedeLayout;
 import it.unibo.dungeonsql.ui.layouts.MenuLayout;
 import it.unibo.dungeonsql.util.HibernateUtil;
@@ -79,11 +83,35 @@ public class App extends Application {
         replaceMainNode(sc);
     }
 
+    private void mostraListaCampagne() {
+        ListaCampagneLayout cc = new ListaCampagneLayout(loggedInUsername,
+            this::mostraMenuLayout,
+            this::creaCampagna,
+            this::mostraCampagna
+        );
+
+        replaceMainNode(cc);
+
+    }
+
+    private void creaCampagna() {
+        CreaCampagnaController cc = new CreaCampagnaController(loggedInUsername, null, this::mostraListaCampagne);
+
+        replaceMainNode(cc);
+    }
+
+    private void mostraCampagna(Campagna campagna) {
+        VediCampagnaController vcc = new VediCampagnaController(campagna, loggedInUsername, this::mostraListaCampagne, this::creaCampagna);
+
+        replaceMainNode(vcc);
+    }
+
     private void mostraMenuLayout() {
         MenuLayout mainLayout = new MenuLayout(
             loggedInUsername, 
             this::mostraSchermataLogin, 
-            this::mostraListaSchede
+            this::mostraListaSchede,
+            this::mostraListaCampagne
         );
         
         replaceMainNode(mainLayout);

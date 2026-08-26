@@ -14,15 +14,17 @@ public class MenuLayout extends VBox {
 
     private String usernameLoggato;
     private Runnable onLogout;
-    private Runnable onApriSchede; // Aggiunta la nuova callback
+    private Runnable onApriSchede; 
+    private Runnable onApriCampagne; 
 
-    // Aggiorniamo il costruttore
     public MenuLayout(String usernameLoggato, 
         Runnable onLogout, 
-        Runnable onApriSchede) {
+        Runnable onApriSchede,
+        Runnable onApriCampagne) {
         this.usernameLoggato = usernameLoggato;
         this.onLogout = onLogout;
-        this.onApriSchede = onApriSchede; // Salviamo la callback
+        this.onApriSchede = onApriSchede; 
+        this.onApriCampagne = onApriCampagne;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/it/unibo/dungeonsql/ui/views/menu_view.fxml"));
         fxmlLoader.setRoot(this);
@@ -46,14 +48,11 @@ public class MenuLayout extends VBox {
 
     @FXML
     private void gestisciCampagne(ActionEvent event) {
-        System.out.println("Apro la schermata delle Campagne");
+        if (onApriCampagne != null) {
+            onApriCampagne.run();
+        }
     }
-
-    @FXML
-    private void gestisciCombattimenti(ActionEvent event) {
-        System.out.println("Avvio iniziativa combattimento...");
-    }
-
+    
     @FXML
     private void eseguiLogout(ActionEvent event) {
         if (onLogout != null) {
