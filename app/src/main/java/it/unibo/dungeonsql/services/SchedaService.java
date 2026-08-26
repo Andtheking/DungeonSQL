@@ -47,24 +47,24 @@ public class SchedaService {
                 "FROM Progresso pr WHERE pr.id.codiceScheda = :codice", Progresso.class)
                 .setParameter("codice", codiceScheda).getResultList();
 
-            /// SVEGLIAMO CLASSI, SOTTOCLASSI E LE TABELLE PONTE
+            
             for (Progresso pr : progressi) {
                 Hibernate.initialize(pr.getClasse());
                 Hibernate.initialize(pr.getSottoclasse());
                 
-                // Svegliamo le abilitazioni per le Risorse
+                
                 Hibernate.initialize(pr.getAbilitazioniRisorse());
                 if (pr.getAbilitazioniRisorse() != null) {
                     for (AbilitazioneRisorsa ar : pr.getAbilitazioniRisorse()) {
-                        Hibernate.initialize(ar.getRisorsaClasse()); // Sveglia l'entità finale Risorsa
+                        Hibernate.initialize(ar.getRisorsaClasse()); 
                     }
                 }
 
-                // Svegliamo le abilitazioni per i Tratti
+                
                 Hibernate.initialize(pr.getAbilitazioniTratti());
                 if (pr.getAbilitazioniTratti() != null) {
                     for (var at : pr.getAbilitazioniTratti()) {
-                        Hibernate.initialize(at.getTrattoClasse()); // Sostituisci con il getter corretto della tua entità AbilitazioneTratto
+                        Hibernate.initialize(at.getTrattoClasse()); 
                     }
                 }
             }

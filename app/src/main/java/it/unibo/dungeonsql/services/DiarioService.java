@@ -9,11 +9,11 @@ import java.time.LocalDate;
 
 public class DiarioService {
 
-    // --- AGGIUNTA: INIZIALIZZAZIONE PREVENTIVA DI HIBERNATE ---
+    
     public DiarioService() {
         try {
-            // Forza la creazione della SessionFactory all'istanziazione del Service.
-            // Questo "scalda" Hibernate ed evita crash al primo accesso al DB.
+            
+            
             HibernateUtil.getSessionFactory();
         } catch (Exception e) {
             System.err.println("❌ Errore critico durante l'inizializzazione di Hibernate: " + e.getMessage());
@@ -27,7 +27,7 @@ public class DiarioService {
     public boolean salvaDiarioETag(String usernameMaster, String nomeCampagna, LocalDate dataSessione, 
                                    String testoDiario, String tagScheda, String tagOggetto, String tagMagia) {
         
-        // Validazione campi obbligatori
+        
         if (usernameMaster == null || usernameMaster.trim().isEmpty() ||
             nomeCampagna == null || nomeCampagna.trim().isEmpty() ||
             dataSessione == null || 
@@ -41,7 +41,7 @@ public class DiarioService {
             try {
                 tx = session.beginTransaction();
 
-                // 1. CREAZIONE (INSERT) della nuova Sessione con il Diario
+                
                 MutationQuery insertSessione = session.createNativeQuery(
                         "INSERT INTO SESSIONE (Username, NomeCampagna, DataSvolgimento, Diario) " +
                         "VALUES (:user, :campagna, :data, :diario)", void.class);
@@ -51,22 +51,22 @@ public class DiarioService {
                 insertSessione.setParameter("data", dataSessione);
                 insertSessione.setParameter("diario", testoDiario);
                 
-                // Esegue la creazione
+                
                 insertSessione.executeUpdate();
 
-                // 2. Insert Tag Partecipante (Opzionale)
+                
                 if (tagScheda != null && !tagScheda.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_PARTECIPANTE", "CodiceScheda", 
                                     usernameMaster, nomeCampagna, dataSessione, tagScheda.trim());
                 }
 
-                // 3. Insert Tag Oggetto (Opzionale)
+                
                 if (tagOggetto != null && !tagOggetto.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_OGGETTO", "CodiceOggetto", 
                                     usernameMaster, nomeCampagna, dataSessione, tagOggetto.trim());
                 }
 
-                // 4. Insert Tag Magia (Opzionale)
+                
                 if (tagMagia != null && !tagMagia.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_MAGIA", "CodiceMagia", 
                                     usernameMaster, nomeCampagna, dataSessione, tagMagia.trim());
@@ -89,7 +89,7 @@ public class DiarioService {
         }
     }
 
-    // Metodo helper interno per non ripetere il codice degli INSERT
+    
     private void eseguiInsertTag(Session session, String tabella, String colonnaCodice, 
                                  String username, String campagna, LocalDate data, String codiceValore) {
         String sql = String.format(

@@ -55,14 +55,14 @@ public class ListaCampagneLayout extends VBox {
         List<Campagna> campagneMaster = campagnaService.getCampagneByUsername(usernameLoggato);
         List<Campagna> campagnePlayer = campagnaService.getCampagnaGiocataByUtente(usernameLoggato);
 
-        // Uniamo le liste in un unico contenitore per la ListView
+        
         ObservableList<Campagna> tutteLeCampagne = FXCollections.observableArrayList();
         tutteLeCampagne.addAll(campagneMaster);
         tutteLeCampagne.addAll(campagnePlayer);
         
         listaCampagne.setItems(tutteLeCampagne);
 
-        // Personalizziamo la cella per mostrare visivamente se sei Master o Giocatore
+        
         listaCampagne.setCellFactory(param -> new ListCell<Campagna>() {
             @Override
             protected void updateItem(Campagna campagna, boolean empty) {
@@ -71,7 +71,7 @@ public class ListaCampagneLayout extends VBox {
                 if (empty || campagna == null || campagna.getId().getNome() == null) {
                     setText(null);
                 } else {
-                    // Controlliamo se l'utente loggato è il master di questa specifica campagna
+                    
                     String ruolo = campagnaService.isMaster(campagna, usernameLoggato) ? "[MASTER]" : "[GIOCATORE]";
                     setText(campagna.getId().getNome() + "  " + ruolo);
                 }
@@ -79,7 +79,7 @@ public class ListaCampagneLayout extends VBox {
         });
     }
 
-    // --- Azioni dei Bottoni ---
+    
 
     @FXML
     private void apriCampagna(ActionEvent event) {
@@ -87,7 +87,7 @@ public class ListaCampagneLayout extends VBox {
 
         if (selezionata != null) {
             System.out.println("Apertura scheda: " + selezionata.getId().getNome());
-            onApriScheda.accept(selezionata); // FIXME
+            onApriScheda.accept(selezionata); 
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Nessuna selezione");

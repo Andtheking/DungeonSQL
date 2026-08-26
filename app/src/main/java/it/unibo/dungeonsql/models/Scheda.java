@@ -13,7 +13,7 @@ import lombok.*;
 public class Scheda {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // <-- QUESTA ANNOTAZIONE È FONDAMENTALE
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "CodiceScheda", nullable = false)
     private int codiceScheda;
 

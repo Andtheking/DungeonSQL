@@ -29,7 +29,7 @@ public class StatoAttivo {
     @JoinColumn(name = "Nome", referencedColumnName = "Nome", insertable = false, updatable = false)
     private EffettoStato effettoStato;
 
-    // Afflizione (IstanzaComb afflitta)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "AFF_Username", referencedColumnName = "Username"),
@@ -40,7 +40,7 @@ public class StatoAttivo {
     })
     private IstanzaComb istanzaAfflitta;
 
-    // Causa (Azione che ha causato lo stato - opzionale)
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "SUD_Username", referencedColumnName = "Username"),

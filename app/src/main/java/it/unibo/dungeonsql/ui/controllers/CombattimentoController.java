@@ -10,23 +10,23 @@ import java.io.IOException;
 
 public class CombattimentoController extends VBox {
 
-    // Dati Sessione & Combattimento
+    
     @FXML private TextField txtCampagnaSelezionata;
     @FXML private DatePicker dpDataSessione;
     @FXML private Spinner<Integer> spnNumCombattimento;
 
-    // Dati Partecipante
+    
     @FXML private Spinner<Integer> spnNumeroIstanza;
     @FXML private Spinner<Integer> spnIniziativa;
     @FXML private Spinner<Integer> spnHp;
     
-    // Tipo Partecipante e Codice
+    
     @FXML private RadioButton radioPersonaggio;
     @FXML private RadioButton radioMostro;
     @FXML private Label lblCodice;
     @FXML private TextField txtCodiceScheda;
 
-    // Messaggi
+    
     @FXML private Label lblError;
     @FXML private Label lblSuccess;
 
@@ -54,16 +54,16 @@ public class CombattimentoController extends VBox {
 
     @FXML
     private void initialize() {
-        // Logica per aggiornare l'etichetta dinamicamente
+        
         radioPersonaggio.setOnAction(e -> lblCodice.setText("Codice Scheda PG:"));
         radioMostro.setOnAction(e -> lblCodice.setText("Codice Scheda Mostro:"));
     }
 
     @FXML
     private void handleScegliCampagna() {
-        // Qui dovresti aprire una nuova finestra/modal (es. TableView)
-        // che fa una SELECT su PostgreSQL per prendere le campagne dove l'utente è Master.
-        // Per ora simuliamo il ritorno di una scelta:
+        
+        
+        
         txtCampagnaSelezionata.setText("Curse of Strahd");
     }
 
@@ -92,6 +92,6 @@ public class CombattimentoController extends VBox {
 
     private void svuotaCampiPartecipante() {
         txtCodiceScheda.clear();
-        spnNumeroIstanza.getValueFactory().setValue(spnNumeroIstanza.getValue() + 1); // Prepara il prossimo ID
+        spnNumeroIstanza.getValueFactory().setValue(spnNumeroIstanza.getValue() + 1); 
     }
 }

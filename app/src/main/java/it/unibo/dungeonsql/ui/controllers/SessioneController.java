@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class DiarioController extends VBox {
+public class SessioneController extends VBox {
 
     @FXML private TextField txtNomeCampagna;
     @FXML private DatePicker dpDataSessione;
@@ -28,7 +28,7 @@ public class DiarioController extends VBox {
 
     private final DiarioService diarioService = new DiarioService();
 
-    public DiarioController(String loggedUsername, Runnable onSaveSuccess, Runnable onCancel) {
+    public SessioneController(String loggedUsername, Runnable onSaveSuccess, Runnable onCancel) {
         this.loggedUsername = loggedUsername;
         this.onSaveSuccess = onSaveSuccess;
         this.onCancel = onCancel;

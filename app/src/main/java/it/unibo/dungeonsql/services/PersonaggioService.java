@@ -33,7 +33,7 @@ public class PersonaggioService {
             try {
                 tx = session.beginTransaction();
 
-                // 1. Recuperiamo le entità esterne di riferimento (Foreign Keys)
+                
                 Utente creatore = session.get(Utente.class, creUsername);
                 Background background = session.get(Background.class, appNome);
                 Razza razza = session.get(Razza.class, fonNome);
@@ -45,7 +45,7 @@ public class PersonaggioService {
                     return false;
                 }
 
-                // 2. SCHEDA: Salviamo prima questa per generare il SERIAL
+                
                 Scheda scheda = Scheda.builder()
                         .nome(nome)
                         .maxHp(hp)
@@ -55,11 +55,11 @@ public class PersonaggioService {
                         .campagna(campagna)
                         .build();
                 session.persist(scheda);
-                session.flush(); // Forza Hibernate a scrivere sul DB e valorizzare l'ID
+                session.flush(); 
 
                 int codiceScheda = scheda.getCodiceScheda();
 
-                // 3. PERSONAGGIO: Ora 'codiceScheda' ha il valore corretto e non è più 0 o null
+                
                 Personaggio personaggio = Personaggio.builder()
                         .scheda(scheda)
                         .allineamento(allineamento)
@@ -70,23 +70,23 @@ public class PersonaggioService {
                         .build();
                 session.persist(personaggio);
 
-                // 4. POSSESSO (Le 6 caratteristiche)
+                
                 if (punteggiCaratteristiche != null) {
                     for (Map.Entry<String, Integer> entry : punteggiCaratteristiche.entrySet()) {
                         String nomeCaratteristica = entry.getKey();
                         int punteggio = entry.getValue();
                         boolean compSalvezza = competenzeSalvezza != null && competenzeSalvezza.getOrDefault(nomeCaratteristica, false);
 
-                        // Recupera l'entità Caratteristica dal database (presumendo che la classe si chiami Caratteristica)
-                        // Se la tua entità si chiama in un altro modo (es. Statistica o simile, adattane il nome)
+                        
+                        
                         Caratteristica caratteristica = session.get(Caratteristica.class, nomeCaratteristica);
 
                         PossessoId possessoId = new PossessoId(nomeCaratteristica, codiceScheda); 
                         
                         Possesso possesso = Possesso.builder()
                                 .id(possessoId)
-                                .scheda(scheda)                      // Collega la scheda
-                                .caratteristica(caratteristica)      // <-- AGGIUNGI QUESTO: Risolve l'errore sul one-to-one!
+                                .scheda(scheda)                      
+                                .caratteristica(caratteristica)      
                                 .punteggio(punteggio)
                                 .competenzaSalvezza(compSalvezza)
                                 .build();
@@ -94,7 +94,7 @@ public class PersonaggioService {
                     }
                 }
 
-                // 5. PROGRESSO (Livello classe)
+                
                 ProgressoId progressoId = new ProgressoId(codiceScheda, nomeClasse);
                 Progresso progresso = Progresso.builder()
                         .id(progressoId)
@@ -104,7 +104,7 @@ public class PersonaggioService {
                         .build();
                 session.persist(progresso);
 
-                // 6. CAPACITÀ / ABILITÀ
+                
                 if (abilitaSelezionate != null) {
                     for (Map.Entry<String, String> entry : abilitaSelezionate.entrySet()) {
                         String nomeCapacita = entry.getKey();
@@ -116,7 +116,7 @@ public class PersonaggioService {
                             CapacitaId capacitaId = new CapacitaId(nomeCapacita, codiceScheda);
                             Capacita capacita = Capacita.builder()
                                     .id(capacitaId)
-                                    .scheda(scheda) // <-- ASSICURATI DI AVERLO ANCHE QUI
+                                    .scheda(scheda) 
                                     .skill(skill)
                                     .livelloCapacita(livelloCapacita)
                                     .build();
@@ -142,15 +142,15 @@ public class PersonaggioService {
         }
     }
 
-    // --- METODI PER POPOLARE LE COMBOBOX ---
+    
 
     public List<String> getAllNomiRazze() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // 'r.id' recupera automaticamente la Primary Key (il nome) della Razza
+            
             return session.createQuery("SELECT r.id FROM Razza r", String.class).list();
         } catch (Exception e) {
             System.err.println("Errore nel recupero delle razze: " + e.getMessage());
-            return List.of(); // Ritorna lista vuota in caso di errore per non far crashare la grafica
+            return List.of(); 
         }
     }
 
@@ -174,7 +174,7 @@ public class PersonaggioService {
 
     public List<String> getAllUsernamesMaster() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Estraiamo tutti i Master che hanno almeno una campagna creata, senza duplicati (DISTINCT)
+            
             return session.createQuery("SELECT DISTINCT c.master.username FROM Campagna c", String.class).list();
         } catch (Exception e) {
             System.err.println("Errore nel recupero dei master: " + e.getMessage());
@@ -184,7 +184,7 @@ public class PersonaggioService {
 
     public List<String> getAllNomiCampagne() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Adatta 'c.id.nome' con il nome reale della variabile stringa dentro la tua classe CampagnaId
+            
             return session.createQuery("SELECT DISTINCT c.id.nome FROM Campagna c", String.class).list();
         } catch (Exception e) {
             System.err.println("Errore nel recupero delle campagne: " + e.getMessage());

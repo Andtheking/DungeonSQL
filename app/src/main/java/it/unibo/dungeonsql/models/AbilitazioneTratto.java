@@ -18,7 +18,7 @@ public class AbilitazioneTratto {
     @Column(name = "Quantita", nullable = false)
     private int quantita;
 
-    // Relazione con Progresso (CodiceScheda, NomeClasse)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "CodiceScheda", referencedColumnName = "CodiceScheda", insertable = false, updatable = false),
@@ -26,7 +26,7 @@ public class AbilitazioneTratto {
     })
     private Progresso progresso;
 
-    // Relazione con TrattoClasse (la cui PK è composta da NomeClasse e Nome)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "NomeClasse", referencedColumnName = "NomeClasse", insertable = false, updatable = false),

@@ -55,7 +55,7 @@ public class Oggetto {
     @Column(name = "DurataCons")
     private String durataCons;
 
-    // Relazione opzionale con la Campagna (oggetti homebrew/creati nella campagna)
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "UsernameMasterCampagna", referencedColumnName = "UsernameMaster"),

@@ -25,8 +25,8 @@ public class ListaSchedeLayout extends VBox {
 
     private String usernameLoggato;
     private SchedaService schedaService;
-    private Runnable onBack; // Callback per tornare al menu
-    private Runnable onCreaScheda; // Callback per tornare al menu
+    private Runnable onBack; 
+    private Runnable onCreaScheda; 
     private Consumer<SchedaPersonaggio> onApriScheda;
 
     public ListaSchedeLayout(String usernameLoggato, 
@@ -40,9 +40,9 @@ public class ListaSchedeLayout extends VBox {
         this.onApriScheda = onApriScheda;
         this.onCreaScheda = onCreaScheda;
 
-        this.schedaService = new SchedaService(); // O passalo dal costruttore se usi Dependency Injection
+        this.schedaService = new SchedaService(); 
 
-        // 1. Caricamento FXML
+        
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/it/unibo/dungeonsql/ui/views/listaschede_view.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -53,18 +53,18 @@ public class ListaSchedeLayout extends VBox {
             throw new RuntimeException("Errore nel caricamento di listaschede_view.fxml", exception);
         }
 
-        // 2. Inizializzazione dati
+        
         inizializzaLista();
     }
 
     private void inizializzaLista() {
-        // Recupera i dati tramite il tuo Service
+        
         List<Scheda> schedeTrovate = schedaService.getSchedeByUtente(usernameLoggato);
         ObservableList<Scheda> schedeObservable = FXCollections.observableArrayList(schedeTrovate);
         
         listaSchede.setItems(schedeObservable);
 
-        // Formatta come le schede appaiono visivamente nella lista
+        
         listaSchede.setCellFactory(param -> new ListCell<Scheda>() {
             @Override
             protected void updateItem(Scheda scheda, boolean empty) {
@@ -73,14 +73,14 @@ public class ListaSchedeLayout extends VBox {
                 if (empty || scheda == null || scheda.getNome() == null) {
                     setText(null);
                 } else {
-                    // Testo mostrato: Nome Personaggio - Nome Campagna (es. Aragorn - La Miniera Perduta)
+                    
                     setText(scheda.getNome() + "  —  Campagna: " + scheda.getCampagna().getId().getNome());
                 }
             }
         });
     }
 
-    // --- Azioni dei Bottoni ---
+    
 
     @FXML
     private void apriScheda(ActionEvent event) {

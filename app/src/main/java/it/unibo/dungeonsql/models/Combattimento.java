@@ -16,7 +16,7 @@ public class Combattimento {
     @EmbeddedId
     private CombattimentoId id;
 
-    // Relazione con Sessione (Username, NomeCampagna, DataSvolgimento)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false),

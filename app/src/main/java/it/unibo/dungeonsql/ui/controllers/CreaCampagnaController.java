@@ -21,7 +21,7 @@ public class CreaCampagnaController extends VBox {
     private Runnable onCampagnaCreated;
     private Runnable onCancel;
 
-    // Istanza del service per la comunicazione con il DB
+    
     private final CampagnaService campagnaService = new CampagnaService();
 
     public CreaCampagnaController(String loggedUsername, Runnable onCampagnaCreated, Runnable onCancel) {
@@ -45,7 +45,7 @@ public class CreaCampagnaController extends VBox {
         lblError.setText("");
         lblSuccess.setText("");
 
-        // Passiamo direttamente loggedUsername al DB
+        
         boolean successo = campagnaService.creaCampagna(loggedUsername, txtNomeCampagna.getText(), txtDescrizione.getText());
 
         if (successo) {
@@ -67,6 +67,6 @@ public class CreaCampagnaController extends VBox {
     private void svuotaCampi() {
         txtNomeCampagna.clear();
         txtDescrizione.clear();
-        // L'username potrebbe rimanere pre-compilato se l'utente sta creando più campagne
+        
     }
 }

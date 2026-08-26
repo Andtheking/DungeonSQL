@@ -25,7 +25,7 @@ public class Contro {
     @Column(name = "Sconfitto", nullable = false)
     private Boolean sconfitto;
 
-    // Relazione con l'azione
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false),
@@ -37,7 +37,7 @@ public class Contro {
     })
     private Azione azione;
 
-    // Relazione con l'istanza bersaglio (target)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false),

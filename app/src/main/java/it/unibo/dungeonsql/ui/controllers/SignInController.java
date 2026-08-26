@@ -46,7 +46,7 @@ public class SignInController extends VBox {
         if (signInService.registraUtente(user, email, password)) {
             if (onSignInSuccess != null) onSignInSuccess.accept(user);
         } else {
-            lblFeedback.setStyle("-fx-text-fill: #c0392b;"); // Rosso errore
+            lblFeedback.setStyle("-fx-text-fill: #c0392b;"); 
             lblFeedback.setText("Username già in uso o campi vuoti!");
         }
     }

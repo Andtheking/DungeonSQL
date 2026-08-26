@@ -54,7 +54,7 @@ public class Progresso {
     })
     private Sottoclasse sottoclasse;
 
-    // Aggiungi queste righe in Progresso.java
+    
     @OneToMany(mappedBy = "progresso", fetch = FetchType.LAZY)
     private List<AbilitazioneRisorsa> abilitazioniRisorse;
 

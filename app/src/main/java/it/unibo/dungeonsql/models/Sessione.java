@@ -16,7 +16,7 @@ public class Sessione {
     @EmbeddedId
     private SessioneId id;
 
-    // Relazione con Campagna (la chiave primaria di Campagna è composta da UsernameMaster e Nome)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "UsernameMaster", insertable = false, updatable = false),

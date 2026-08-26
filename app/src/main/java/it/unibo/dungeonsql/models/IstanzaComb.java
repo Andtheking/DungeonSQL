@@ -31,7 +31,7 @@ public class IstanzaComb {
     })
     private Combattimento combattimento;
 
-    // Questa è la chiave diretta che punta alla scheda (sia essa di un personaggio o di un mostro)
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CodiceScheda", nullable = false)
     private Scheda scheda;

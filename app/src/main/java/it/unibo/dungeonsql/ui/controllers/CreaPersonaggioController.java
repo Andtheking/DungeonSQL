@@ -17,10 +17,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 
-// Estendiamo ScrollPane per permettere lo scorrimento del modulo
+
 public class CreaPersonaggioController extends ScrollPane {
 
-    // Campi Scheda & PG
+    
     @FXML private TextField txtNomePersonaggio;
     @FXML private ComboBox<String> cmbTaglia;
     @FXML private Spinner<Integer> spnHp;
@@ -32,10 +32,10 @@ public class CreaPersonaggioController extends ScrollPane {
     @FXML private ComboBox<String> cmbBackground;
     @FXML private ComboBox<String> cmbClasse;
 
-    // Statistiche, Classe, Capacità, Equipaggiamento
+    
     @FXML private CheckBox chkCompetenzaForza;
     
-    // Messaggi
+    
     @FXML private Label lblError;
     @FXML private Label lblSuccess;
     
@@ -73,7 +73,7 @@ public class CreaPersonaggioController extends ScrollPane {
     @FXML private CheckBox chkCompetenzaSalvezzaSaggezza;
     @FXML private CheckBox chkCompetenzaSalvezzaCarisma;
 
-    // Mappa che associa il nome della skill (esattamente come va salvato nel DB) al suo componente
+    
     private final Map<String, NCEComboBox> mapSkillComboBoxes = new HashMap<>();
 
     private final Runnable onSaveSuccess;
@@ -100,11 +100,11 @@ public class CreaPersonaggioController extends ScrollPane {
 
     @FXML
     private void initialize() {
-        // Inizializza la ComboBox della taglia
+        
         cmbTaglia.setItems(FXCollections.observableArrayList("Piccola", "Media", "Grande"));
         cmbTaglia.getSelectionModel().select("Media");
 
-        // CHIAMATE AL DATABASE PER POPOLARE LE COMBOBOX
+        
         List<String> razze = personaggioService.getAllNomiRazze();
         cmbRazza.setItems(FXCollections.observableArrayList(razze));
 
@@ -120,7 +120,7 @@ public class CreaPersonaggioController extends ScrollPane {
         List<String> master = personaggioService.getAllUsernamesMaster();
         cmbMaster.setItems(FXCollections.observableArrayList(master));
 
-        // Popoliamo la mappa collegando la stringa del DB al rispettivo componente
+        
         mapSkillComboBoxes.put("Acrobazia", cmbAcrobazia);
         mapSkillComboBoxes.put("Addestrare Animali", cmbAddestrareAnimali);
         mapSkillComboBoxes.put("Arcano", cmbArcano);
@@ -140,7 +140,7 @@ public class CreaPersonaggioController extends ScrollPane {
         mapSkillComboBoxes.put("Sopravvivenza", cmbSopravvivenza);
         mapSkillComboBoxes.put("Storia", cmbStoria);
 
-        // Permette allo ScrollPane di adattarsi dinamicamente
+        
         this.setFitToWidth(true);
     }
 
@@ -148,7 +148,7 @@ public class CreaPersonaggioController extends ScrollPane {
     private void handleCreaPersonaggio() {
         lblError.setText(""); lblSuccess.setText("");
         
-        // Genera un CodiceScheda univoco per PostgreSQL 
+        
         Map<String, String> valoriSkill = new HashMap<>();
     
         for (Map.Entry<String, NCEComboBox> entry : mapSkillComboBoxes.entrySet()) {
@@ -160,7 +160,7 @@ public class CreaPersonaggioController extends ScrollPane {
             }
         }
 
-        // Esempio nel metodo di salvataggio del Controller:
+        
         Map<String, Integer> punteggiCaratteristiche = Map.of(
             "Forza", spnForza.getValue(),
             "Destrezza", spnDestrezza.getValue(),
@@ -186,14 +186,14 @@ public class CreaPersonaggioController extends ScrollPane {
             cmbTaglia.getValue(), 
             loggedUsername, 
             txtAllineamento.getText(), 
-            cmbRazza.getValue(),       // <-- Prelevato da ComboBox
-            cmbBackground.getValue(),  // <-- Prelevato da ComboBox
+            cmbRazza.getValue(),       
+            cmbBackground.getValue(),  
             punteggiCaratteristiche, 
             competenzeSalvezza,
-            cmbClasse.getValue(),      // <-- Prelevato da ComboBox
+            cmbClasse.getValue(),      
             valoriSkill, 
-            cmbCampagna.getValue(),    // <-- Prelevato da ComboBox
-            cmbMaster.getValue()       // <-- Prelevato da ComboBox
+            cmbCampagna.getValue(),    
+            cmbMaster.getValue()       
         );
 
         if (successo) {

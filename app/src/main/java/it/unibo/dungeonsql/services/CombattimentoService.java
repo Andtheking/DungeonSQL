@@ -27,7 +27,7 @@ public class CombattimentoService {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
 
-            // 1. INSERT INTO COMBATTIMENTO
+            
             MutationQuery qCombattimento = session.createNativeQuery(
                 "INSERT INTO COMBATTIMENTO (Username, Nome, DataSvolgimento, NumCombattimento) " +
                 "VALUES (:user, :campagna, :data, :numComb)", void.class);
@@ -37,7 +37,7 @@ public class CombattimentoService {
             qCombattimento.setParameter("numComb", numCombattimento);
             qCombattimento.executeUpdate();
 
-            // 2. INSERT INTO TURNO (Primo turno = 1)
+            
             MutationQuery qTurno = session.createNativeQuery(
                 "INSERT INTO TURNO (Username, Nome, DataSvolgimento, NumCombattimento, NumTurno) " +
                 "VALUES (:user, :campagna, :data, :numComb, 1)", void.class);
@@ -47,7 +47,7 @@ public class CombattimentoService {
             qTurno.setParameter("numComb", numCombattimento);
             qTurno.executeUpdate();
 
-            // 3. INSERT INTO ISTANZA_COMB
+            
             MutationQuery qIstanza = session.createNativeQuery(
                 "INSERT INTO ISTANZA_COMB (Username, Nome, DataSvolgimento, NumCombattimento, Numero, Iniziativa, HP) " +
                 "VALUES (:user, :campagna, :data, :numComb, :numero, :iniziativa, :hp)", void.class);
@@ -60,7 +60,7 @@ public class CombattimentoService {
             qIstanza.setParameter("hp", hp);
             qIstanza.executeUpdate();
 
-            // 4. INSERT INTO ISTANZA_XOR
+            
             String sqlXor = "INSERT INTO ISTANZA_XOR (Username, Nome, DataSvolgimento, NumCombattimento, Numero, I_P_CodiceScheda, I_M_CodiceScheda) " +
                             "VALUES (:user, :campagna, :data, :numComb, :numero, :pCodice, :mCodice)";
             MutationQuery qXor = session.createNativeQuery(sqlXor, void.class);
@@ -70,7 +70,7 @@ public class CombattimentoService {
             qXor.setParameter("numComb", numCombattimento);
             qXor.setParameter("numero", numeroIstanza);
             
-            // Gestione del vincolo XOR
+            
             if (isPersonaggio) {
                 qXor.setParameter("pCodice", codiceScheda);
                 qXor.setParameter("mCodice", null);

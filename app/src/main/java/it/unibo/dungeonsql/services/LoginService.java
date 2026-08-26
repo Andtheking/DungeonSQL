@@ -1,6 +1,6 @@
 package it.unibo.dungeonsql.services;
 
-import it.unibo.dungeonsql.models.Utente; // Assicurati che punti alla tua entity
+import it.unibo.dungeonsql.models.Utente; 
 import it.unibo.dungeonsql.util.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

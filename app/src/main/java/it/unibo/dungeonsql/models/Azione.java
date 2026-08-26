@@ -22,17 +22,17 @@ public class Azione {
     @Column(name = "NumeroIstanza", nullable = false)
     private int numeroIstanza;
 
-    // Relazione opzionale con Oggetto
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CodiceOggetto")
     private Oggetto oggetto;
 
-    // Relazione opzionale con Magia
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CodiceMagia")
     private Magia magia;
 
-    // Relazione con l'istanza che esegue l'azione
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false),
@@ -43,7 +43,7 @@ public class Azione {
     })
     private IstanzaComb istanzaComb;
 
-    // Relazione con il Turno in cui avviene
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
         @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false),
