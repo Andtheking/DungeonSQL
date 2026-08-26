@@ -198,3 +198,5 @@ INSERT INTO TAG_PARTECIPANTE (CodiceScheda, Username, NomeCampagna, DataSvolgime
 (2, 'm_rossi', 'La Miniera Perduta', '2026-08-24'),
 (4, 'm_rossi', 'La Miniera Perduta', '2026-08-31'),
 (3, 'm_rossi', 'La Miniera Perduta', '2026-08-31');
+
+SELECT setval(pg_get_serial_sequence('scheda', 'codicescheda'), (SELECT MAX(codicescheda) FROM scheda));

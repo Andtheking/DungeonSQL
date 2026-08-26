@@ -407,7 +407,7 @@ Saranno ora elencate tutte le entità e relazioni che andranno a comporre lo sch
     SOTTORAZZA & R & Lega ricorsivamente una Razza alle sue Sottorazze. \\ \midrule 
     APPARTENENZA\_RAZZA & R & Lega il Personaggio alla Razza a cui appartiene. \\ \midrule 
     FONDAMENTO & R & Lega il Personaggio al Background scelto in fase di creazione. \\ \midrule
-    PROPENSIONE & R & Lega un Background alle Skill in cui garantisce competenza (sostituisce Perizia). \\ \midrule
+    PROPENSIONE & R & Lega un Background alle Skill in cui garantisce competenza. \\ \midrule
     APPARTENENZA & R & Lega il Progresso al Personaggio giocante, definendone il livello accumulato. \\ \midrule 
     RIFERIMENTO & R & Lega il Progresso alla specifica Classe in cui il Personaggio sta avanzando. \\ \midrule 
     SCELTA & R & Lega il Progresso alla Sottoclasse intrapresa. \\ \midrule 
@@ -856,7 +856,7 @@ Osservando lo schema si dovrebbero già notare chiaramente le chiavi primarie di
 Bisogna giusto fare un'osservazione sulle entità \textit{MOSTRO} e \textit{PERSONAGGIO}, in quanto queste sono identificate esternamente dall'entità \textit{SCHEDA}, ma DB-main non permette di realizzare tali identificatori completamente esterni.
 
 \section{Analisi delle ridondanze}
-Da un'analisi aggiuntiva sotto sbucate le alcune ridondanze, che verranno gestite rispettivamente nei seguenti modi:
+Da un'analisi aggiuntiva sono risultate alcune ridondanze, che verranno gestite rispettivamente nei seguenti modi:
 \begin{itemize}
     \item Nell'entità \textit{MOSTRO} sono presenti come attributi sia \texttt{CR} che \texttt{ExpRilasciata}, ma quest'ultima potrebbe risultare ridondante in quanto il CR di un mostro determina univocamente la sua ExpRilasciata. Si decide però di mantenere tale attributo in quanto l'applicazione dà anche la possibilità di realizzare dei mostri custom da parte del DM.
     \item L'entità \textit{PERSONAGGIO} presenta l'attributo \texttt{ExpAccumulata} e l'entità \textit{PROGESSO} presenta l'attributo \texttt{Livello}. L'unione di questi due attributi potrebbe risultare ridonante in quanto l'ExpAccumulata da un personaggio determina il suo livello totale, però l'attributo in \textit{PROGRESSO} verrà mantenuto in quanto viene specificato il livello per ogni classe scelta.
@@ -1116,9 +1116,6 @@ VALUES (%, %, %, %, 1);
 INSERT INTO ISTANZA_COMB (Username, Nome, DataSvolgimento, NumCombattimento, Numero, Iniziativa, HP)
 VALUES (%, %, %, %, %, %, %);
 
--- Tabella XOR per determinare se e' PC o Mostro
--- Se e' un Personaggio: I_P_CodiceScheda = :id, I_M_CodiceScheda = NULL
--- Se e' un Mostro:      I_P_CodiceScheda = NULL, I_M_CodiceScheda = :id
 INSERT INTO ISTANZA_XOR (Username, Nome, DataSvolgimento, NumCombattimento, Numero, I_P_CodiceScheda, I_M_CodiceScheda)
 VALUES (%, %, %, %, %, %, NULL);
 
