@@ -12,17 +12,17 @@
 
     <VBox spacing="5.0" maxWidth="400.0">
         <Label text="Master:"/>
-        <TextField fx:id="txtMaster" editable="false"/>
+        <TextField fx:id="txtMaster" disable="true"/>
     </VBox>
 
     <VBox fx:id="vbxPg" spacing="5.0" maxWidth="400.0">
         <Label text="Personaggi con cui partecipi:"/>
-        <TextField fx:id="txtPg" editable="false"/>
+        <TextField fx:id="txtPg" disable="true"/>
     </VBox>
 
     <VBox spacing="5.0" maxWidth="400.0">
         <Label text="Descrizione:"/>
-        <TextArea fx:id="txtDescrizione" editable="false" wrapText="true" prefRowCount="4"/>
+        <TextArea fx:id="txtDescrizione" disable="true" wrapText="true" prefRowCount="4"/>
     </VBox>
 
     <HBox spacing="10.0" alignment="CENTER_LEFT">

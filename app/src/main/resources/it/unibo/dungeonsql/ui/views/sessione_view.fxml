@@ -13,23 +13,25 @@
     <HBox spacing="15.0">
         <VBox spacing="5.0" HBox.hgrow="ALWAYS">
             <Label text="Nome Campagna:"/>
-            <TextField fx:id="txtNomeCampagna" editable="false"/>
+            <TextField fx:id="txtNomeCampagna" disable="true"/>
         </VBox>
         <VBox spacing="5.0">
             <Label text="Data Sessione:"/>
-            <DatePicker editable="false" fx:id="dpDataSessione"/>
+            <DatePicker disable="true" fx:id="dpDataSessione"/>
         </VBox>
     </HBox>
 
     <VBox spacing="5.0" VBox.vgrow="ALWAYS">
         <Label text="Avvenimenti della Sessione:"/>
-        <TextArea  editable="false" fx:id="txtDiario" wrapText="true" prefRowCount="6"/>
+        <TextArea  disable="true" fx:id="txtDiario" wrapText="true" prefRowCount="6"/>
     </VBox>
 
     <Separator/>
 
     <HBox spacing="10.0" alignment="CENTER_RIGHT">
         <Button text="Indietro" onAction="#handleIndietro" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        <Button fx:id="btnModifica" text="Modifica" onAction="#handleModifica" style="-fx-background-color: #e8a45b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        <Button fx:id="btnSalva" text="Salva" onAction="#handleSalva" style="-fx-background-color: #5be887; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
     </HBox>
 
     <VBox alignment="CENTER_LEFT" spacing="5.0">

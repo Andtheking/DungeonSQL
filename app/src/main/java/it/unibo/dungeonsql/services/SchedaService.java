@@ -12,10 +12,14 @@ public class SchedaService {
 
     public List<Scheda> getSchedeByUtente(String usernameLoggato) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "SELECT s FROM Scheda s JOIN FETCH s.campagna WHERE s.creatore.username = :username";
-            Query<Scheda> query = session.createQuery(hql, Scheda.class);
-            query.setParameter("username", usernameLoggato);
-            return query.list();
+            String hql = "SELECT s FROM Scheda s " +
+                        "JOIN FETCH s.campagna " +
+                        "JOIN s.personaggio " +
+                        "WHERE s.creatore.username = :username";
+                        
+            return session.createSelectionQuery(hql, Scheda.class)
+                        .setParameter("username", usernameLoggato)
+                        .list();
         }
     }
 

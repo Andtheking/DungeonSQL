@@ -13,8 +13,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class SessioneService {
-
-    
     public SessioneService() {
         try {
             HibernateUtil.getSessionFactory();
@@ -51,13 +49,25 @@ public class SessioneService {
         }
     }
 
-    /**
-     * Aggiorna il diario della sessione e inserisce eventuali tag.
-     * Restituisce true se l'operazione va a buon fine, false altrimenti.
-     */
+    public void updateDiarioSessione(Sessione sessione, String nuovoDiario) {
+        Transaction transaction = null;
+        
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            sessione.setDiario(nuovoDiario);
+            session.merge(sessione);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+
     public boolean salvaDiarioETag(String usernameMaster, Campagna campagna, LocalDate dataSessione, 
                                String testoDiario, String tagScheda, String tagOggetto, String tagMagia) {
-        // 1. Corretto il controllo: rimosso .trim().isEmpty() su campagna
         if (usernameMaster == null || usernameMaster.trim().isEmpty() ||
             campagna == null || 
             dataSessione == null || 
@@ -71,9 +81,6 @@ public class SessioneService {
             try {
                 tx = session.beginTransaction();
 
-                // 2. Estraiamo il nome della campagna come stringa per passarla alla query SQL.
-                // NOTA: Adatta 'getId().getNome()' in base a come hai chiamato i getter nella tua classe Campagna!
-                // Se non hai la chiave composta, potrebbe essere semplicemente campagna.getNome()
                 String nomeCampagnaStr = campagna.getId().getNome(); 
 
                 MutationQuery insertSessione = session.createNativeQuery(
@@ -81,15 +88,12 @@ public class SessioneService {
                         "VALUES (:user, :campagna, :data, :diario)", void.class);
                 
                 insertSessione.setParameter("user", usernameMaster);
-                insertSessione.setParameter("campagna", nomeCampagnaStr); // <-- Passiamo la stringa, non l'oggetto
+                insertSessione.setParameter("campagna", nomeCampagnaStr);
                 insertSessione.setParameter("data", dataSessione);
                 insertSessione.setParameter("diario", testoDiario);
                 
                 insertSessione.executeUpdate();
 
-                // 3. Passiamo la stringa 'nomeCampagnaStr' al metodo eseguiInsertTag
-                // (Assicurati che eseguiInsertTag accetti una String. Se accetta un oggetto Campagna, 
-                // rimetti semplicemente 'campagna' al posto di 'nomeCampagnaStr')
                 if (tagScheda != null && !tagScheda.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_PARTECIPANTE", "CodiceScheda", 
                                     usernameMaster, nomeCampagnaStr, dataSessione, tagScheda.trim());

@@ -15,7 +15,7 @@
         <VBox spacing="10">
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Button text="Scegli Campagna" onAction="#handleScegliCampagna"/>
-                <TextField fx:id="txtCampagnaSelezionata" editable="false" promptText="Nessuna campagna scelta" prefWidth="200"/>
+                <TextField fx:id="txtCampagnaSelezionata" disable="true" promptText="Nessuna campagna scelta" prefWidth="200"/>
             </HBox>
             <HBox spacing="15">
                 <VBox spacing="5">

@@ -2,6 +2,7 @@ package it.unibo.dungeonsql.ui.controllers;
 
 import it.unibo.dungeonsql.models.Campagna;
 import it.unibo.dungeonsql.models.Sessione;
+import it.unibo.dungeonsql.services.CampagnaService;
 import it.unibo.dungeonsql.services.SessioneService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,12 +27,15 @@ public class VediSessioneController extends VBox {
     
     @FXML private Label lblTitle;
 
+    @FXML private Button btnModifica;
+    @FXML private Button btnSalva;
 
     private Runnable onSaveSuccess;
     private Consumer<Campagna> onCancel;
     private String loggedInUsername;
     private Sessione sessione;
 
+    private final CampagnaService campagnaService = new CampagnaService();
     private final SessioneService diarioService = new SessioneService();
 
     public VediSessioneController(String loggedInUsername, Sessione sessione, Runnable onSaveSuccess, Consumer<Campagna> onCancel) {
@@ -51,9 +55,28 @@ public class VediSessioneController extends VBox {
         }
     }
 
+    @FXML void handleModifica() {
+        txtDiario.setDisable(false);    
+        btnSalva.setVisible(true);
+        btnModifica.setVisible(false);
+    }
+
+    @FXML void handleSalva() {
+        diarioService.updateDiarioSessione(sessione, txtDiario.getText());
+        btnSalva.setVisible(false);
+        btnModifica.setVisible(true);
+        txtDiario.setDisable(true);
+    }
+
     @FXML void initialize() {
         
         txtNomeCampagna.setText(sessione.getId().getNomeCampagna());
+        
+        btnSalva.setVisible(false);
+        if (!campagnaService.isMaster(sessione.getCampagna(), loggedInUsername)) {
+            btnModifica.setVisible(false);
+        }
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 

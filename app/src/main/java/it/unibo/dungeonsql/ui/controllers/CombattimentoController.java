@@ -9,23 +9,18 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class CombattimentoController extends VBox {
-
-    
     @FXML private TextField txtCampagnaSelezionata;
     @FXML private DatePicker dpDataSessione;
     @FXML private Spinner<Integer> spnNumCombattimento;
-
     
     @FXML private Spinner<Integer> spnNumeroIstanza;
     @FXML private Spinner<Integer> spnIniziativa;
     @FXML private Spinner<Integer> spnHp;
     
-    
     @FXML private RadioButton radioPersonaggio;
     @FXML private RadioButton radioMostro;
     @FXML private Label lblCodice;
     @FXML private TextField txtCodiceScheda;
-
     
     @FXML private Label lblError;
     @FXML private Label lblSuccess;
@@ -54,16 +49,12 @@ public class CombattimentoController extends VBox {
 
     @FXML
     private void initialize() {
-        
         radioPersonaggio.setOnAction(e -> lblCodice.setText("Codice Scheda PG:"));
         radioMostro.setOnAction(e -> lblCodice.setText("Codice Scheda Mostro:"));
     }
 
     @FXML
     private void handleScegliCampagna() {
-        
-        
-        
         txtCampagnaSelezionata.setText("Curse of Strahd");
     }
 
