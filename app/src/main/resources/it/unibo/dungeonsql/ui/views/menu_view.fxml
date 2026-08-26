@@ -21,7 +21,7 @@
       </font>
    </Label>
 
-   <Label text="Cosa vuoi fare oggi?" textFill="#555555">
+   <Label text="Cosa vuoi fare?" textFill="#555555">
       <font>
          <Font size="16.0" />
       </font>

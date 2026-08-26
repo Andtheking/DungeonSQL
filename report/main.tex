@@ -993,7 +993,20 @@ Da un'analisi aggiuntiva sotto sbucate le alcune ridondanze, che verranno gestit
 \texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione) REFERENCES AZIONI(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumTurno, NumAzione)} \\
 \texttt{FK: (UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, NumeroIstanza) REFERENCES ISTANZE\_COMB(UsernameMaster, NomeCampagna, DataSvolgimento, NumCombattimento, Numero)} \\
 
+\clearpage
+\newgeometry{margin=1.5cm}
+
 \section{Schema relazionale finale}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{relational.png}
+    \caption{Schema relazionale finale}
+    \label{fig:relational}
+\end{figure}
+
+\clearpage
+\restoregeometry
 
 \section{Traduzione delle operazioni in query SQL}
 
@@ -1111,5 +1124,87 @@ VALUES (%, %, %, %, %, %, NULL);
 
 COMMIT;
 \end{lstlisting}
+
+\chapter{Progettazione applicazione}
+
+\section{Collegamento con il Database}
+
+Per il collegamento con il DBMS è stato usato l'ORM "Hibernate", questo per rendere comodo l'utilizzo delle varie Relazioni nell'applicazione.
+Sono state mappate tutte le relazioni in oggetti Hibernate e poi utilizzate come classi normali di Java.
+
+\section{Guida utilizzo dell'applicativo}
+
+\subsection{Avviare il programma}
+
+Per avviare il programma è necessario avere Java 21 e il motore di Postgres.
+Sarà necessario passare le credenziali del DBMS tramite variabili di ambiente e avviare tramite gradlew, come mostrato nello screenshot
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/startup.png}
+    \caption{Avvio del programma tramite CLI}
+    \label{fig:startup}
+\end{figure}
+
+\subsection{Accesso}
+
+Schermata di login
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/login.png}
+    \caption{Schermata di login}
+    \label{fig:login}
+\end{figure}
+
+\subsection{Menù principale}
+
+Il menù principale si mostra come in foto
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/menu.png}
+    \caption{Schermata di login}
+    \label{fig:menu}
+\end{figure}
+
+\subsection{Gestione personaggi}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/characters_list.png}
+    \caption{Lista dei personaggi}
+    \label{fig:character_list}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/character.png}
+    \caption{Dettaglio di un personaggio}
+    \label{fig:character}
+\end{figure}
+
+\subsection{Campagne} 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/campagne_list.png}
+    \caption{Lista delle campagne, sia masterate sia giocate}
+    \label{fig:campagne}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/campagna_detail.png}
+    \caption{Dettaglio di una campagna masterata}
+    \label{fig:dettaglio_campagna}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{application/sessione_detail.png}
+    \caption{Dettaglio di una sessione masterata (possibilità di modifica)}
+    \label{fig:sessione}
+\end{figure}
 
 \end{document}
