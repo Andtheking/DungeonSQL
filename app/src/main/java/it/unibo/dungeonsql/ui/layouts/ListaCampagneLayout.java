@@ -54,7 +54,7 @@ public class ListaCampagneLayout extends VBox {
     private void inizializzaLista() {
         List<Campagna> campagneMaster = campagnaService.getCampagneByUsername(usernameLoggato);
         List<Campagna> campagnePlayer = campagnaService.getCampagnaGiocataByUtente(usernameLoggato);
-
+        
         
         ObservableList<Campagna> tutteLeCampagne = FXCollections.observableArrayList();
         tutteLeCampagne.addAll(campagneMaster);

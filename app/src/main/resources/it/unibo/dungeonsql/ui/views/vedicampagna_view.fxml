@@ -26,6 +26,11 @@
     </VBox>
 
     <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Button text="Vedi Sessioni" onAction="#handleVediSessioni"/>
+        <Button fx:id="btnNuovaSessione" text="Nuova Sessione" onAction="#handleNuovaSessione"/>
+    </HBox>
+
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
         <Button text="Indietro" onAction="#handleIndietro" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
         <Button text="Crea Campagna" onAction="#handleCreaCampagna" defaultButton="true" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
     </HBox>

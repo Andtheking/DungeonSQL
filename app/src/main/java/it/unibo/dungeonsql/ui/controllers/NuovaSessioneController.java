@@ -1,15 +1,19 @@
 package it.unibo.dungeonsql.ui.controllers;
 
-import it.unibo.dungeonsql.services.DiarioService;
+import it.unibo.dungeonsql.models.Campagna;
+import it.unibo.dungeonsql.services.SessioneService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
-public class SessioneController extends VBox {
+public class NuovaSessioneController extends VBox {
 
     @FXML private TextField txtNomeCampagna;
     @FXML private DatePicker dpDataSessione;
@@ -23,15 +27,17 @@ public class SessioneController extends VBox {
     @FXML private Label lblSuccess;
 
     private Runnable onSaveSuccess;
-    private Runnable onCancel;
+    private Consumer<Campagna> onCancel;
     private String loggedUsername;
+    private Campagna campagna;
 
-    private final DiarioService diarioService = new DiarioService();
+    private final SessioneService diarioService = new SessioneService();
 
-    public SessioneController(String loggedUsername, Runnable onSaveSuccess, Runnable onCancel) {
+    public NuovaSessioneController(String loggedUsername, Campagna campagna, Runnable onSaveSuccess, Consumer<Campagna> onCancel) {
         this.loggedUsername = loggedUsername;
         this.onSaveSuccess = onSaveSuccess;
         this.onCancel = onCancel;
+        this.campagna = campagna;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unibo/dungeonsql/ui/views/diario_view.fxml"));
         loader.setRoot(this);
@@ -40,15 +46,41 @@ public class SessioneController extends VBox {
         try {
             loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("Errore nel caricamento di diario_sessione_view.fxml", e);
+            throw new RuntimeException("Errore nel caricamento di diario_view.fxml", e);
         }
+    }
+
+    @FXML void initialize() {
+        
+        txtNomeCampagna.setText(campagna.getId().getNome());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        dpDataSessione.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return formatter.format(date);
+                }
+                return "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, formatter);
+                }
+                return null;
+            }
+        });
+        dpDataSessione.setValue(LocalDate.now());
     }
 
     @FXML
     private void handleSalvaDiario() {
         lblError.setText(""); lblSuccess.setText("");
         boolean successo = diarioService.salvaDiarioETag(
-            loggedUsername, txtNomeCampagna.getText(), dpDataSessione.getValue(), txtDiario.getText(),
+            loggedUsername, campagna, dpDataSessione.getValue(), txtDiario.getText(),
             txtTagScheda.getText(), txtTagOggetto.getText(), txtTagMagia.getText()
         );
 
@@ -63,13 +95,7 @@ public class SessioneController extends VBox {
     @FXML
     private void handleAnnulla() {
         if (onCancel != null) {
-            onCancel.run();
+            onCancel.accept(campagna);
         }
-    }
-
-    private void svuotaCampiTag() {
-        txtTagScheda.clear();
-        txtTagOggetto.clear();
-        txtTagMagia.clear();
     }
 }

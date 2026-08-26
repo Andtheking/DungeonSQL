@@ -4,14 +4,18 @@ import java.util.concurrent.CompletableFuture;
 
 import it.unibo.dungeonsql.dtos.SchedaPersonaggio;
 import it.unibo.dungeonsql.models.Campagna;
+import it.unibo.dungeonsql.models.Sessione;
 import it.unibo.dungeonsql.ui.controllers.CreaCampagnaController;
 import it.unibo.dungeonsql.ui.controllers.CreaPersonaggioController;
 import it.unibo.dungeonsql.ui.controllers.LogInController;
+import it.unibo.dungeonsql.ui.controllers.NuovaSessioneController;
 import it.unibo.dungeonsql.ui.controllers.SchedaController;
 import it.unibo.dungeonsql.ui.controllers.SignInController;
 import it.unibo.dungeonsql.ui.controllers.VediCampagnaController;
+import it.unibo.dungeonsql.ui.controllers.VediSessioneController;
 import it.unibo.dungeonsql.ui.layouts.ListaCampagneLayout;
 import it.unibo.dungeonsql.ui.layouts.ListaSchedeLayout;
+import it.unibo.dungeonsql.ui.layouts.ListaSessioniLayout;
 import it.unibo.dungeonsql.ui.layouts.MenuLayout;
 import it.unibo.dungeonsql.util.HibernateUtil;
 import javafx.application.Application;
@@ -112,10 +116,48 @@ public class App extends Application {
     }
 
     private void mostraCampagna(Campagna campagna) {
-        VediCampagnaController vcc = new VediCampagnaController(campagna, loggedInUsername, this::mostraListaCampagne, this::creaCampagna);
+        VediCampagnaController vcc = new VediCampagnaController(
+            campagna, 
+            loggedInUsername, 
+            this::mostraListaCampagne, 
+            this::creaCampagna,
+            this::mostraListaSessioni,
+            this::mostraNuovaSessione
+        );
 
         replaceMainNode(vcc);
     }
+
+    private void mostraNuovaSessione(Campagna campagna) {
+        NuovaSessioneController sc = new NuovaSessioneController(
+            loggedInUsername, campagna, null, this::mostraCampagna
+        );
+
+        replaceMainNode(sc);
+    }
+
+    private void mostraListaSessioni(Campagna campagna) {
+        ListaSessioniLayout lsl = new ListaSessioniLayout(
+            loggedInUsername, 
+            campagna,
+            this::mostraListaCampagne,
+            this::mostraNuovaSessione,
+            this::mostraSessione);
+
+            replaceMainNode(lsl);
+    }
+
+    private void mostraSessione(Sessione sessione) {
+        VediSessioneController vsc = new VediSessioneController(
+            loggedInUsername, 
+            sessione, 
+            null, 
+            this::mostraListaSessioni
+        );
+
+        replaceMainNode(vsc);
+    }
+
     //#endregion
 
     private void mostraMenuLayout() {

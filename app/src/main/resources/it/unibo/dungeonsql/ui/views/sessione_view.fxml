@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="VBox" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+    </padding>
+
+    <Label fx:id="lblTitle" text="DungeonSQL - Diario della Sessione del " style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <HBox spacing="15.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Nome Campagna:"/>
+            <TextField fx:id="txtNomeCampagna" editable="false"/>
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Data Sessione:"/>
+            <DatePicker editable="false" fx:id="dpDataSessione"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+        <Label text="Avvenimenti della Sessione:"/>
+        <TextArea  editable="false" fx:id="txtDiario" wrapText="true" prefRowCount="6"/>
+    </VBox>
+
+    <Separator/>
+
+    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+        <Button text="Indietro" onAction="#handleIndietro" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <VBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label fx:id="lblError" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;"/>
+        <Label fx:id="lblSuccess" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
+    </VBox>
+</fx:root>

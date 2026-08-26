@@ -13,7 +13,7 @@
     <HBox spacing="15.0">
         <VBox spacing="5.0" HBox.hgrow="ALWAYS">
             <Label text="Nome Campagna:"/>
-            <TextField fx:id="txtNomeCampagna" promptText="Es. Curse of Strahd"/>
+            <TextField fx:id="txtNomeCampagna" editable="false"/>
         </VBox>
         <VBox spacing="5.0">
             <Label text="Data Sessione:"/>

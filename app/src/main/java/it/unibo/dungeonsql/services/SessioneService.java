@@ -1,22 +1,53 @@
 package it.unibo.dungeonsql.services;
 
+import it.unibo.dungeonsql.models.Campagna;
+import it.unibo.dungeonsql.models.Sessione;
 import it.unibo.dungeonsql.util.HibernateUtil;
+
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.MutationQuery;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public class DiarioService {
+public class SessioneService {
 
     
-    public DiarioService() {
+    public SessioneService() {
         try {
-            
-            
             HibernateUtil.getSessionFactory();
         } catch (Exception e) {
             System.err.println("❌ Errore critico durante l'inizializzazione di Hibernate: " + e.getMessage());
+        }
+    }
+
+    public Sessione getSessioneByCampagnaEData(Campagna campagna, LocalDate datasvolgimento) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Sessione sessione = session.createQuery(
+                "FROM Sessione s WHERE s.campagna = :campagna AND s.datasvolgimento = :datasvolgimento",
+                Sessione.class)
+                .setParameter("campagna", campagna)
+                .setParameter("datasvolgimento", datasvolgimento)
+                .uniqueResult();
+
+            Hibernate.initialize(sessione.getCampagna());
+
+            return sessione;
+        }
+    }
+
+    public List<Sessione> getSessioniByCampagna(Campagna campagna) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Sessione> sessione = session.createQuery(
+                "FROM Sessione s JOIN FETCH s.campagna WHERE s.campagna = :campagna",
+                Sessione.class)
+                .setParameter("campagna", campagna)
+                .getResultList();
+
+
+            return sessione;
         }
     }
 
@@ -24,12 +55,11 @@ public class DiarioService {
      * Aggiorna il diario della sessione e inserisce eventuali tag.
      * Restituisce true se l'operazione va a buon fine, false altrimenti.
      */
-    public boolean salvaDiarioETag(String usernameMaster, String nomeCampagna, LocalDate dataSessione, 
-                                   String testoDiario, String tagScheda, String tagOggetto, String tagMagia) {
-        
-        
+    public boolean salvaDiarioETag(String usernameMaster, Campagna campagna, LocalDate dataSessione, 
+                               String testoDiario, String tagScheda, String tagOggetto, String tagMagia) {
+        // 1. Corretto il controllo: rimosso .trim().isEmpty() su campagna
         if (usernameMaster == null || usernameMaster.trim().isEmpty() ||
-            nomeCampagna == null || nomeCampagna.trim().isEmpty() ||
+            campagna == null || 
             dataSessione == null || 
             testoDiario == null || testoDiario.trim().isEmpty()) {
             return false;
@@ -41,35 +71,38 @@ public class DiarioService {
             try {
                 tx = session.beginTransaction();
 
-                
+                // 2. Estraiamo il nome della campagna come stringa per passarla alla query SQL.
+                // NOTA: Adatta 'getId().getNome()' in base a come hai chiamato i getter nella tua classe Campagna!
+                // Se non hai la chiave composta, potrebbe essere semplicemente campagna.getNome()
+                String nomeCampagnaStr = campagna.getId().getNome(); 
+
                 MutationQuery insertSessione = session.createNativeQuery(
                         "INSERT INTO SESSIONE (Username, NomeCampagna, DataSvolgimento, Diario) " +
                         "VALUES (:user, :campagna, :data, :diario)", void.class);
                 
                 insertSessione.setParameter("user", usernameMaster);
-                insertSessione.setParameter("campagna", nomeCampagna);
+                insertSessione.setParameter("campagna", nomeCampagnaStr); // <-- Passiamo la stringa, non l'oggetto
                 insertSessione.setParameter("data", dataSessione);
                 insertSessione.setParameter("diario", testoDiario);
                 
-                
                 insertSessione.executeUpdate();
 
-                
+                // 3. Passiamo la stringa 'nomeCampagnaStr' al metodo eseguiInsertTag
+                // (Assicurati che eseguiInsertTag accetti una String. Se accetta un oggetto Campagna, 
+                // rimetti semplicemente 'campagna' al posto di 'nomeCampagnaStr')
                 if (tagScheda != null && !tagScheda.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_PARTECIPANTE", "CodiceScheda", 
-                                    usernameMaster, nomeCampagna, dataSessione, tagScheda.trim());
+                                    usernameMaster, nomeCampagnaStr, dataSessione, tagScheda.trim());
                 }
 
-                
                 if (tagOggetto != null && !tagOggetto.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_OGGETTO", "CodiceOggetto", 
-                                    usernameMaster, nomeCampagna, dataSessione, tagOggetto.trim());
+                                    usernameMaster, nomeCampagnaStr, dataSessione, tagOggetto.trim());
                 }
 
-                
                 if (tagMagia != null && !tagMagia.trim().isEmpty()) {
                     eseguiInsertTag(session, "TAG_MAGIA", "CodiceMagia", 
-                                    usernameMaster, nomeCampagna, dataSessione, tagMagia.trim());
+                                    usernameMaster, nomeCampagnaStr, dataSessione, tagMagia.trim());
                 }
 
                 tx.commit();
