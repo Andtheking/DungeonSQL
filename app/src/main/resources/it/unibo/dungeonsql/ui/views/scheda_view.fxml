@@ -21,6 +21,7 @@
                   style="-fx-background-color: #f4efe4; -fx-border-color: #6d1f1f; -fx-border-width: 2; -fx-padding: 12 14 12 14;">
                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                     <VBox HBox.hgrow="ALWAYS" spacing="2.0">
+                        <Button fx:id="btnBack" onAction="#backBtnHandler" text="Indietro"></Button>
                         <Label text="NOME DEL PERSONAGGIO"
                                style="-fx-text-fill: #6d1f1f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
                         <Label fx:id="characterNameLabel" text="Nome Personaggio"

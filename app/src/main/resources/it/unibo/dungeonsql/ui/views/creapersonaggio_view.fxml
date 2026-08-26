@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import it.unibo.dungeonsql.ui.components.NCEComboBox?>
+
+<fx:root type="javafx.scene.control.ScrollPane" fitToWidth="true" style="-fx-background-color: transparent;"
+         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    
+    <VBox spacing="15.0" prefWidth="650.0">
+        <padding>
+            <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
+        </padding>
+
+        <Label text="DungeonSQL - Creazione Personaggio" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+        <!-- Dati Base -->
+        <TitledPane text="Dati Generali Scheda" expanded="true">
+            <GridPane hgap="15" vgap="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                <!-- Riga 0: Campagna e Master -->
+                <Label text="Campagna:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <ComboBox fx:id="cmbCampagna" prefWidth="150" promptText="Scegli..." GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Master:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                <ComboBox fx:id="cmbMaster" prefWidth="150" promptText="Scegli..." GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+                <!-- Riga 1: Nome PG e Taglia -->
+                <Label text="Nome PG:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtNomePersonaggio" promptText="Es. Gimli" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Taglia:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cmbTaglia" prefWidth="150" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            </GridPane>
+        </TitledPane>
+        <!-- Combattimento e Background -->
+        <TitledPane text="Combattimento e Background" expanded="true">
+            <GridPane hgap="15" vgap="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                <Label text="Punti Vita (Max HP):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Spinner fx:id="spnHp" min="1" max="500" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Classe Armatura:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                <Spinner fx:id="spnCa" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+                <Label text="Allineamento:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtAllineamento" promptText="Es. Caotico Buono" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Razza/Fonte:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cmbRazza" prefWidth="150" promptText="Scegli Razza" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+
+                <Label text="Background:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <ComboBox fx:id="cmbBackground" prefWidth="150" promptText="Scegli Background" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="3"/>
+            </GridPane>
+        </TitledPane>
+
+        <!-- Classe, Statistica ed Equipaggiamento -->
+        <TitledPane text="Classe, Caratteristiche e Abilità" expanded="true" xmlns="http://javafx.com/javafx">
+    <content>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox spacing="15">
+                    <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                    <!-- SEZIONE 1: CLASSE E INFO GENERALI -->
+                    <GridPane hgap="15" vgap="10">
+                        <Label text="Nome Classe (Livello 1):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <ComboBox fx:id="cmbClasse" prefWidth="150" promptText="Scegli Classe" GridPane.columnIndex="1" GridPane.rowIndex="0"/>         
+                    </GridPane>
+
+                    <Separator/>
+
+                    <!-- SEZIONE 2: LE 6 CARATTERISTICHE E SALVEZZE -->
+                    <Label text="Punteggi Caratteristica e Tiri Salvezza" style="-fx-font-weight: bold;"/>
+                    <GridPane hgap="15" vgap="8">
+                        <!-- Intestazioni -->
+                        <Label text="Caratteristica" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="Punteggio" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="Salvezza" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                        <!-- Forza -->
+                        <Label text="Forza" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Spinner fx:id="spnForza" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaForza" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                        <!-- Destrezza -->
+                        <Label text="Destrezza" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Spinner fx:id="spnDestrezza" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaDestrezza" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
+                        <!-- Costituzione -->
+                        <Label text="Costituzione" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Spinner fx:id="spnCostituzione" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaCostituzione" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+                        <!-- Intelligenza -->
+                        <Label text="Intelligenza" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Spinner fx:id="spnIntelligenza" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaIntelligenza" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+
+                        <!-- Saggezza -->
+                        <Label text="Saggezza" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <Spinner fx:id="spnSaggezza" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaSaggezza" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+
+                        <!-- Carisma -->
+                        <Label text="Carisma" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <Spinner fx:id="spnCarisma" min="1" max="30" initialValue="10" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <CheckBox fx:id="chkCompetenzaSalvezzaCarisma" text="Competente" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
+                    </GridPane>
+
+                    <Separator/>
+
+                    <!-- SEZIONE 3: LE 18 ABILITÀ (SKILL) -->
+                    <Label text="Abilità (Skills)" style="-fx-font-weight: bold;"/>
+                    <GridPane hgap="20" vgap="6">
+                        <!-- 3 Colonne per disporre ordinatamente le 18 skill senza allungare troppo la pagina in verticale -->
+                        
+                        <!-- Colonna 1 (Skill 1-6) -->
+                        <Label text="Acrobazia (Des):" GridPane.columnIndex="0" GridPane.rowIndex="0"/><NCEComboBox fx:id="cmbAcrobazia" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="Addestrare Animali (Sag):" GridPane.columnIndex="0" GridPane.rowIndex="1"/><NCEComboBox fx:id="cmbAddestrareAnimali" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="Arcano (Int):" GridPane.columnIndex="0" GridPane.rowIndex="2"/><NCEComboBox fx:id="cmbArcano" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label text="Atletica (For):" GridPane.columnIndex="0" GridPane.rowIndex="3"/><NCEComboBox fx:id="cmbAtletica" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label text="Furtività (Des):" GridPane.columnIndex="0" GridPane.rowIndex="4"/><NCEComboBox fx:id="cmbFurtivita" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <Label text="Indagare (Int):" GridPane.columnIndex="0" GridPane.rowIndex="5"/><NCEComboBox fx:id="cmbIndagare" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                        <!-- Colonna 2 (Skill 7-12) -->
+                        <Label text="Inganno (Car):" GridPane.columnIndex="2" GridPane.rowIndex="0"/><NCEComboBox fx:id="cmbInganno" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                        <Label text="Intimidire (Car):" GridPane.columnIndex="2" GridPane.rowIndex="1"/><NCEComboBox fx:id="cmbIntimidire" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                        <Label text="Intuizione (Sag):" GridPane.columnIndex="2" GridPane.rowIndex="2"/><NCEComboBox fx:id="cmbIntuizione" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                        <Label text="Intrattenere (Car):" GridPane.columnIndex="2" GridPane.rowIndex="3"/><NCEComboBox fx:id="cmbIntrattenere" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+                        <Label text="Medicina (Sag):" GridPane.columnIndex="2" GridPane.rowIndex="4"/><NCEComboBox fx:id="cmbMedicina" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+                        <Label text="Natura (Int):" GridPane.columnIndex="2" GridPane.rowIndex="5"/><NCEComboBox fx:id="cmbNatura" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
+
+                        <!-- Colonna 3 (Skill 13-18) -->
+                        <Label text="Percezione (Sag):" GridPane.columnIndex="4" GridPane.rowIndex="0"/><NCEComboBox fx:id="cmbPercezione" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+                        <Label text="Persuasione (Car):" GridPane.columnIndex="4" GridPane.rowIndex="1"/><NCEComboBox fx:id="cmbPersuasione" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                        <Label text="Rapidità di Mano (Des):" GridPane.columnIndex="4" GridPane.rowIndex="2"/><NCEComboBox fx:id="cmbRapiditaDiMano" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
+                        <Label text="Religione (Int):" GridPane.columnIndex="4" GridPane.rowIndex="3"/><NCEComboBox fx:id="cmbReligione" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+                        <Label text="Sopravvivenza (Sag):" GridPane.columnIndex="4" GridPane.rowIndex="4"/><NCEComboBox fx:id="cmbSopravvivenza" GridPane.columnIndex="5" GridPane.rowIndex="4"/>
+                        <Label text="Storia (Int):" GridPane.columnIndex="4" GridPane.rowIndex="5"/><NCEComboBox fx:id="cmbStoria" GridPane.columnIndex="5" GridPane.rowIndex="5"/>
+                    </GridPane>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </content>
+</TitledPane>
+
+        <!-- Bottoni e Stato -->
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button text="Annulla" onAction="#handleAnnulla" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+            <Button text="Crea Personaggio" onAction="#handleCreaPersonaggio" defaultButton="true" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"/>
+        </HBox>
+
+        <VBox alignment="CENTER" spacing="5.0">
+            <Label fx:id="lblError" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;" wrapText="true"/>
+            <Label fx:id="lblSuccess" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;" wrapText="true"/>
+        </VBox>
+    </VBox>
+</fx:root>

@@ -26,12 +26,19 @@ public class ListaSchedeLayout extends VBox {
     private String usernameLoggato;
     private SchedaService schedaService;
     private Runnable onBack; // Callback per tornare al menu
+    private Runnable onCreaScheda; // Callback per tornare al menu
     private Consumer<SchedaPersonaggio> onApriScheda;
 
-    public ListaSchedeLayout(String usernameLoggato, Runnable onBack, Consumer<SchedaPersonaggio> onApriScheda) {
+    public ListaSchedeLayout(String usernameLoggato, 
+        Runnable onBack, 
+        Consumer<SchedaPersonaggio> onApriScheda,
+        Runnable onCreaScheda
+    
+    ) {
         this.usernameLoggato = usernameLoggato;
         this.onBack = onBack;
         this.onApriScheda = onApriScheda;
+        this.onCreaScheda = onCreaScheda;
 
         this.schedaService = new SchedaService(); // O passalo dal costruttore se usi Dependency Injection
 
@@ -93,7 +100,7 @@ public class ListaSchedeLayout extends VBox {
 
     @FXML
     private void creaNuovaScheda(ActionEvent event) {
-        System.out.println("Apertura form per creare una nuova scheda...");
+        onCreaScheda.run();
     }
 
     @FXML

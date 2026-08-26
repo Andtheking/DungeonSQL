@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import it.unibo.dungeonsql.dtos.SchedaPersonaggio;
 import it.unibo.dungeonsql.models.Campagna;
 import it.unibo.dungeonsql.ui.controllers.CreaCampagnaController;
+import it.unibo.dungeonsql.ui.controllers.CreaPersonaggioController;
 import it.unibo.dungeonsql.ui.controllers.LogInController;
 import it.unibo.dungeonsql.ui.controllers.SchedaController;
 import it.unibo.dungeonsql.ui.controllers.SignInController;
@@ -71,8 +72,9 @@ public class App extends Application {
         replaceMainNode(signInView);
     }
 
+    //#region Personaggi
     private void mostraListaSchede() {
-        ListaSchedeLayout schedeLayout = new ListaSchedeLayout(this.loggedInUsername, this::mostraMenuLayout, this::mostraScheda);
+        ListaSchedeLayout schedeLayout = new ListaSchedeLayout(this.loggedInUsername, this::mostraMenuLayout, this::mostraScheda, this::creaPersonaggio);
 
         replaceMainNode(schedeLayout);
     }
@@ -83,6 +85,15 @@ public class App extends Application {
         replaceMainNode(sc);
     }
 
+    private void creaPersonaggio() {
+        CreaPersonaggioController cpc = new CreaPersonaggioController(this.loggedInUsername, null, this::mostraListaSchede);
+    
+        replaceMainNode(cpc);
+    }
+    //#endregion
+
+
+    //#region Campagna
     private void mostraListaCampagne() {
         ListaCampagneLayout cc = new ListaCampagneLayout(loggedInUsername,
             this::mostraMenuLayout,
@@ -105,6 +116,7 @@ public class App extends Application {
 
         replaceMainNode(vcc);
     }
+    //#endregion
 
     private void mostraMenuLayout() {
         MenuLayout mainLayout = new MenuLayout(

@@ -1,98 +1,128 @@
 package it.unibo.dungeonsql.services;
 
+import it.unibo.dungeonsql.models.*;
+import it.unibo.dungeonsql.models.ids.*;
 import it.unibo.dungeonsql.util.HibernateUtil;
+
+import java.util.List;
+import java.util.Map;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.MutationQuery;
 
 public class PersonaggioService {
 
-    /**
-     * Esegue la transazione atomica per creare un personaggio completo.
-     * Restituisce true in caso di successo, false in caso di errore.
-     */
     public boolean creaPersonaggioCompleto(
-            String codiceScheda, String nome, int hp, int ca, String taglia, String creUsername,
+            String nome, int hp, int ca, String taglia, String creUsername,
             String allineamento, String fonNome, String appNome,
-            int punteggioForza, boolean competenzaForza,
+            Map<String, Integer> punteggiCaratteristiche,
+            Map<String, Boolean> competenzeSalvezza,
             String nomeClasse,
-            String nomeCapacita, int livelloCapacita,
-            String codiceOggetto) {
+            Map<String, String> abilitaSelezionate,
+            String nomeCampagna, String master) {
 
-        // Validazione base
-        if (codiceScheda == null || codiceScheda.trim().isEmpty() ||
-            nome == null || nome.trim().isEmpty() ||
+        if (nome == null || nome.trim().isEmpty() ||
             creUsername == null || creUsername.trim().isEmpty() ||
             nomeClasse == null || nomeClasse.trim().isEmpty()) {
             return false;
         }
 
-        // Try esterno: gestisce l'apertura e chiusura della connessione
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = null;
-            
-            // Try interno: gestisce la transazione e l'errore SQL
+
             try {
                 tx = session.beginTransaction();
 
-                // 1. SCHEDA
-                MutationQuery qScheda = session.createNativeQuery(
-                    "INSERT INTO SCHEDA (CodiceScheda, Nome, MaxHP, CA, Taglia, CRE_Username, PRE_Username, PRE_Nome) " +
-                    "VALUES (:codice, :nome, :maxHp, :ca, :taglia, :creUser, NULL, NULL)", void.class);
-                qScheda.setParameter("codice", codiceScheda);
-                qScheda.setParameter("nome", nome);
-                qScheda.setParameter("maxHp", hp);
-                qScheda.setParameter("ca", ca);
-                qScheda.setParameter("taglia", taglia);
-                qScheda.setParameter("creUser", creUsername);
-                qScheda.executeUpdate();
+                // 1. Recuperiamo le entità esterne di riferimento (Foreign Keys)
+                Utente creatore = session.get(Utente.class, creUsername);
+                Background background = session.get(Background.class, appNome);
+                Razza razza = session.get(Razza.class, fonNome);
+                Classe classe = session.get(Classe.class, nomeClasse);
+                Campagna campagna = session.get(Campagna.class, new CampagnaId(master, nomeCampagna));
 
-                // 2. PERSONAGGIO
-                MutationQuery qPersonaggio = session.createNativeQuery(
-                    "INSERT INTO PERSONAGGIO (CodiceScheda, Allineamento, HP, ExpAccumulata, FON_Nome, APP_Nome) " +
-                    "VALUES (:codice, :allineamento, :hp, 0, :fonNome, :appNome)", void.class);
-                qPersonaggio.setParameter("codice", codiceScheda);
-                qPersonaggio.setParameter("allineamento", allineamento);
-                qPersonaggio.setParameter("hp", hp);
-                qPersonaggio.setParameter("fonNome", fonNome);
-                qPersonaggio.setParameter("appNome", appNome);
-                qPersonaggio.executeUpdate();
+                if (creatore == null || classe == null) {
+                    System.err.println("❌ Errore: Utente creatore o Classe non trovati nel database.");
+                    return false;
+                }
 
-                // 3. POSSESSO (Forza)
-                MutationQuery qPossesso = session.createNativeQuery(
-                    "INSERT INTO POSSESSO (Nome, CodiceScheda, Punteggio, CompetenzaSalvezza) " +
-                    "VALUES ('Forza', :codice, :punteggio, :competenza)", void.class);
-                qPossesso.setParameter("codice", codiceScheda);
-                qPossesso.setParameter("punteggio", punteggioForza);
-                qPossesso.setParameter("competenza", competenzaForza);
-                qPossesso.executeUpdate();
+                // 2. SCHEDA: Salviamo prima questa per generare il SERIAL
+                Scheda scheda = Scheda.builder()
+                        .nome(nome)
+                        .maxHp(hp)
+                        .ca(ca)
+                        .taglia(taglia)
+                        .creatore(creatore)
+                        .campagna(campagna)
+                        .build();
+                session.persist(scheda);
+                session.flush(); // Forza Hibernate a scrivere sul DB e valorizzare l'ID
 
-                // 4. PROGRESSO (Livello 1)
-                MutationQuery qProgresso = session.createNativeQuery(
-                    "INSERT INTO PROGRESSO (CodiceScheda, RIF_NomeClasse, Livello, NomeClasse, NomeSottoclasse) " +
-                    "VALUES (:codice, :rifClasse, 1, :nomeClasse, NULL)", void.class);
-                qProgresso.setParameter("codice", codiceScheda);
-                qProgresso.setParameter("rifClasse", nomeClasse);
-                qProgresso.setParameter("nomeClasse", nomeClasse);
-                qProgresso.executeUpdate();
+                int codiceScheda = scheda.getCodiceScheda();
 
-                // 5. CAPACITA
-                MutationQuery qCapacita = session.createNativeQuery(
-                    "INSERT INTO CAPACITA (CodiceScheda, Nome, LivelloCapacita) " +
-                    "VALUES (:codice, :nomeCapacita, :livelloCapacita)", void.class);
-                qCapacita.setParameter("codice", codiceScheda);
-                qCapacita.setParameter("nomeCapacita", nomeCapacita);
-                qCapacita.setParameter("livelloCapacita", livelloCapacita);
-                qCapacita.executeUpdate();
+                // 3. PERSONAGGIO: Ora 'codiceScheda' ha il valore corretto e non è più 0 o null
+                Personaggio personaggio = Personaggio.builder()
+                        .scheda(scheda)
+                        .allineamento(allineamento)
+                        .hp(hp)
+                        .expAccumulata(0)
+                        .background(background)
+                        .razza(razza)
+                        .build();
+                session.persist(personaggio);
 
-                // 6. INVENTARIO (Opzionale: lo esegue solo se hai scritto un codice oggetto)
-                if (codiceOggetto != null && !codiceOggetto.trim().isEmpty()) {
-                    MutationQuery qInventario = session.createNativeQuery(
-                        "INSERT INTO INVENTARIO (CodiceOggetto, CodiceScheda, Quantita) " +
-                        "VALUES (:codiceOggetto, :codice, 1)", void.class);
-                    qInventario.setParameter("codiceOggetto", codiceOggetto.trim());
-                    qInventario.setParameter("codice", codiceScheda);
-                    qInventario.executeUpdate();
+                // 4. POSSESSO (Le 6 caratteristiche)
+                if (punteggiCaratteristiche != null) {
+                    for (Map.Entry<String, Integer> entry : punteggiCaratteristiche.entrySet()) {
+                        String nomeCaratteristica = entry.getKey();
+                        int punteggio = entry.getValue();
+                        boolean compSalvezza = competenzeSalvezza != null && competenzeSalvezza.getOrDefault(nomeCaratteristica, false);
+
+                        // Recupera l'entità Caratteristica dal database (presumendo che la classe si chiami Caratteristica)
+                        // Se la tua entità si chiama in un altro modo (es. Statistica o simile, adattane il nome)
+                        Caratteristica caratteristica = session.get(Caratteristica.class, nomeCaratteristica);
+
+                        PossessoId possessoId = new PossessoId(nomeCaratteristica, codiceScheda); 
+                        
+                        Possesso possesso = Possesso.builder()
+                                .id(possessoId)
+                                .scheda(scheda)                      // Collega la scheda
+                                .caratteristica(caratteristica)      // <-- AGGIUNGI QUESTO: Risolve l'errore sul one-to-one!
+                                .punteggio(punteggio)
+                                .competenzaSalvezza(compSalvezza)
+                                .build();
+                        session.persist(possesso);
+                    }
+                }
+
+                // 5. PROGRESSO (Livello classe)
+                ProgressoId progressoId = new ProgressoId(codiceScheda, nomeClasse);
+                Progresso progresso = Progresso.builder()
+                        .id(progressoId)
+                        .personaggio(personaggio)
+                        .classe(classe)
+                        .livello(1)
+                        .build();
+                session.persist(progresso);
+
+                // 6. CAPACITÀ / ABILITÀ
+                if (abilitaSelezionate != null) {
+                    for (Map.Entry<String, String> entry : abilitaSelezionate.entrySet()) {
+                        String nomeCapacita = entry.getKey();
+                        String livelloCapacita = entry.getValue();
+
+                        Skill skill = session.get(Skill.class, nomeCapacita);
+
+                        if (List.of("N", "C", "E").contains(livelloCapacita)) {
+                            CapacitaId capacitaId = new CapacitaId(nomeCapacita, codiceScheda);
+                            Capacita capacita = Capacita.builder()
+                                    .id(capacitaId)
+                                    .scheda(scheda) // <-- ASSICURATI DI AVERLO ANCHE QUI
+                                    .skill(skill)
+                                    .livelloCapacita(livelloCapacita)
+                                    .build();
+                            session.persist(capacita);
+                        }
+                    }
                 }
 
                 tx.commit();
@@ -102,8 +132,7 @@ public class PersonaggioService {
                 if (tx != null && tx.isActive()) {
                     tx.rollback();
                 }
-                // Adesso ti stamperà il VERO errore SQL (es. "Ladro" non trovato in CLASSE)
-                System.err.println("❌ ERRORE SQL IN CREAZIONE PERSONAGGIO: ");
+                System.err.println("❌ ERRORE DURANTE LA CREAZIONE DEL PERSONAGGIO CON HIBERNATE: ");
                 e.printStackTrace();
                 return false;
             }
@@ -112,4 +141,55 @@ public class PersonaggioService {
             return false;
         }
     }
+
+    // --- METODI PER POPOLARE LE COMBOBOX ---
+
+    public List<String> getAllNomiRazze() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // 'r.id' recupera automaticamente la Primary Key (il nome) della Razza
+            return session.createQuery("SELECT r.id FROM Razza r", String.class).list();
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero delle razze: " + e.getMessage());
+            return List.of(); // Ritorna lista vuota in caso di errore per non far crashare la grafica
+        }
+    }
+
+    public List<String> getAllNomiBackground() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT b.id FROM Background b", String.class).list();
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero dei background: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<String> getAllNomiClassi() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT c.id FROM Classe c", String.class).list();
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero delle classi: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<String> getAllUsernamesMaster() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Estraiamo tutti i Master che hanno almeno una campagna creata, senza duplicati (DISTINCT)
+            return session.createQuery("SELECT DISTINCT c.master.username FROM Campagna c", String.class).list();
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero dei master: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<String> getAllNomiCampagne() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Adatta 'c.id.nome' con il nome reale della variabile stringa dentro la tua classe CampagnaId
+            return session.createQuery("SELECT DISTINCT c.id.nome FROM Campagna c", String.class).list();
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero delle campagne: " + e.getMessage());
+            return List.of();
+        }
+    }
+
 }
